@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KAVIROX | Building Secure. Intelligent. Impactful. Digital Solutions.</title>
+  <meta name="description" content="KAVIROX (kavirox.space) delivers AI/ML, Cybersecurity, Secure Systems, Web/Product Engineering, and complete digital growth solutions.">
+  <meta name="theme-color" content="#020503">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Ambient Particle Field Canvas -->
+  <canvas id="sparkle-canvas" style="position: fixed; inset: 0; pointer-events: none; z-index: 0;"></canvas>
+
+  <!-- Header / Navigation -->
+  <header id="header" class="site-header">
+    <div class="container header-container">
+      <a href="#home" class="logo" id="logo-link">
+        <span class="logo-icon">&lt;/&gt;</span>
+        <span class="logo-text">KAVIROX</span>
+      </a>
+
+      <nav class="main-nav" id="main-nav">
+        <ul>
+          <li><a href="#home" class="nav-link active" data-translate="nav_home">Home</a></li>
+          <li><a href="#services" class="nav-link" data-translate="nav_services">Services</a></li>
+          <li><a href="#about" class="nav-link" data-translate="nav_about">About</a></li>
+          <li><a href="#projects" class="nav-link" data-translate="nav_projects">Projects</a></li>
+          <li><a href="#research" class="nav-link" data-translate="nav_research">Research</a></li>
+          <li><a href="#process" class="nav-link" data-translate="nav_process">Process</a></li>
+          <li><a href="#why-us" class="nav-link" data-translate="nav_why_us">Why Us</a></li>
+          <li><a href="#contact" class="nav-link" data-translate="nav_contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <!-- Multi-language Switcher -->
+        <div class="lang-selector">
+          <button class="lang-btn" id="lang-btn" aria-label="Switch Language">
+            <i class="fa-solid fa-globe"></i>
+            <span id="current-lang">EN</span>
+          </button>
+          <div class="lang-dropdown" id="lang-dropdown">
+            <button class="lang-option active" data-lang="en">English</button>
+            <button class="lang-option" data-lang="es">Español</button>
+            <button class="lang-option" data-lang="hi">हिन्दी</button>
+          </div>
+        </div>
+
+        <!-- Theme Toggle (Dark/Light) -->
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Dark/Light Mode">
+          <i class="fa-solid fa-sun icon-light"></i>
+          <i class="fa-solid fa-moon icon-dark"></i>
+        </button>
+
+        <a href="#contact" class="btn btn-primary" data-translate="btn_get_touch">Let's Connect</a>
+
+        <!-- Mobile Hamburger Menu Toggle -->
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle Navigation Menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Flow -->
+  <main>
+
+    <!-- ═══════════════════════════════════════════════
+         1. HERO SECTION
+         ═══════════════════════════════════════════════ -->
+    <section id="home" class="hero-section">
+      <div class="container hero-shell">
+        <div class="hero-copy scroll-reveal">
+          <div class="hero-badge-pill">
+            <span class="pulse-dot"></span>
+            <span data-translate="hero_badge">Build. Secure. Automate. Innovate.</span>
+          </div>
+          
+          <h1 class="hero-title" data-translate="hero_title">
+            Building Secure.<br>
+            <span class="text-gradient">Intelligent. Impactful.</span><br>
+            Digital Solutions.
+          </h1>
+
+          <p class="hero-description" data-translate="hero_desc">
+            From AI research published at ACM & ACL to offensive security frameworks and hardware security systems — we build things that solve real-world problems with speed, precision, and impact.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#projects" class="btn btn-primary" data-translate="hero_btn_explore">Explore Our Work</a>
+            <a href="#contact" class="btn btn-secondary" data-translate="hero_btn_contact">Contact Us</a>
+          </div>
+
+          <!-- Animated Metrics Grid with Live Easing Count-Up -->
+          <div class="hero-metrics" id="hero-metrics">
+            <div class="metric-item">
+              <strong class="stat-counter" data-count="10" data-suffix="+">0+</strong>
+              <span data-translate="stat_projects">Projects Delivered</span>
+            </div>
+            <div class="metric-item">
+              <strong class="stat-counter" data-count="5" data-suffix="+">0+</strong>
+              <span data-translate="stat_papers">Research Papers</span>
+            </div>
+            <div class="metric-item">
+              <strong class="stat-counter" data-count="4" data-suffix="+">0+</strong>
+              <span data-translate="stat_experience">Years Velocity</span>
+            </div>
+            <div class="metric-item">
+              <strong class="stat-counter" data-count="100" data-suffix="%">0%</strong>
+              <span data-translate="stat_satisfaction">Client Satisfaction</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual scroll-reveal delay-1">
+          <div class="visual-frame">
+            <div class="status-card card-top">
+              <span class="status-dot"></span>
+              <span>AI Researcher</span>
+            </div>
+            <div class="status-card card-mid">
+              <span class="status-dot"></span>
+              <span>Security Engineer</span>
+            </div>
+            <img src="assets/01_Hero_Cyber_AI_Illustration.png" alt="KAVIROX Cyber AI Illustration" class="hero-illustration">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════
+         2. SERVICES / WHAT WE DO (21st.dev Bento Grid)
+         ═══════════════════════════════════════════════ -->
+    <section id="services" class="services-section section-padding section-bg">
+      <div class="container">
+        <div class="section-header scroll-reveal">
+          <span class="section-tag" data-translate="services_tag">WHAT WE DO</span>
+          <h2 class="section-title" data-translate="services_title">End-to-End Solutions for Your Digital Success</h2>
+          <p class="section-desc" data-translate="services_desc">
+            From powerful software and secure systems to impactful marketing and business support, we help you build, grow and scale without limits.
+          </p>
+        </div>
+
+        <!-- 12 Spotlight Bento Service Cards -->
+        <div class="services-grid">
+          <div class="service-card scroll-reveal">
+            <div class="service-icon"><i class="fa-solid fa-film"></i></div>
+            <h3 class="service-title" data-translate="srv_video_title">Video Editing</h3>
+            <p class="service-text" data-translate="srv_video_desc">Professional video editing for YouTube, Reels, Ads, Corporate and more.</p>
+          </div>
+          <div class="service-card scroll-reveal delay-1">
+            <div class="service-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+            <h3 class="service-title" data-translate="srv_seo_title">SEO Services</h3>
+            <p class="service-text" data-translate="srv_seo_desc">On-page, Off-page, Technical SEO to boost rankings and drive organic traffic.</p>
+          </div>
+          <div class="service-card scroll-reveal delay-2">
+            <div class="service-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
+            <h3 class="service-title" data-translate="srv_app_title">App Development</h3>
+            <p class="service-text" data-translate="srv_app_desc">Android, iOS & Cross-platform apps built for performance and scalability.</p>
+          </div>
+          <div class="service-card scroll-reveal delay-3">
+            <div class="service-icon"><i class="fa-solid fa-bullhorn"></i></div>
+            <h3 class="service-title" data-translate="srv_mkt_title">Digital Marketing</h3>
+            <p class="service-text" data-translate="srv_mkt_desc">Social Media, Ads, Content Marketing, Influencer Marketing & more.</p>
+          </div>
+          <div class="service-card scroll-reveal">
+            <div class="service-icon"><i class="fa-solid fa-code"></i></div>
+            <h3 class="service-title" data-translate="srv_web_title">Web Development</h3>
+            <p class="service-text" data-translate="srv_web_desc">Modern, responsive websites and web apps with great UI/UX.</p>
+          </div>
+          <div class="service-card scroll-reveal delay-1">
+            <div class="service-icon"><i class="fa-solid fa-briefcase"></i></div>
+            <h3 class="service-title" data-translate="srv_biz_title">Business Support</h3>
+            <p class="service-text" data-translate="srv_biz_desc">Virtual assistance, data management, documentation & daily operations.</p>
+          </div>
+          <div class="service-card scroll-reveal delay-2">
+            <div class="service-icon"><i class="fa-solid fa-palette"></i></div>
+            <h3 class="service-title" data-translate="srv_brand_title">Branding & Design</h3>
+            <p class="service-text" data-translate="srv_brand_desc">Logos, UI/UX, Graphics, Brand Identity & complete visual solutions.</p>
+          </div>
+          <div class="service-card scroll-reveal delay-3">
+            <div class="service-icon"><i class="fa-solid fa-gears"></i></div>
+            <h3 class="service-title" data-translate="srv_tech_title">Technical Solutions</h3>
+            <p class="service-text" data-translate="srv_tech_desc">Custom software, automation, APIs, Integrations & IT support.</p>
+          </div>
+          <div class="service-card scroll-reveal">
+            <div class="service-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+            <h3 class="service-title" data-translate="srv_ecom_title">E-commerce Solutions</h3>
+            <p class="service-text" data-translate="srv_ecom_desc">Online stores, payment integration, inventory, and complete e-commerce solutions.</p>
+          </div>
+          <div class="service-card scroll-reveal delay-1">
+            <div class="service-icon"><i class="fa-solid fa-pen-nib"></i></div>
+            <h3 class="service-title" data-translate="srv_write_title">Content Writing</h3>
+            <p class="service-text" data-translate="srv_write_desc">Website content, blogs, articles, product descriptions & more.</p>
+          </div>
+          <div class="service-card scroll-reveal delay-2">
+            <div class="service-icon"><i class="fa-solid fa-envelope-open-text"></i></div>
+            <h3 class="service-title" data-translate="srv_email_title">Email Marketing</h3>
+            <p class="service-text" data-translate="srv_email_desc">Campaigns, newsletters and automations to engage your audience.</p>
+          </div>
+          <div class="service-card scroll-reveal delay-3">
+            <div class="service-icon"><i class="fa-solid fa-chart-line"></i></div>
+            <h3 class="service-title" data-translate="srv_analytics_title">Analytics & Reporting</h3>
+            <p class="service-text" data-translate="srv_analytics_desc">Custom dashboards, insights and reports for smart decisions.</p>
+          </div>
+        </div>
+
+        <!-- Custom Solutions Callout -->
+        <div class="solutions-callout scroll-reveal">
+          <div class="callout-content">
+            <h4 data-translate="callout_title">Need a Custom Solution?</h4>
+            <p data-translate="callout_desc">Tell us your requirements and we'll build the perfect solution for you.</p>
+          </div>
+          <a href="#contact" class="btn btn-primary" data-translate="callout_btn">Let's Talk</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════
+         3. ABOUT US (WHO WE ARE DOSSIER)
+         ═══════════════════════════════════════════════ -->
+    <section id="about" class="about-section section-padding">
+      <div class="container about-shell">
+        <div class="about-visual scroll-reveal">
+          <div class="about-portrait-wrap">
+            <img src="assets/about_workspace_hq.jpg" alt="Who We Are - KAVIROX Cyber AI Engineering Lab" class="about-portrait">
+          </div>
+        </div>
+
+        <div class="about-copy scroll-reveal delay-1">
+          <span class="section-tag" data-translate="about_tag">ABOUT US</span>
+          <h2 data-translate="about_title">Who We Are</h2>
+          <p data-translate="about_desc1">
+            KAVIROX is a team of builders, researchers, and problem solvers working at the intersection of AI/ML, Cybersecurity, Secure Systems, Web/Product Engineering, and Digital Growth.
+          </p>
+          <p data-translate="about_desc2">
+            We love automating the complex, securing the vulnerable, and building systems that create real impact.
+          </p>
+
+          <div class="info-grid">
+            <div class="info-card">
+              <div class="card-icon"><i class="fa-solid fa-brain"></i></div>
+              <div>
+                <h4>AI Researcher</h4>
+                <small>Published at ACM MM 2025 & ACL 2025</small>
+              </div>
+            </div>
+            <div class="info-card">
+              <div class="card-icon"><i class="fa-solid fa-code"></i></div>
+              <div>
+                <h4>Full Stack Developer</h4>
+                <small>Scalable web & product engineering</small>
+              </div>
+            </div>
+            <div class="info-card">
+              <div class="card-icon"><i class="fa-solid fa-shield-halved"></i></div>
+              <div>
+                <h4>Security Engineer</h4>
+                <small>Offensive security & VAPT specialist</small>
+              </div>
+            </div>
+            <div class="info-card">
+              <div class="card-icon"><i class="fa-solid fa-microchip"></i></div>
+              <div>
+                <h4>Hardware Hacker</h4>
+                <small>Embedded systems & IoT security</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="github-profile-links">
+            <a href="https://github.com/acro777x/acromap" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i> acro777x/acromap</a>
+            <a href="https://github.com/Eurt-labs/AI-DFIR" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i> Eurt-labs/AI-DFIR</a>
+            <a href="https://github.com/YuganshGoyal2007/Tkinter" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i> YuganshGoyal2007/Tkinter</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════
+         4. FEATURED PROJECTS & 3D FLOATING CARDS
+         ═══════════════════════════════════════════════ -->
+    <section id="projects" class="projects-section section-padding section-bg">
+      <div class="container">
+        <div class="section-header scroll-reveal">
+          <span class="section-tag" data-translate="proj_tag">FEATURED PROJECTS</span>
+          <h2 class="section-title" data-translate="proj_title">Some Things We're Proud Of</h2>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="project-filters scroll-reveal delay-1">
+          <button class="filter-btn active" data-filter="all" data-translate="filter_all">All</button>
+          <button class="filter-btn" data-filter="cybersecurity" data-translate="filter_cyber">Cybersecurity</button>
+          <button class="filter-btn" data-filter="ai-ml" data-translate="filter_ai">AI/ML</button>
+          <button class="filter-btn" data-filter="web-app" data-translate="filter_web">Web & App</button>
+          <button class="filter-btn" data-filter="research" data-translate="filter_research">Research</button>
+          <button class="filter-btn" data-filter="embedded" data-translate="filter_embedded">Embedded</button>
+        </div>
+
+        <!-- Projects Grid with 3D Float & Dedicated Bespoke Visuals -->
+        <div class="projects-grid">
+          <!-- Project 1: AcroMap -->
+          <div class="project-card scroll-reveal" data-category="cybersecurity">
+            <div class="project-topbar">
+              <div class="project-status">
+                <span class="status-led"></span>
+                <span>DEPLOYED</span>
+              </div>
+              <div class="project-badges">
+                <span class="project-badge">v5.0</span>
+                <span class="project-badge">3D-Phase</span>
+              </div>
+            </div>
+            <div class="project-media">
+              <img src="assets/project_acromap.jpg" alt="AcroMap 3D Penetration Testing Framework">
+            </div>
+            <div class="project-info">
+              <h3 class="project-name">AcroMap</h3>
+              <p class="project-desc" data-translate="proj_acromap_desc">3D-Phase Automated Penetration Testing Framework</p>
+              <div class="project-tags">
+                <span class="project-tag">Python</span>
+                <span class="project-tag">Bash</span>
+                <span class="project-tag">Nmap</span>
+                <span class="project-tag">Nuclei</span>
+                <span class="project-tag">VAPT</span>
+              </div>
+              <div class="project-actions">
+                <button class="btn btn-text open-modal-btn" data-project="acromap" data-translate="proj_view">View Details <i class="fa-solid fa-arrow-right"></i></button>
+                <a href="https://github.com/acro777x/acromap" target="_blank" class="btn btn-text"><i class="fa-brands fa-github"></i> GitHub</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 2: AI-DFIR -->
+          <div class="project-card scroll-reveal delay-1" data-category="ai-ml">
+            <div class="project-topbar">
+              <div class="project-status">
+                <span class="status-led"></span>
+                <span>ACTIVE</span>
+              </div>
+              <div class="project-badges">
+                <span class="project-badge badge-cyan">4-Agent</span>
+                <span class="project-badge">Threat Intel</span>
+              </div>
+            </div>
+            <div class="project-media">
+              <img src="assets/project_aidfir.jpg" alt="AI-DFIR Cyber Threat Investigation Platform">
+            </div>
+            <div class="project-info">
+              <h3 class="project-name">AI-DFIR</h3>
+              <p class="project-desc" data-translate="proj_aidfir_desc">AI-Assisted Digital Forensics & Cyber Threat Investigation</p>
+              <div class="project-tags">
+                <span class="project-tag">Python</span>
+                <span class="project-tag">LangChain</span>
+                <span class="project-tag">FastAPI</span>
+                <span class="project-tag">Elasticsearch</span>
+              </div>
+              <div class="project-actions">
+                <button class="btn btn-text open-modal-btn" data-project="aidfir" data-translate="proj_view">View Details <i class="fa-solid fa-arrow-right"></i></button>
+                <a href="https://github.com/Eurt-labs/AI-DFIR" target="_blank" class="btn btn-text"><i class="fa-brands fa-github"></i> GitHub</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 3: AcroStrike -->
+          <div class="project-card scroll-reveal delay-2" data-category="cybersecurity">
+            <div class="project-topbar">
+              <div class="project-status">
+                <span class="status-led"></span>
+                <span>ZERO-DEP</span>
+              </div>
+              <div class="project-badges">
+                <span class="project-badge">v2.0</span>
+                <span class="project-badge">Raw Sockets</span>
+              </div>
+            </div>
+            <div class="project-media">
+              <img src="assets/project_acrostrike.jpg" alt="AcroStrike Network Vulnerability Scanner">
+            </div>
+            <div class="project-info">
+              <h3 class="project-name">AcroStrike</h3>
+              <p class="project-desc" data-translate="proj_acrostrike_desc">2D-Phase VAPT Scanner (Zero External Dependencies)</p>
+              <div class="project-tags">
+                <span class="project-tag">C/C++</span>
+                <span class="project-tag">Raw Sockets</span>
+                <span class="project-tag">SYN Sweep</span>
+                <span class="project-tag">Multithread</span>
+              </div>
+              <div class="project-actions">
+                <button class="btn btn-text open-modal-btn" data-project="acrostrike" data-translate="proj_view">View Details <i class="fa-solid fa-arrow-right"></i></button>
+                <a href="https://github.com/acro777x/AcroStrike" target="_blank" class="btn btn-text"><i class="fa-brands fa-github"></i> GitHub</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 4: QR Attendance Engine -->
+          <div class="project-card scroll-reveal" data-category="ai-ml web-app">
+            <div class="project-topbar">
+              <div class="project-status">
+                <span class="status-led"></span>
+                <span>DESKTOP</span>
+              </div>
+              <div class="project-badges">
+                <span class="project-badge">OpenCV</span>
+                <span class="project-badge badge-cyan">Vision HUD</span>
+              </div>
+            </div>
+            <div class="project-media">
+              <img src="assets/project_qr_attendance.jpg" alt="QR Attendance Computer Vision System">
+            </div>
+            <div class="project-info">
+              <h3 class="project-name">Tkinter QR Attendance</h3>
+              <p class="project-desc" data-translate="proj_studyhub_desc">Single-file Tkinter app for QR-based attendance workflows</p>
+              <div class="project-tags">
+                <span class="project-tag">Python</span>
+                <span class="project-tag">Tkinter</span>
+                <span class="project-tag">OpenCV</span>
+                <span class="project-tag">SQLite</span>
+              </div>
+              <div class="project-actions">
+                <button class="btn btn-text open-modal-btn" data-project="studyhub" data-translate="proj_view">View Details <i class="fa-solid fa-arrow-right"></i></button>
+                <a href="https://github.com/YuganshGoyal2007/Tkinter" target="_blank" class="btn btn-text"><i class="fa-brands fa-github"></i> GitHub</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 5: Ghost Chat -->
+          <div class="project-card scroll-reveal delay-1" data-category="embedded">
+            <div class="project-topbar">
+              <div class="project-status">
+                <span class="status-led"></span>
+                <span>HARDWARE</span>
+              </div>
+              <div class="project-badges">
+                <span class="project-badge badge-purple">ESP32</span>
+                <span class="project-badge">AES-256</span>
+              </div>
+            </div>
+            <div class="project-media">
+              <img src="assets/project_ghostchat.jpg" alt="Ghost Chat ESP32 Offline Mesh Messenger">
+            </div>
+            <div class="project-info">
+              <h3 class="project-name">Ghost Chat</h3>
+              <p class="project-desc" data-translate="proj_ghostchat_desc">Offline Captive Portal Messenger on ESP32</p>
+              <div class="project-tags">
+                <span class="project-tag">ESP32</span>
+                <span class="project-tag">C++</span>
+                <span class="project-tag">Captive Portal</span>
+                <span class="project-tag">WebSockets</span>
+              </div>
+              <div class="project-actions">
+                <button class="btn btn-text open-modal-btn" data-project="ghostchat" data-translate="proj_view">View Details <i class="fa-solid fa-arrow-right"></i></button>
+                <a href="https://github.com/acro777x/Ghost_Chat" target="_blank" class="btn btn-text"><i class="fa-brands fa-github"></i> GitHub</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 6: COVID Analytics -->
+          <div class="project-card scroll-reveal delay-2" data-category="ai-ml web-app">
+            <div class="project-topbar">
+              <div class="project-status">
+                <span class="status-led"></span>
+                <span>ANALYTICS</span>
+              </div>
+              <div class="project-badges">
+                <span class="project-badge">Data Science</span>
+                <span class="project-badge badge-cyan">Pandas</span>
+              </div>
+            </div>
+            <div class="project-media">
+              <img src="assets/project_covid_analytics.jpg" alt="COVID Epidemiological Analytics Engine">
+            </div>
+            <div class="project-info">
+              <h3 class="project-name">COVID Project</h3>
+              <p class="project-desc" data-translate="proj_resumebuilder_desc">Python data processing project for patient CSV exploration</p>
+              <div class="project-tags">
+                <span class="project-tag">Python</span>
+                <span class="project-tag">Pandas</span>
+                <span class="project-tag">NumPy</span>
+                <span class="project-tag">Matplotlib</span>
+              </div>
+              <div class="project-actions">
+                <button class="btn btn-text open-modal-btn" data-project="resumebuilder" data-translate="proj_view">View Details <i class="fa-solid fa-arrow-right"></i></button>
+                <a href="https://github.com/YuganshGoyal2007/covid-project" target="_blank" class="btn btn-text"><i class="fa-brands fa-github"></i> GitHub</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live GitHub Repository Showcase -->
+        <div class="repo-showcase scroll-reveal" id="repo-showcase">
+          <div class="repo-showcase-header">
+            <div>
+              <span class="section-tag">LIVE GITHUB INDEX</span>
+              <h3 style="font-family: var(--font-heading); font-size: 1.6rem; color: var(--text-primary);">Repository Showcase</h3>
+              <p style="color: var(--text-secondary); font-size: 0.95rem;">Real-time repositories from acro777x, Eurt-labs, and YuganshGoyal2007.</p>
+            </div>
+            <a class="btn btn-secondary" href="https://github.com/acro777x" target="_blank" rel="noreferrer">
+              <i class="fa-brands fa-github"></i> View GitHub Profile
+            </a>
+          </div>
+
+          <div class="repo-stats" id="repo-stats" aria-live="polite">
+            <div class="repo-stat-card">
+              <span id="repo-total">--</span>
+              <small>Repositories</small>
+            </div>
+            <div class="repo-stat-card">
+              <span id="repo-owners">3</span>
+              <small>Accounts</small>
+            </div>
+            <div class="repo-stat-card">
+              <span id="repo-languages">--</span>
+              <small>Languages</small>
+            </div>
+          </div>
+
+          <div class="repo-toolbar">
+            <div class="repo-tabs" id="repo-tabs" role="tablist">
+              <button class="repo-tab active" data-owner-filter="all" type="button">All</button>
+              <button class="repo-tab" data-owner-filter="acro777x" type="button">acro777x</button>
+              <button class="repo-tab" data-owner-filter="Eurt-labs" type="button">Eurt-labs</button>
+              <button class="repo-tab" data-owner-filter="YuganshGoyal2007" type="button">YuganshGoyal2007</button>
+            </div>
+            <label class="repo-search-wrap" for="repo-search">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input id="repo-search" type="search" placeholder="Search repositories...">
+            </label>
+          </div>
+
+          <div class="repo-grid" id="repo-grid" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════
+         5. RESEARCH PUBLICATIONS SECTION (DEDICATED VISUALS)
+         ═══════════════════════════════════════════════ -->
+    <section id="research" class="research-section section-padding">
+      <div class="container">
+        <div class="section-header scroll-reveal">
+          <span class="section-tag" data-translate="research_tag">ACADEMIC & PEER-REVIEWED</span>
+          <h2 class="section-title" data-translate="res_pub_title">Research Publications</h2>
+          <p class="section-desc">Pioneering multimodal AI architectures, language model benchmarks, and neural retrieval pipelines accepted at global top-tier conferences.</p>
+        </div>
+
+        <!-- 2 Detailed Publication Cards with Bespoke Architecture Diagrams -->
+        <div class="research-publications-grid">
+          <!-- Paper 1: ACM MM 2025 -->
+          <article class="pub-card-detailed scroll-reveal">
+            <div class="pub-media">
+              <img src="assets/research_acm.jpg" alt="ACM MM 2025 Multimodal Emotion & Trait Recognition Pipeline Architecture">
+            </div>
+            <div class="pub-content">
+              <div class="pub-badge-row">
+                <span class="pub-badge">ACM MM 2025 // RESEARCH TRACK</span>
+                <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);">Oral Presentation</span>
+              </div>
+              <h3 class="pub-title-detailed" data-translate="pub1_title">Multimodal Emotion & Trait Recognition Pipeline</h3>
+              <p class="pub-desc-detailed" data-translate="pub1_desc">
+                Engineered a four-agent hierarchical pipeline for fine-grained emotion and personality-trait classification combining LLaMA-3.2-3B, Patronus AI automated reasoning verification, and psychological RAG databases.
+              </p>
+              <div style="display: flex; gap: 0.8rem; align-items: center; margin-top: auto;">
+                <button class="btn btn-text open-modal-btn" data-project="acm_paper" data-translate="pub_view_paper">Explore Paper <i class="fa-solid fa-arrow-right"></i></button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Paper 2: ACL 2025 -->
+          <article class="pub-card-detailed scroll-reveal delay-1">
+            <div class="pub-media">
+              <img src="assets/research_acl.jpg" alt="ACL 2025 Analogy-ANGLE II Workshop Architecture">
+            </div>
+            <div class="pub-content">
+              <div class="pub-badge-row">
+                <span class="pub-badge">ACL 2025 // WORKSHOP</span>
+                <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);">Peer-Reviewed</span>
+              </div>
+              <h3 class="pub-title-detailed" data-translate="pub2_title">Analogy-ANGLE II Workshop</h3>
+              <p class="pub-desc-detailed" data-translate="pub2_desc">
+                Comparative research framework evaluating transformer attention dynamics, cross-model reasoning consistency, and failure patterns in zero-shot analogical reasoning tasks.
+              </p>
+              <div style="display: flex; gap: 0.8rem; align-items: center; margin-top: auto;">
+                <button class="btn btn-text open-modal-btn" data-project="acl_paper" data-translate="pub_view_paper">Explore Paper <i class="fa-solid fa-arrow-right"></i></button>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════
+             5B. BATTLE LOG & ACHIEVEMENTS TIMELINE (ANIMATED ENTRANCE)
+             ═══════════════════════════════════════════════ -->
+        <div class="achievements-timeline-wrapper">
+          <div class="section-header scroll-reveal" style="margin-bottom: 2.5rem;">
+            <span class="section-tag" data-translate="ach_tag">CONTEST WINS & CTF OPS</span>
+            <h2 class="section-title" data-translate="ach_title">Battle Log & Wins</h2>
+          </div>
+
+          <div class="achievements-timeline">
+            <!-- Win 1: Avinya 4.0 -->
+            <div class="timeline-item">
+              <div class="timeline-dot"><i class="fa-solid fa-trophy"></i></div>
+              <div class="timeline-card">
+                <div class="timeline-meta">
+                  <span class="timeline-date">2025 // NATIONAL HACKATHON</span>
+                  <span class="timeline-badge badge-gold">1st Runner Up</span>
+                </div>
+                <h4 class="timeline-title" data-translate="ach_item1_title">Avinya 4.0 Hackathon Victory</h4>
+                <p class="timeline-desc" data-translate="ach_item1_desc">Built an autonomous cyber defense orchestrator with zero-trust network verification in 36 continuous hours.</p>
+                <div class="timeline-tags">
+                  <span class="timeline-tag">Avinya 4.0</span>
+                  <span class="timeline-tag">Cyber Defense</span>
+                  <span class="timeline-tag">Zero-Trust</span>
+                  <span class="timeline-tag">Multi-Agent</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Win 2: ACM MM 2025 -->
+            <div class="timeline-item">
+              <div class="timeline-dot"><i class="fa-solid fa-ranking-star"></i></div>
+              <div class="timeline-card">
+                <div class="timeline-meta">
+                  <span class="timeline-date">2025 // RESEARCH TRACK</span>
+                  <span class="timeline-badge badge-accent">Top 10 Global</span>
+                </div>
+                <h4 class="timeline-title" data-translate="ach_item2_title">ACM MM 2025 Finalist</h4>
+                <p class="timeline-desc" data-translate="ach_item2_desc">Selected among the Top 10 global research finalists for multi-modal emotion and trait recognition AI architecture.</p>
+                <div class="timeline-tags">
+                  <span class="timeline-tag">ACM MM 2025</span>
+                  <span class="timeline-tag">LLaMA-3.2</span>
+                  <span class="timeline-tag">Patronus AI</span>
+                  <span class="timeline-tag">RAG Pipeline</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Win 3: GBU Hackathon -->
+            <div class="timeline-item">
+              <div class="timeline-dot"><i class="fa-solid fa-medal"></i></div>
+              <div class="timeline-card">
+                <div class="timeline-meta">
+                  <span class="timeline-date">2024 // HACKATHON</span>
+                  <span class="timeline-badge badge-accent">Grand Finalist</span>
+                </div>
+                <h4 class="timeline-title" data-translate="ach_item3_title">GBU Hackathon Finalist</h4>
+                <p class="timeline-desc" data-translate="ach_item3_desc">Engineered resilient distributed backend architecture handling real-time high-throughput telemetry streams.</p>
+                <div class="timeline-tags">
+                  <span class="timeline-tag">GBU Finalist</span>
+                  <span class="timeline-tag">Distributed Systems</span>
+                  <span class="timeline-tag">High-Throughput</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Win 4: HackRX -->
+            <div class="timeline-item">
+              <div class="timeline-dot"><i class="fa-solid fa-shield-halved"></i></div>
+              <div class="timeline-card">
+                <div class="timeline-meta">
+                  <span class="timeline-date">2024 // CTF & RED TEAM</span>
+                  <span class="timeline-badge badge-accent">Top 20 Nationally</span>
+                </div>
+                <h4 class="timeline-title" data-translate="ach_item4_title">HackRX Top 20 National</h4>
+                <p class="timeline-desc" data-translate="ach_item4_desc">Ranked in the top 20 nationally at HackRX, solving complex exploit development and vulnerability challenges.</p>
+                <div class="timeline-tags">
+                  <span class="timeline-tag">HackRX</span>
+                  <span class="timeline-tag">Red Teaming</span>
+                  <span class="timeline-tag">VAPT</span>
+                  <span class="timeline-tag">Binary Exploitation</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════
+         6. OUR PROCESS (HOW WE WORK)
+         ═══════════════════════════════════════════════ -->
+    <section id="process" class="process-section section-padding section-bg">
+      <div class="container">
+        <div class="section-header scroll-reveal">
+          <span class="section-tag" data-translate="proc_tag">HOW WE WORK</span>
+          <h2 class="section-title" data-translate="proc_title">Our Process</h2>
+          <p class="section-desc" data-translate="proc_desc">A simple and transparent process that ensures quality delivery and client satisfaction.</p>
+        </div>
+
+        <div class="process-steps">
+          <div class="process-step scroll-reveal">
+            <div class="step-num">01</div>
+            <h3 class="step-title" data-translate="proc_step1_title">Discover</h3>
+            <p class="step-text" data-translate="proc_step1_desc">We understand your requirements, goals and challenges.</p>
+          </div>
+          <div class="process-step scroll-reveal delay-1">
+            <div class="step-num">02</div>
+            <h3 class="step-title" data-translate="proc_step2_title">Plan</h3>
+            <p class="step-text" data-translate="proc_step2_desc">We analyze and plan the best strategy and solution.</p>
+          </div>
+          <div class="process-step scroll-reveal delay-2">
+            <div class="step-num">03</div>
+            <h3 class="step-title" data-translate="proc_step3_title">Design & Develop</h3>
+            <p class="step-text" data-translate="proc_step3_desc">We design, develop and build your solution with best practices.</p>
+          </div>
+          <div class="process-step scroll-reveal delay-3">
+            <div class="step-num">04</div>
+            <h3 class="step-title" data-translate="proc_step4_title">Test & Deliver</h3>
+            <p class="step-text" data-translate="proc_step4_desc">We test thoroughly and deliver a high-quality product.</p>
+          </div>
+          <div class="process-step scroll-reveal delay-1">
+            <div class="step-num">05</div>
+            <h3 class="step-title" data-translate="proc_step5_title">Support</h3>
+            <p class="step-text" data-translate="proc_step5_desc">We provide ongoing support and help you grow.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════
+         7. WHY CHOOSE US (WAR ROOM SPOTLIGHT CARDS)
+         ═══════════════════════════════════════════════ -->
+    <section id="why-us" class="why-us-section section-padding">
+      <div class="container">
+        <div class="why-us-grid">
+          <div class="why-us-content scroll-reveal">
+            <span class="section-tag" data-translate="why_tag">WHY KAVIROX</span>
+            <h2 class="why-us-heading" data-translate="why_title">Why Choose Us</h2>
+            
+            <div class="why-us-spotlight-list">
+              <div class="why-us-card">
+                <div class="why-card-icon"><i class="fa-solid fa-user-shield"></i></div>
+                <div>
+                  <h4 class="why-card-title" data-translate="why_item1_title">Experienced Research Engineers</h4>
+                  <p class="why-card-desc" data-translate="why_item1_desc">Senior professionals with published AI research and proven VAPT credentials.</p>
+                </div>
+              </div>
+              <div class="why-us-card">
+                <div class="why-card-icon"><i class="fa-solid fa-bolt"></i></div>
+                <div>
+                  <h4 class="why-card-title" data-translate="why_item2_title">Quality & On-Time Delivery</h4>
+                  <p class="why-card-desc" data-translate="why_item2_desc">High-velocity engineering sprints with continuous QA and verified delivery.</p>
+                </div>
+              </div>
+              <div class="why-us-card">
+                <div class="why-card-icon"><i class="fa-solid fa-lock"></i></div>
+                <div>
+                  <h4 class="why-card-title" data-translate="why_item3_title">Security-First Architecture</h4>
+                  <p class="why-card-desc" data-translate="why_item3_desc">Zero-trust principles, hardened APIs, and automated penetration testing built in.</p>
+                </div>
+              </div>
+              <div class="why-us-card">
+                <div class="why-card-icon"><i class="fa-solid fa-handshake"></i></div>
+                <div>
+                  <h4 class="why-card-title" data-translate="why_item4_title">Transparent Milestone Pricing</h4>
+                  <p class="why-card-desc" data-translate="why_item4_desc">Clear deliverables, transparent quotes, and zero hidden licensing fees.</p>
+                </div>
+              </div>
+              <div class="why-us-card">
+                <div class="why-card-icon"><i class="fa-solid fa-headset"></i></div>
+                <div>
+                  <h4 class="why-card-title" data-translate="why_item5_title">24/7 Priority Support</h4>
+                  <p class="why-card-desc" data-translate="why_item5_desc">Direct access to technical architects and immediate mission-critical incident support.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="why-us-media scroll-reveal delay-1">
+            <div class="why-us-media-frame">
+              <img src="assets/team_operations.jpg" alt="KAVIROX Cyber Operations & AI Engineering Command Center">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════
+         8. SUGGESTED ADDONS & FAQ
+         ═══════════════════════════════════════════════ -->
+    <section class="addons-section section-padding section-bg">
+      <div class="container">
+        <div class="section-header scroll-reveal">
+          <span class="section-tag" data-translate="addons_tag">PREMIUM EXTENSIONS</span>
+          <h2 class="section-title" data-translate="addons_title">Suggested Add-ons</h2>
+          <p class="section-desc" data-translate="addons_desc">Suggested features to make your website more professional and premium.</p>
+        </div>
+
+        <div class="addons-grid">
+          <div class="addon-card scroll-reveal">
+            <span class="addon-badge" data-translate="addon_live">LIVE DEMO</span>
+            <h4 class="addon-title" data-translate="addon1_title">Live Chat / Chatbot</h4>
+            <p class="addon-desc" data-translate="addon1_desc">24/7 instant support for website visitors. Try our chatbot widget at bottom right!</p>
+          </div>
+          <div class="addon-card scroll-reveal delay-1">
+            <span class="addon-badge" data-translate="addon_click">TRY CLICKING</span>
+            <h4 class="addon-title" data-translate="addon2_title">Case Studies Modal</h4>
+            <p class="addon-desc" data-translate="addon2_desc">Detailed write-ups for major projects. Click "View Details" on projects to view.</p>
+          </div>
+          <div class="addon-card scroll-reveal delay-2">
+            <span class="addon-badge" data-translate="addon_auto">AUTOPLAY</span>
+            <h4 class="addon-title" data-translate="addon3_title">Testimonials Slider</h4>
+            <p class="addon-desc" data-translate="addon3_desc">Client feedback slider that builds immediate trust and industry credibility.</p>
+          </div>
+          <div class="addon-card scroll-reveal delay-3">
+            <span class="addon-badge" data-translate="addon_static">DYNAMIC</span>
+            <h4 class="addon-title" data-translate="addon4_title">Multi-Language Engine</h4>
+            <p class="addon-desc" data-translate="addon9_desc">Language switcher supporting English, Spanish, and Hindi translation.</p>
+          </div>
+        </div>
+
+        <!-- FAQ Section Accordion -->
+        <div class="faq-section-wrapper scroll-reveal">
+          <h3 style="font-family: var(--font-heading); font-size: 1.8rem; text-align: center; margin-bottom: 2rem;" data-translate="faq_title">Frequently Asked Questions</h3>
+          
+          <div class="faq-item active">
+            <button class="faq-question">
+              <span data-translate="faq1_q">What services does KAVIROX provide?</span>
+              <i class="fa-solid fa-chevron-down faq-icon"></i>
+            </button>
+            <div class="faq-answer">
+              <p data-translate="faq1_a">We offer comprehensive solutions including AI/ML engineering, Cybersecurity consultancy, penetration testing, responsive web and mobile application development, digital marketing, and dedicated business operations support.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">
+              <span data-translate="faq2_q">How do you ensure cybersecurity in your projects?</span>
+              <i class="fa-solid fa-chevron-down faq-icon"></i>
+            </button>
+            <div class="faq-answer">
+              <p data-translate="faq2_a">We adopt a "Security First" methodology. Every line of code, framework design, and database configuration complies with global security standards, backed by robust penetration testing frameworks like AcroMap and AcroStrike.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">
+              <span data-translate="faq3_q">Can you integrate custom AI models into existing web pages?</span>
+              <i class="fa-solid fa-chevron-down faq-icon"></i>
+            </button>
+            <div class="faq-answer">
+              <p data-translate="faq3_a">Yes. We specialize in building custom AI models (e.g. text/image generation, predictive analytics) and deploying them securely onto cloud architectures with seamless REST/GraphQL APIs.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════
+         9. CONTACT US (PERFECT PADDING & FULL VISIBILITY)
+         ═══════════════════════════════════════════════ -->
+    <section id="contact" class="contact-section section-padding">
+      <div class="container">
+        <div class="section-header scroll-reveal">
+          <span class="section-tag" data-translate="contact_tag">GET IN TOUCH</span>
+          <h2 class="section-title" data-translate="contact_title">Contact Us</h2>
+        </div>
+
+        <div class="contact-grid">
+          <!-- Info Column -->
+          <div class="contact-info-col scroll-reveal">
+            <h3 data-translate="contact_info_heading">Let's start your project</h3>
+            <p data-translate="contact_info_desc">We'd love to hear from you. Send us a message or contact us directly via email or phone.</p>
+            
+            <div class="contact-methods">
+              <div class="method-item">
+                <div class="method-icon"><i class="fa-solid fa-phone"></i></div>
+                <div>
+                  <span class="method-label" data-translate="contact_lbl_phone">Phone</span>
+                  <span class="method-value">+91 95484 25711</span>
+                </div>
+              </div>
+              <div class="method-item">
+                <div class="method-icon"><i class="fa-solid fa-envelope"></i></div>
+                <div>
+                  <span class="method-label" data-translate="contact_lbl_email">Email</span>
+                  <span class="method-value">kavirox.space@gmail.com</span>
+                </div>
+              </div>
+              <div class="method-item">
+                <div class="method-icon"><i class="fa-solid fa-location-dot"></i></div>
+                <div>
+                  <span class="method-label" data-translate="contact_lbl_loc">Location</span>
+                  <span class="method-value" data-translate="contact_val_loc">Greater Noida, Uttar Pradesh, India</span>
+                </div>
+              </div>
+              <div class="method-item">
+                <div class="method-icon"><i class="fa-solid fa-clock"></i></div>
+                <div>
+                  <span class="method-label" data-translate="contact_lbl_hours">Working Hours</span>
+                  <span class="method-value" data-translate="contact_val_hours">Mon - Sat: 9:00 AM - 7:00 PM</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Column (Full Box with High-Contrast Send Button) -->
+          <div class="contact-form-col scroll-reveal delay-1">
+            <div class="form-wrapper">
+              <h3 class="form-title" data-translate="form_title">Send Us a Message</h3>
+              <form id="contact-form" class="contact-form" novalidate>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="form-name" data-translate="form_name">Your Name</label>
+                    <input type="text" id="form-name" required placeholder="John Doe">
+                    <span class="error-msg" data-translate="err_name">Please enter your name</span>
+                  </div>
+                  <div class="form-group">
+                    <label for="form-email" data-translate="form_email">Your Email</label>
+                    <input type="email" id="form-email" required placeholder="john@example.com">
+                    <span class="error-msg" data-translate="err_email">Please enter a valid email</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="form-subject" data-translate="form_subject">Subject</label>
+                  <input type="text" id="form-subject" required placeholder="Project discussion">
+                  <span class="error-msg" data-translate="err_subject">Please enter a subject</span>
+                </div>
+                <div class="form-group">
+                  <label for="form-message" data-translate="form_msg">Your Message</label>
+                  <textarea id="form-message" required rows="4" placeholder="Tell us about your project..."></textarea>
+                  <span class="error-msg" data-translate="err_msg">Please enter your message</span>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block btn-send-message" id="form-submit-btn">
+                  <i class="fa-solid fa-paper-plane" style="margin-right: 0.4rem;"></i>
+                  <span class="btn-text" data-translate="form_send">Send Message</span>
+                </button>
+              </form>
+              <div class="form-success-alert" id="form-success-alert">
+                <i class="fa-solid fa-circle-check"></i>
+                <h4 data-translate="form_success_title">Message Sent Successfully!</h4>
+                <p data-translate="form_success_desc">Thank you for reaching out. We will get back to you shortly at kavirox.space@gmail.com.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════
+         10. FOOTER CTA
+         ═══════════════════════════════════════════════ -->
+    <section class="footer-cta scroll-reveal">
+      <div class="container">
+        <h2 class="cta-heading" data-translate="footer_cta_heading">Let's Build Something Great Together!</h2>
+        <p class="cta-text" data-translate="footer_cta_desc">We're excited to help you grow your business with our custom software, AI, and cybersecurity solutions.</p>
+        <a href="#contact" class="btn btn-primary" data-translate="footer_cta_btn">Get in Touch</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a href="#home" class="logo">
+          <span class="logo-icon">&lt;/&gt;</span>
+          <span class="logo-text">KAVIROX</span>
+        </a>
+        <p class="brand-desc" data-translate="footer_brand_desc">We build and deploy practical software solutions that help businesses grow, stay secure and scale effortlessly.</p>
+        <div class="social-links">
+          <a href="https://github.com/acro777x" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <h4 data-translate="footer_lbl_links">Quick Links</h4>
+        <ul>
+          <li><a href="#home" data-translate="nav_home">Home</a></li>
+          <li><a href="#services" data-translate="nav_services">Services</a></li>
+          <li><a href="#about" data-translate="nav_about">About</a></li>
+          <li><a href="#projects" data-translate="nav_projects">Projects</a></li>
+          <li><a href="#research" data-translate="nav_research">Research</a></li>
+          <li><a href="#contact" data-translate="nav_contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links">
+        <h4 data-translate="footer_lbl_services">Our Services</h4>
+        <ul>
+          <li><a href="#services" data-translate="srv_web_title">Web Development</a></li>
+          <li><a href="#services" data-translate="srv_app_title">App Development</a></li>
+          <li><a href="#services" data-translate="srv_seo_title">SEO Services</a></li>
+          <li><a href="#services" data-translate="srv_mkt_title">Digital Marketing</a></li>
+          <li><a href="#services" data-translate="srv_brand_title">Branding & Design</a></li>
+          <li><a href="#services" data-translate="srv_biz_title">Business Support</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-contact">
+        <h4 data-translate="footer_lbl_contact">Contact Info</h4>
+        <p><i class="fa-solid fa-phone"></i> +91 95484 25711</p>
+        <p><i class="fa-solid fa-envelope"></i> kavirox.space@gmail.com</p>
+        <p><i class="fa-solid fa-location-dot"></i> <span data-translate="contact_val_loc">Greater Noida, Uttar Pradesh, India</span></p>
+        <p><i class="fa-solid fa-clock"></i> <span data-translate="contact_val_hours">Mon - Sat: 9:00 AM - 7:00 PM</span></p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container">
+        <p>&copy; 2026 KAVIROX. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Project Details Modal -->
+  <div class="modal" id="project-modal" aria-hidden="true" role="dialog">
+    <div class="modal-backdrop"></div>
+    <div class="modal-container">
+      <button class="modal-close" aria-label="Close Modal"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-body" id="modal-project-content"></div>
+    </div>
+  </div>
+
+  <!-- Interactive AI Chatbot Widget -->
+  <div class="chatbot-widget" id="chatbot-widget">
+    <button class="chatbot-toggle" id="chatbot-toggle" aria-label="Open Chatbot">
+      <i class="fa-solid fa-comments"></i>
+      <span class="chatbot-pulse"></span>
+    </button>
+    <div class="chatbot-box" id="chatbot-box">
+      <div class="chatbot-header">
+        <div class="chatbot-header-info">
+          <div class="chatbot-avatar"><i class="fa-solid fa-robot"></i></div>
+          <div>
+            <h4 class="chatbot-name">KAVIROX AI Assistant</h4>
+            <span class="chatbot-status" data-translate="chat_online">Online</span>
+          </div>
+        </div>
+        <button class="chatbot-close" id="chatbot-close" aria-label="Close Chatbot"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="chatbot-messages" id="chatbot-messages">
+        <div class="chat-message bot">
+          <p data-translate="chat_welcome">Hello! I am the KAVIROX virtual assistant. How can I help you today?</p>
+        </div>
+      </div>
+      <div class="chatbot-input-container">
+        <input type="text" id="chatbot-input" placeholder="Type a message..." required>
+        <button id="chatbot-send-btn" aria-label="Send Message"><i class="fa-solid fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Multi-Language Translation Data (JSON) -->
+  <script id="translation-data" type="application/json">
+  {
+    "en": {
+      "nav_home": "Home",
+      "nav_services": "Services",
+      "nav_about": "About",
+      "nav_projects": "Projects",
+      "nav_research": "Research",
+      "nav_process": "Process",
+      "nav_why_us": "Why Us",
+      "nav_contact": "Contact",
+      "btn_get_touch": "Let's Connect",
+      "hero_badge": "Build. Secure. Automate. Innovate.",
+      "hero_title": "Building Secure.<br><span class=\"text-gradient\">Intelligent. Impactful.</span><br>Digital Solutions.",
+      "hero_desc": "From AI research published at ACM & ACL to offensive security frameworks and hardware security systems — we build things that solve real-world problems with speed, precision, and impact.",
+      "hero_btn_explore": "Explore Our Work",
+      "hero_btn_contact": "Contact Us",
+      "stat_projects": "Projects Delivered",
+      "stat_papers": "Research Papers",
+      "stat_experience": "Years Velocity",
+      "stat_satisfaction": "Client Satisfaction",
+      "services_tag": "WHAT WE DO",
+      "services_title": "End-to-End Solutions for Your Digital Success",
+      "services_desc": "From powerful software and secure systems to impactful marketing and business support, we help you build, grow and scale without limits.",
+      "srv_video_title": "Video Editing",
+      "srv_video_desc": "Professional video editing for YouTube, Reels, Ads, Corporate and more.",
+      "srv_seo_title": "SEO Services",
+      "srv_seo_desc": "On-page, Off-page, Technical SEO to boost rankings and drive organic traffic.",
+      "srv_app_title": "App Development",
+      "srv_app_desc": "Android, iOS & Cross-platform apps built for performance and scalability.",
+      "srv_mkt_title": "Digital Marketing",
+      "srv_mkt_desc": "Social Media, Ads, Content Marketing, Influencer Marketing & more.",
+      "srv_web_title": "Web Development",
+      "srv_web_desc": "Modern, responsive websites and web apps with great UI/UX.",
+      "srv_biz_title": "Business Support",
+      "srv_biz_desc": "Virtual assistance, data management, documentation & daily operations.",
+      "srv_brand_title": "Branding & Design",
+      "srv_brand_desc": "Logos, UI/UX, Graphics, Brand Identity & complete visual solutions.",
+      "srv_tech_title": "Technical Solutions",
+      "srv_tech_desc": "Custom software, automation, APIs, Integrations & IT support.",
+      "srv_ecom_title": "E-commerce Solutions",
+      "srv_ecom_desc": "Online stores, payment integration, inventory, and complete e-commerce solutions.",
+      "srv_write_title": "Content Writing",
+      "srv_write_desc": "Website content, blogs, articles, product descriptions & more.",
+      "srv_email_title": "Email Marketing",
+      "srv_email_desc": "Campaigns, newsletters and automations to engage your audience.",
+      "srv_analytics_title": "Analytics & Reporting",
+      "srv_analytics_desc": "Custom dashboards, insights and reports for smart decisions.",
+      "callout_title": "Need a Custom Solution?",
+      "callout_desc": "Tell us your requirements and we'll build the perfect solution for you.",
+      "callout_btn": "Let's Talk",
+      "about_tag": "ABOUT US",
+      "about_title": "Who We Are",
+      "about_desc1": "KAVIROX is a team of builders, researchers, and problem solvers working at the intersection of AI/ML, Cybersecurity, Secure Systems, Web/Product Engineering, and Digital Growth.",
+      "about_desc2": "We love automating the complex, securing the vulnerable, and building systems that create real impact.",
+      "proj_tag": "FEATURED PROJECTS",
+      "proj_title": "Some Things We're Proud Of",
+      "filter_all": "All",
+      "filter_cyber": "Cybersecurity",
+      "filter_ai": "AI/ML",
+      "filter_web": "Web & App",
+      "filter_research": "Research",
+      "filter_embedded": "Embedded",
+      "proj_acromap_desc": "3D-Phase Automated Penetration Testing Framework",
+      "proj_aidfir_desc": "AI-Assisted Digital Forensics & Cyber Threat Investigation",
+      "proj_acrostrike_desc": "2D-Phase VAPT Scanner (Zero External Dependencies)",
+      "proj_ghostchat_desc": "Offline Captive Portal Messenger on ESP32",
+      "proj_studyhub_desc": "Single-file Tkinter app for QR-based attendance workflows",
+      "proj_resumebuilder_desc": "Python data processing project for patient CSV exploration",
+      "proj_view": "View Details",
+      "research_tag": "ACADEMIC & PEER-REVIEWED",
+      "research_title": "Research & Achievements",
+      "res_pub_title": "Research Publications",
+      "pub1_title": "Multimodal Emotion & Trait Recognition Pipeline",
+      "pub1_desc": "Engineered a four-agent hierarchical pipeline for fine-grained emotion and personality-trait classification combining LLaMA-3.2-3B, Patronus AI automated reasoning verification, and psychological RAG databases.",
+      "pub2_title": "Analogy-ANGLE II Workshop",
+      "pub2_desc": "Comparative research framework evaluating transformer attention dynamics, cross-model reasoning consistency, and failure patterns in zero-shot analogical reasoning tasks.",
+      "pub_view_paper": "Explore Paper",
+      "ach_tag": "CONTEST WINS & CTF OPS",
+      "ach_title": "Battle Log & Wins",
+      "ach_item1_title": "Avinya 4.0 Hackathon Victory",
+      "ach_item1_desc": "Built an autonomous cyber defense orchestrator with zero-trust network verification in 36 continuous hours.",
+      "ach_item2_title": "ACM MM 2025 Finalist",
+      "ach_item2_desc": "Selected among the Top 10 global research finalists for multi-modal emotion and trait recognition AI architecture.",
+      "ach_item3_title": "GBU Hackathon Finalist",
+      "ach_item3_desc": "Engineered resilient distributed backend architecture handling real-time high-throughput telemetry streams.",
+      "ach_item4_title": "HackRX Top 20 National",
+      "ach_item4_desc": "Ranked in the top 20 nationally at HackRX, solving complex exploit development and vulnerability challenges.",
+      "proc_tag": "HOW WE WORK",
+      "proc_title": "Our Process",
+      "proc_desc": "A simple and transparent process that ensures quality delivery and client satisfaction.",
+      "proc_step1_title": "Discover",
+      "proc_step1_desc": "We understand your requirements, goals and challenges.",
+      "proc_step2_title": "Plan",
+      "proc_step2_desc": "We analyze and plan the best strategy and solution.",
+      "proc_step3_title": "Design & Develop",
+      "proc_step3_desc": "We design, develop and build your solution with best practices.",
+      "proc_step4_title": "Test & Deliver",
+      "proc_step4_desc": "We test thoroughly and deliver a high-quality product.",
+      "proc_step5_title": "Support",
+      "proc_step5_desc": "We provide ongoing support and help you grow.",
+      "why_tag": "WHY KAVIROX",
+      "why_title": "Why Choose Us",
+      "why_item1_title": "Experienced Research Engineers",
+      "why_item1_desc": "Senior professionals with published AI research and proven VAPT credentials.",
+      "why_item2_title": "Quality & On-Time Delivery",
+      "why_item2_desc": "High-velocity engineering sprints with continuous QA and verified delivery.",
+      "why_item3_title": "Security-First Architecture",
+      "why_item3_desc": "Zero-trust principles, hardened APIs, and automated penetration testing built in.",
+      "why_item4_title": "Transparent Milestone Pricing",
+      "why_item4_desc": "Clear deliverables, transparent quotes, and zero hidden licensing fees.",
+      "why_item5_title": "24/7 Priority Support",
+      "why_item5_desc": "Direct access to technical architects and immediate mission-critical incident support.",
+      "addons_tag": "PREMIUM EXTENSIONS",
+      "addons_title": "Suggested Add-ons",
+      "addons_desc": "Suggested features to make your website more professional and premium.",
+      "addon_live": "LIVE DEMO",
+      "addon_click": "TRY CLICKING",
+      "addon_auto": "AUTOPLAY",
+      "addon_static": "DYNAMIC",
+      "addon1_title": "Live Chat / Chatbot",
+      "addon1_desc": "24/7 instant support for website visitors. Try our chatbot widget at bottom right!",
+      "addon2_title": "Case Studies Modal",
+      "addon2_desc": "Detailed write-ups for major projects. Click \"View Details\" on projects to view.",
+      "addon3_title": "Testimonials Slider",
+      "addon3_desc": "Client feedback slider that builds immediate trust and industry credibility.",
+      "addon4_title": "Multi-Language Engine",
+      "addon9_desc": "Language switcher supporting English, Spanish, and Hindi translation.",
+      "faq_title": "Frequently Asked Questions",
+      "faq1_q": "What services does KAVIROX provide?",
+      "faq1_a": "We offer comprehensive solutions including AI/ML engineering, Cybersecurity consultancy, penetration testing, responsive web and mobile application development, digital marketing, and dedicated business operations support.",
+      "faq2_q": "How do you ensure cybersecurity in your projects?",
+      "faq2_a": "We adopt a \"Security First\" methodology. Every line of code, framework design, and database configuration complies with global security standards, backed by robust penetration testing frameworks like AcroMap and AcroStrike.",
+      "faq3_q": "Can you integrate custom AI models into existing web pages?",
+      "faq3_a": "Yes. We specialize in building custom AI models (e.g. text/image generation, predictive analytics) and deploying them securely onto cloud architectures with seamless REST/GraphQL APIs.",
+      "contact_tag": "GET IN TOUCH",
+      "contact_title": "Contact Us",
+      "contact_info_heading": "Let's start your project",
+      "contact_info_desc": "We'd love to hear from you. Send us a message or contact us directly via email or phone.",
+      "contact_lbl_phone": "Phone",
+      "contact_lbl_email": "Email",
+      "contact_lbl_loc": "Location",
+      "contact_val_loc": "Greater Noida, Uttar Pradesh, India",
+      "contact_lbl_hours": "Working Hours",
+      "contact_val_hours": "Mon - Sat: 9:00 AM - 7:00 PM",
+      "form_title": "Send Us a Message",
+      "form_name": "Your Name",
+      "form_email": "Your Email",
+      "form_subject": "Subject",
+      "form_msg": "Your Message",
+      "form_send": "Send Message",
+      "err_name": "Please enter your name",
+      "err_email": "Please enter a valid email",
+      "err_subject": "Please enter a subject",
+      "err_msg": "Please enter your message",
+      "form_success_title": "Message Sent Successfully!",
+      "form_success_desc": "Thank you for reaching out. We will get back to you shortly at kavirox.space@gmail.com.",
+      "footer_cta_heading": "Let's Build Something Great Together!",
+      "footer_cta_desc": "We're excited to help you grow your business with our custom software, AI, and cybersecurity solutions.",
+      "footer_cta_btn": "Get in Touch",
+      "footer_brand_desc": "We build and deploy practical software solutions that help businesses grow, stay secure and scale effortlessly.",
+      "footer_lbl_links": "Quick Links",
+      "footer_lbl_services": "Our Services",
+      "footer_lbl_contact": "Contact Info",
+      "chat_online": "Online",
+      "chat_welcome": "Hello! I am the KAVIROX virtual assistant. How can I help you today?"
+    },
+    "es": {
+      "nav_home": "Inicio",
+      "nav_services": "Servicios",
+      "nav_about": "Sobre Nosotros",
+      "nav_projects": "Proyectos",
+      "nav_research": "Investigación",
+      "nav_process": "Proceso",
+      "nav_why_us": "Por Qué KAVIROX",
+      "nav_contact": "Contacto",
+      "btn_get_touch": "Contáctanos",
+      "hero_badge": "Construir. Asegurar. Automatizar. Innovar.",
+      "hero_title": "Construyendo Soluciones<br><span class=\"text-gradient\">Seguras, Inteligentes</span><br>y de Gran Impacto.",
+      "hero_desc": "Ofrecemos soluciones de IA/ML, Ciberseguridad, Sistemas Seguros, Ingeniería de Software y crecimiento digital completo para empresas y particulares.",
+      "hero_btn_explore": "Ver Proyectos",
+      "hero_btn_contact": "Contáctanos",
+      "stat_projects": "Proyectos Entregados",
+      "stat_papers": "Artículos de Investigación",
+      "stat_experience": "Años de Velocidad",
+      "stat_satisfaction": "Clientes Satisfechos",
+      "services_tag": "QUÉ HACEMOS",
+      "services_title": "Soluciones Integrales para tu Éxito Digital",
+      "services_desc": "Desde software potente y sistemas seguros hasta marketing de impacto y soporte comercial, te ayudamos a construir, crecer y escalar sin límites.",
+      "srv_video_title": "Edición de Video",
+      "srv_video_desc": "Edición de video profesional para YouTube, Reels, Anuncios, Corporativo y más.",
+      "srv_seo_title": "Servicios de SEO",
+      "srv_seo_desc": "SEO On-page, Off-page y Técnico para mejorar posiciones y atraer tráfico orgánico.",
+      "srv_app_title": "Desarrollo de Apps",
+      "srv_app_desc": "Aplicaciones Android, iOS y multiplataforma diseñadas para alto rendimiento y escalabilidad.",
+      "srv_mkt_title": "Marketing Digital",
+      "srv_mkt_desc": "Redes sociales, anuncios pagados, marketing de contenidos y de influencers.",
+      "srv_web_title": "Desarrollo Web",
+      "srv_web_desc": "Sitios web y aplicaciones modernas y responsivas con excelente UI/UX.",
+      "srv_biz_title": "Soporte de Negocios",
+      "srv_biz_desc": "Asistencia virtual, gestión de datos, documentación y operaciones diarias.",
+      "srv_brand_title": "Diseño y Branding",
+      "srv_brand_desc": "Logotipos, UI/UX, gráficos, identidad de marca y soluciones visuales completas.",
+      "srv_tech_title": "Soluciones Técnicas",
+      "srv_tech_desc": "Software a medida, automatización, APIs, integraciones y soporte de TI.",
+      "srv_ecom_title": "Soluciones de E-commerce",
+      "srv_ecom_desc": "Tiendas en línea, pasarelas de pago, gestión de inventario y soluciones completas.",
+      "srv_write_title": "Redacción de Contenidos",
+      "srv_write_desc": "Contenido web, blogs, artículos de opinión, descripciones de productos y más.",
+      "srv_email_title": "Email Marketing",
+      "srv_email_desc": "Campañas de email, boletines informativos y flujos automatizados de comunicación.",
+      "srv_analytics_title": "Analítica y Reportes",
+      "srv_analytics_desc": "Tableros de control personalizados, análisis de datos y reportes inteligentes.",
+      "callout_title": "¿Necesitas una solución a medida?",
+      "callout_desc": "Cuéntanos tus requisitos y construiremos la solución perfecta para ti.",
+      "callout_btn": "Hablemos",
+      "about_tag": "SOBRE NOSOTROS",
+      "about_title": "Quiénes Somos",
+      "about_desc1": "KAVIROX es un equipo de desarrolladores, investigadores y solucionadores de problemas que trabajan en la intersección de IA/ML, Ciberseguridad, Sistemas Seguros y Crecimiento Digital.",
+      "about_desc2": "Nos encanta automatizar lo complejo, proteger lo vulnerable y construir sistemas que generen un impacto real.",
+      "proj_tag": "PROYECTOS DESTACADOS",
+      "proj_title": "Proyectos de los que Estamos Orgullosos",
+      "filter_all": "Todos",
+      "filter_cyber": "Ciberseguridad",
+      "filter_ai": "IA/ML",
+      "filter_web": "Web y Apps",
+      "filter_research": "Investigación",
+      "filter_embedded": "Embebidos",
+      "proj_acromap_desc": "3D-Phase Automated Penetration Testing Framework",
+      "proj_aidfir_desc": "AI-Assisted Digital Forensics & Cyber Threat Investigation",
+      "proj_acrostrike_desc": "2D-Phase VAPT Scanner (Zero External Dependencies)",
+      "proj_ghostchat_desc": "Offline Captive Portal Messenger on ESP32",
+      "proj_studyhub_desc": "Single-file Tkinter app for QR-based attendance workflows",
+      "proj_resumebuilder_desc": "Python data processing project for patient CSV exploration",
+      "proj_view": "Ver Detalles",
+      "research_tag": "ACADEMIA Y CONCURSOS",
+      "research_title": "Investigación y Logros",
+      "res_pub_title": "Publicaciones de Investigación",
+      "pub1_title": "Línea de producción de reconocimiento multimodal de emociones",
+      "pub1_desc": "Sistema de 4 agentes para la clasificación de emociones y personalidad usando LLaMA-3.2-3B, Patronus y RAG.",
+      "pub2_title": "Taller Analogy-ANGLE II",
+      "pub2_desc": "Artículo comparativo que analiza la precisión de clasificación, consistencia y fallos de modelos de IA.",
+      "pub_view_paper": "Ver Artículo",
+      "ach_tag": "VICTORIAS Y CTF",
+      "ach_title": "Registro de Batallas y Victorias",
+      "ach_item1_title": "Victoria en Hackathon Avinya 4.0",
+      "ach_item1_desc": "Orquestador autónomo de ciberdefensa con verificación de red zero-trust en 36 horas continuas.",
+      "ach_item2_title": "Finalista ACM MM 2025",
+      "ach_item2_desc": "Seleccionado en el Top 10 global de investigación por arquitectura de IA de reconocimiento emocional.",
+      "ach_item3_title": "Finalista Hackathon GBU",
+      "ach_item3_desc": "Arquitectura distribuida y resiliente para procesamiento de flujos de telemetría de alto rendimiento.",
+      "ach_item4_title": "Top 20 Nacional HackRX",
+      "ach_item4_desc": "Top 20 en la competencia nacional de ciberseguridad ofensiva y desarrollo de exploits.",
+      "proc_tag": "CÓMO TRABAJAMOS",
+      "proc_title": "Nuestro Proceso",
+      "proc_desc": "Un proceso simple y transparente que garantiza la máxima calidad y satisfacción del cliente.",
+      "proc_step1_title": "Descubrir",
+      "proc_step1_desc": "Entendemos a fondo tus requisitos, objetivos y desafíos actuales.",
+      "proc_step2_title": "Planificar",
+      "proc_step2_desc": "Analizamos y diseñamos la mejor estrategia y arquitectura técnica.",
+      "proc_step3_title": "Diseñar y Desarrollar",
+      "proc_step3_desc": "Diseñamos y programamos tu solución siguiendo las mejores prácticas de la industria.",
+      "proc_step4_title": "Probar y Entregar",
+      "proc_step4_desc": "Probamos exhaustivamente y entregamos un producto estable y de alta calidad.",
+      "proc_step5_title": "Soporte",
+      "proc_step5_desc": "Brindamos soporte continuo para ayudarte a escalar y crecer.",
+      "why_tag": "POR QUÉ KAVIROX",
+      "why_title": "Por Qué Elegirnos",
+      "why_item1_title": "Ingenieros de Investigación",
+      "why_item1_desc": "Profesionales senior con investigación de IA publicada y credenciales VAPT comprobadas.",
+      "why_item2_title": "Calidad y Puntualidad",
+      "why_item2_desc": "Sprints de ingeniería de alta velocidad con control de calidad continuo.",
+      "why_item3_title": "Arquitectura con Seguridad Primero",
+      "why_item3_desc": "Principios zero-trust, APIs reforzadas y pruebas de penetración integradas.",
+      "why_item4_title": "Precios Transparentes por Hitos",
+      "why_item4_desc": "Entregables claros, presupuestos transparentes y sin tarifas ocultas.",
+      "why_item5_title": "Soporte Prioritario 24/7",
+      "why_item5_desc": "Acceso directo a arquitectos técnicos y respuesta inmediata a incidentes críticos.",
+      "addons_tag": "EXTENSIONES PREMIUM",
+      "addons_title": "Complementos Propuestos",
+      "addons_desc": "Características sugeridas para hacer tu sitio web más premium y profesional.",
+      "addon_live": "DEMO EN VIVO",
+      "addon_click": "PRUEBA CLIC",
+      "addon_auto": "REPRODUCCIÓN",
+      "addon_static": "DINÁMICO",
+      "addon1_title": "Chat en Vivo / Chatbot",
+      "addon1_desc": "Soporte instantáneo 24/7. ¡Prueba el widget de chat abajo a la derecha!",
+      "addon2_title": "Página de Casos de Estudio",
+      "addon2_desc": "Análisis detallados de proyectos. Haz clic en \"View Details\" de un proyecto.",
+      "addon3_title": "Testimonios / Reseñas",
+      "addon3_desc": "Deslizador de comentarios de clientes para generar confianza inmediata.",
+      "addon4_title": "Soporte Multilingüe",
+      "addon9_desc": "Cambia el idioma del sitio al instante entre inglés, español e hindi.",
+      "faq_title": "Preguntas Frecuentes",
+      "faq1_q": "¿Qué servicios ofrece KAVIROX?",
+      "faq1_a": "Ofrecemos soluciones de IA/ML, consultoría en ciberseguridad, pruebas de penetración, desarrollo web y móvil responsivo, marketing digital y soporte operativo.",
+      "faq2_q": "¿Cómo garantizan la ciberseguridad en sus desarrollos?",
+      "faq2_a": "Diseñamos todo con 'Seguridad Primero'. Cada línea de código, arquitectura de datos y configuración de red se somete a escaneos y pruebas internas con herramientas avanzadas.",
+      "faq3_q": "¿Pueden integrar modelos de IA personalizados en plataformas web existentes?",
+      "faq3_a": "Sí. Nos especializamos en la integración de modelos de lenguaje, automatización de flujos con agentes y despliegue de APIs seguras en la nube.",
+      "contact_tag": "CONTACTO",
+      "contact_title": "Contáctanos",
+      "contact_info_heading": "Comencemos tu proyecto",
+      "contact_info_desc": "Nos encantaría hablar contigo. Envíanos un mensaje o contáctanos por email o teléfono.",
+      "contact_lbl_phone": "Teléfono",
+      "contact_lbl_email": "Email",
+      "contact_lbl_loc": "Ubicación",
+      "contact_val_loc": "Greater Noida, Uttar Pradesh, India",
+      "contact_lbl_hours": "Horario de Atención",
+      "contact_val_hours": "Lun - Sáb: 9:00 AM - 7:00 PM",
+      "form_title": "Envíanos un Mensaje",
+      "form_name": "Nombre",
+      "form_email": "Email",
+      "form_subject": "Asunto",
+      "form_msg": "Mensaje",
+      "form_send": "Enviar Mensaje",
+      "err_name": "Por favor ingresa tu nombre",
+      "err_email": "Por favor ingresa un correo válido",
+      "err_subject": "Por favor ingresa un asunto",
+      "err_msg": "Por favor escribe tu mensaje",
+      "form_success_title": "¡Mensaje Enviado con Éxito!",
+      "form_success_desc": "Gracias por contactarnos. Te responderemos en la brevedad posible a kavirox.space@gmail.com.",
+      "footer_cta_heading": "¡Construyamos Algo Increíble Juntos!",
+      "footer_cta_desc": "Estamos listos para hacer crecer tu negocio con nuestras soluciones personalizadas de software, IA y seguridad.",
+      "footer_cta_btn": "Comenzar Proyecto",
+      "footer_brand_desc": "Construimos e implementamos soluciones prácticas de software que ayudan a las empresas a crecer y protegerse.",
+      "footer_lbl_links": "Enlaces Rápidos",
+      "footer_lbl_services": "Servicios",
+      "footer_lbl_contact": "Contacto",
+      "chat_online": "En línea",
+      "chat_welcome": "¡Hola! Soy el asistente virtual de KAVIROX. ¿En qué puedo ayudarte hoy?"
+    },
+    "hi": {
+      "nav_home": "होम",
+      "nav_services": "सेवाएँ",
+      "nav_about": "हमारे बारे में",
+      "nav_projects": "प्रोजेक्ट्स",
+      "nav_research": "रिसर्च",
+      "nav_process": "प्रक्रिया",
+      "nav_why_us": "हमें क्यों चुनें",
+      "nav_contact": "संपर्क करें",
+      "btn_get_touch": "बातचीत शुरू करें",
+      "hero_badge": "बिल्ड। सिक्योर। ऑटोमेट। इनोवेट।",
+      "hero_title": "सुरक्षित, बुद्धिमान और<br><span class=\"text-gradient\">प्रभावशाली</span> डिजिटल समाधान।",
+      "hero_desc": "हम व्यवसायों और व्यक्तियों के लिए AI/ML, साइबर सुरक्षा, सुरक्षित सिस्टम, वेब/उत्पाद इंजीनियरिंग और संपूर्ण डिजिटल विकास समाधान प्रदान करते हैं।",
+      "hero_btn_explore": "हमारा काम देखें",
+      "hero_btn_contact": "संपर्क करें",
+      "stat_projects": "सफल प्रोजेक्ट्स",
+      "stat_papers": "रिसर्च पेपर्स",
+      "stat_experience": "कोडिंग का अनुभव",
+      "stat_satisfaction": "ग्राहक संतुष्टि",
+      "services_tag": "हम क्या करते हैं",
+      "services_title": "आपकी डिजिटल सफलता के लिए संपूर्ण समाधान",
+      "services_desc": "शक्तिशाली सॉफ़्टवेयर और सुरक्षित सिस्टम से लेकर प्रभावशाली मार्केटिंग और व्यावसायिक सहायता तक, हम आपको बिना किसी सीमा के बढ़ने और स्केल करने में मदद करते हैं।",
+      "srv_video_title": "वीडियो संपादन",
+      "srv_video_desc": "यूट्यूब, रील्स, विज्ञापनों और कॉर्पोरेट के लिए पेशेवर वीडियो संपादन।",
+      "srv_seo_title": "एसईओ सेवाएँ",
+      "srv_seo_desc": "रैंकिंग बढ़ाने और आर्गेनिक ट्रैफ़िक लाने के लिए ऑन-पेज, ऑफ-पेज, टेक्निकल एसईओ।",
+      "srv_app_title": "ऐप विकास",
+      "srv_app_desc": "बेहतर प्रदर्शन और स्केलेबिलिटी के लिए बनाए गए एंड्रॉइड, आईओएस और क्रॉस-प्लेटफॉर्म ऐप्स।",
+      "srv_mkt_title": "डिजिटल मार्केटिंग",
+      "srv_mkt_desc": "सोशल मीडिया, विज्ञापन, कंटेंट मार्केटिंग, इन्फ्लुएंसर मार्केटिंग और बहुत कुछ।",
+      "srv_web_title": "वेब विकास",
+      "srv_web_desc": "शानदार UI/UX के साथ आधुनिक, उत्तरदायी वेबसाइट और वेब ऐप्स।",
+      "srv_biz_title": "व्यापार सहायता",
+      "srv_biz_desc": "वर्चुअल सहायता, डेटा प्रबंधन, दस्तावेज़ीकरण और दैनिक संचालन प्रबंधन।",
+      "srv_brand_title": "ब्रांडिंग और डिज़ाइन",
+      "srv_brand_desc": "लोगो, UI/UX, ग्राफिक्स, ब्रांड पहचान और संपूर्ण दृश्य समाधान।",
+      "srv_tech_title": "तकनीकी समाधान",
+      "srv_tech_desc": "कस्टम सॉफ़्टवेयर, स्वचालन (ऑटोमेशन), एपीआई, इंटीग्रेशन और आईटी सहायता।",
+      "srv_ecom_title": "ई-कॉमर्स समाधान",
+      "srv_ecom_desc": "ऑनलाइन स्टोर, भुगतान एकीकरण, इन्वेंट्री और संपूर्ण ई-कॉमर्स समाधान।",
+      "srv_write_title": "कंटेंट लेखन",
+      "srv_write_desc": "वेबसाइट कंटेंट, ब्लॉग, लेख, उत्पाद विवरण और बहुत कुछ।",
+      "srv_email_title": "ईमेल मार्केटिंग",
+      "srv_email_desc": "दर्शकों को जोड़े रखने के लिए अभियान, समाचार पत्र (न्यूज़लेटर) और स्वचालन।",
+      "srv_analytics_title": "एनालिटिक्स और रिपोर्टिंग",
+      "srv_analytics_desc": "स्मार्ट निर्णयों के लिए कस्टम डैशबोर्ड, अंतर्दृष्टि और रिपोर्ट।",
+      "callout_title": "एक कस्टम समाधान की आवश्यकता है?",
+      "callout_desc": "हमें अपनी ज़रूरतें बताएं और हम आपके लिए एक आदर्श समाधान तैयार करेंगे।",
+      "callout_btn": "बातचीत शुरू करें",
+      "about_tag": "हमारे बारे में",
+      "about_title": "हम कौन हैं",
+      "about_desc1": "KAVIROX उन निर्माताओं, शोधकर्ताओं और समस्या समाधानकर्ताओं की एक टीम है जो AI/ML, साइबर सुरक्षा, सुरक्षित सिस्टम, वेब/उत्पाद इंजीनियरिंग और डिजिटल ग्रोथ के क्षेत्र में काम करते हैं।",
+      "about_desc2": "हम जटिल चीजों को स्वचालित करना, संवेदनशील बुनियादी ढांचे को सुरक्षित करना और वास्तविक प्रभाव पैदा करने वाले सिस्टम बनाना पसंद करते हैं।",
+      "proj_tag": "हमारे चुनिंदा प्रोजेक्ट्स",
+      "proj_title": "कुछ बेहतरीन काम जिन पर हमें गर्व है",
+      "filter_all": "सभी",
+      "filter_cyber": "साइबर सुरक्षा",
+      "filter_ai": "AI/ML",
+      "filter_web": "वेब और ऐप",
+      "filter_research": "रिसर्च",
+      "filter_embedded": "एंबेडेड",
+      "proj_acromap_desc": "3D-Phase Automated Penetration Testing Framework",
+      "proj_aidfir_desc": "AI-Assisted Digital Forensics & Cyber Threat Investigation",
+      "proj_acrostrike_desc": "2D-Phase VAPT Scanner (Zero External Dependencies)",
+      "proj_ghostchat_desc": "Offline Captive Portal Messenger on ESP32",
+      "proj_studyhub_desc": "Single-file Tkinter app for QR-based attendance workflows",
+      "proj_resumebuilder_desc": "Python data processing project for patient CSV exploration",
+      "proj_view": "विवरण देखें",
+      "research_tag": "अकादमिक और सहकर्मी-समीक्षित",
+      "research_title": "रिसर्च और उपलब्धियां",
+      "res_pub_title": "रिसर्च पब्लिकेशन्स",
+      "pub1_title": "मल्टीमॉडल इमोशन और ट्रेट रिकग्निशन पाइपलाइन",
+      "pub1_desc": "LLaMA-3.2-3B, Patronus और RAG का उपयोग करके भावना और व्यक्तित्व-विशेषता वर्गीकरण के लिए 4-एजेंट सिस्टम।",
+      "pub2_title": "एनालॉजी-एंगल II कार्यशाला",
+      "pub2_desc": "वर्गीकरण सटीकता, स्थिरता और विफलता पैटर्न के लिए मॉडल आउटपुट का विश्लेषण करने वाला तुलनात्मक पेपर।",
+      "pub_view_paper": "पेपर देखें",
+      "ach_tag": "प्रतियोगिता विजय और सीटीएफ",
+      "ach_title": "बैटल लॉग और उपलब्धियां",
+      "ach_item1_title": "अविन्या 4.0 हैकाथॉन विजय",
+      "ach_item1_desc": "36 घंटे के भीतर ज़ीरो-ट्रस्ट सुरक्षा सत्यापन के साथ स्वायत्त साइबर रक्षा प्रणाली का निर्माण।",
+      "ach_item2_title": "ACM MM 2025 फाइनलिस्ट",
+      "ach_item2_desc": "मल्टी-मॉडल एआई आर्किटेक्चर के लिए वैश्विक शीर्ष 10 रिसर्च फाइनलिस्ट में चयन।",
+      "ach_item3_title": "GBU हैकाथॉन फाइनलिस्ट",
+      "ach_item3_desc": "उच्च-थ्रूपुट टेलीमेट्री स्ट्रीम्स को संभालने वाले वितरित बैकएंड सिस्टम का विकास।",
+      "ach_item4_title": "हैकरएक्स टॉप 20 राष्ट्रीय",
+      "ach_item4_desc": "राष्ट्रीय स्तर की साइबर सुरक्षा प्रतियोगिता में टॉप 20 में स्थान।",
+      "proc_tag": "हमारी कार्यप्रणाली",
+      "proc_title": "हमारी प्रक्रिया",
+      "proc_desc": "एक सरल और पारदर्शी प्रक्रिया जो गुणवत्तापूर्ण वितरण और ग्राहक संतुष्टि सुनिश्चित करती है।",
+      "proc_step1_title": "खोजें",
+      "proc_step1_desc": "हम आपकी आवश्यकताओं, लक्ष्यों और चुनौतियों को समझते हैं।",
+      "proc_step2_title": "योजना",
+      "proc_step2_desc": "हम सर्वोत्तम रणनीति और समाधान का विश्लेषण और योजना बनाते हैं।",
+      "proc_step3_title": "डिज़ाइन और विकास",
+      "proc_step3_desc": "हम सर्वोत्तम प्रथाओं के साथ आपके समाधान को डिज़ाइन और विकसित करते हैं।",
+      "proc_step4_title": "परीक्षण और वितरण",
+      "proc_step4_desc": "हम पूरी तरह से परीक्षण करते हैं और एक उच्च गुणवत्ता वाला उत्पाद वितरित करते हैं।",
+      "proc_step5_title": "सहायता",
+      "proc_step5_desc": "हम निरंतर तकनीकी सहायता प्रदान करते हैं और आपको बढ़ने में मदद करते हैं।",
+      "why_tag": "KAVIROX ही क्यों",
+      "why_title": "हमें क्यों चुनें",
+      "why_item1_title": "अनुभवी रिसर्च इंजीनियर्स",
+      "why_item1_desc": "प्रकाशित एआई अनुसंधान और सिद्ध वीएपीटी क्रेडेंशियल्स वाले वरिष्ठ पेशेवर।",
+      "why_item2_title": "गुणवत्ता और समय पर वितरण",
+      "why_item2_desc": "निरंतर क्यूए और सत्यापित वितरण के साथ उच्च-वेग इंजीनियरिंग स्प्रिंट।",
+      "why_item3_title": "सुरक्षा-प्रथम आर्किटेक्चर",
+      "why_item3_desc": "ज़ीरो-ट्रस्ट सिद्धांत, मजबूत एपीआई और स्वचालित पेनेट्रेशन परीक्षण शामिल।",
+      "why_item4_title": "पारदर्शी मूल्य निर्धारण",
+      "why_item4_desc": "स्पष्ट परिणाम, पारदर्शी उद्धरण और कोई छिपी हुई फीस नहीं।",
+      "why_item5_title": "24/7 प्राथमिकता सहायता",
+      "why_item5_desc": "तकनीकी वास्तुकारों तक सीधी पहुंच और तत्काल महत्वपूर्ण घटना सहायता।",
+      "addons_tag": "प्रीमियम एक्सटेंशन",
+      "addons_title": "प्रस्तावित ऐड-ऑन्स",
+      "addons_desc": "आपकी वेबसाइट को अधिक पेशेवर और प्रीमियम बनाने के लिए सुझाए गए फीचर्स।",
+      "addon_live": "लाइव डेमो",
+      "addon_click": "क्लिक करके देखें",
+      "addon_auto": "ऑटोप्ले",
+      "addon_static": "डायनेमिक",
+      "addon1_title": "लाइव चैट / चैटबॉट",
+      "addon1_desc": "वेबसाइट आगंतुकों के लिए 24/7 त्वरित सहायता। नीचे दाईं ओर हमारे चैटबॉट का प्रयास करें!",
+      "addon2_title": "केस स्टडीज पेज",
+      "addon2_desc": "मुख्य प्रोजेक्ट्स का विस्तृत विवरण। देखने के लिए प्रोजेक्ट्स पर \"View Details\" पर क्लिक करें।",
+      "addon3_title": "प्रशंसापत्र / समीक्षाएं",
+      "addon3_desc": "तत्काल विश्वास और साख बनाने के लिए ग्राहकों की प्रतिक्रियाओं का स्लाइडर।",
+      "addon4_title": "बहुभाषी समर्थन",
+      "addon9_desc": "अंग्रेजी, स्पेनिश और हिंदी अनुवादों का तुरंत समर्थन करने वाला विकल्प।",
+      "faq_title": "अक्सर पूछे जाने वाले प्रश्न",
+      "faq1_q": "KAVIROX क्या सेवाएँ प्रदान करती है?",
+      "faq1_a": "हम AI/ML इंजीनियरिंग, साइबर सुरक्षा परामर्श, पेनेट्रेशन परीक्षण, वेब और मोबाइल एप्लीकेशन विकास, डिजिटल मार्केटिंग और व्यावसायिक सहायता सहित व्यापक सेवाएं प्रदान करते हैं।",
+      "faq2_q": "आप अपने प्रोजेक्ट्स में साइबर सुरक्षा कैसे सुनिश्चित करते हैं?",
+      "faq2_a": "हम 'सुरक्षा सर्वोपरि' दृष्टिकोण अपनाते हैं। हमारा हर कोड और डेटाबेस आर्किटेक्चर सुरक्षा मानकों के अनुरूप विकसित और परीक्षण किया जाता है।",
+      "faq3_q": "क्या आप मौजूदा वेब पेजों में कस्टम एआई मॉडल जोड़ सकते हैं?",
+      "faq3_a": "हाँ। हम कस्टम एआई मॉडल (जैसे टेक्स्ट/इमेज जनरेशन, प्रेडिक्टिव एनालिटिक्स) बनाने और उन्हें सुरक्षित रूप से क्लाउड आर्किटेक्चर पर डिप्लॉय करने में माहिर हैं।",
+      "contact_tag": "संपर्क",
+      "contact_title": "संपर्क करें",
+      "contact_info_heading": "आइए अपना प्रोजेक्ट शुरू करें",
+      "contact_info_desc": "हमें आपसे सुनकर खुशी होगी। हमें एक संदेश भेजें या सीधे ईमेल या फोन के माध्यम से संपर्क करें।",
+      "contact_lbl_phone": "फोन",
+      "contact_lbl_email": "ईमेल",
+      "contact_lbl_loc": "स्थान",
+      "contact_val_loc": "Greater Noida, Uttar Pradesh, India",
+      "contact_lbl_hours": "कार्य के घंटे",
+      "contact_val_hours": "सोम - शनि: सुबह 9:00 - शाम 7:00",
+      "form_title": "हमें एक संदेश भेजें",
+      "form_name": "आपका नाम",
+      "form_email": "आपका ईमेल",
+      "form_subject": "विषय",
+      "form_msg": "आपका संदेश",
+      "form_send": "संदेश भेजें",
+      "err_name": "कृपया अपना नाम दर्ज करें",
+      "err_email": "कृपया एक मान्य ईमेल दर्ज करें",
+      "err_subject": "कृपया एक विषय दर्ज करें",
+      "err_msg": "कृपया अपना संदेश दर्ज करें",
+      "form_success_title": "संदेश सफलतापूर्वक भेजा गया!",
+      "form_success_desc": "संपर्क करने के लिए धन्यवाद। हम शीघ्र ही आपसे kavirox.space@gmail.com पर संपर्क करेंगे।",
+      "footer_cta_heading": "आइए मिलकर कुछ बेहतरीन बनाएं!",
+      "footer_cta_desc": "हम आपके व्यवसाय को हमारे कस्टम सॉफ़्टवेयर, AI और साइबर सुरक्षा समाधानों के साथ विकसित करने में मदद करने के लिए उत्साहित हैं।",
+      "footer_cta_btn": "बातचीत शुरू करें",
+      "footer_brand_desc": "हम ऐसे सॉफ़्टवेयर समाधान बनाते और लागू करते हैं जो व्यवसायों को सुरक्षित रूप से विकसित करने में मदद करते हैं।",
+      "footer_lbl_links": "त्वरित लिंक",
+      "footer_lbl_services": "हमारी सेवाएँ",
+      "footer_lbl_contact": "संपर्क जानकारी",
+      "chat_online": "ऑनलाइन",
+      "chat_welcome": "नमस्ते! मैं KAVIROX का वर्चुअल असिस्टेंट हूँ। आज मैं आपकी क्या मदद कर सकता हूँ?"
+    }
+  }
+  </script>
+
+  <!-- Script -->
+  <script src="script.js"></script>
+</body>
+</html>

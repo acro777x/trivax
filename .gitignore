@@ -1,0 +1,10 @@
+# OS Metadata
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs & Temp
+*.log
+*.tmp
+.tempmediaStorage/
+.agents/
