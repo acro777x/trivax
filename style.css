@@ -1960,6 +1960,207 @@ body.light-mode .theme-toggle .icon-moon {
 }
 
 /* ═══════════════════════════════════════════════
+   LIVE GITHUB REPOSITORY SHOWCASE
+   ═══════════════════════════════════════════════ */
+.repo-showcase {
+  margin-top: 4.5rem;
+  padding: 2.8rem 2.2rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+  position: relative;
+  overflow: hidden;
+}
+
+.repo-showcase-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.repo-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.repo-stat-card {
+  padding: 1.2rem 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(12px);
+  transition: all var(--transition-fast);
+}
+
+.repo-stat-card:hover {
+  border-color: var(--border-bright);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.repo-stat-card span {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.repo-stat-card small {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+}
+
+.repo-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.repo-tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.repo-tab {
+  padding: 0.45rem 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.repo-tab:hover, .repo-tab.active {
+  background: var(--accent);
+  color: #020503;
+  font-weight: 700;
+  border-color: var(--accent);
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
+.repo-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 280px;
+}
+
+.repo-search-wrap i {
+  position: absolute;
+  left: 1rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  pointer-events: none;
+}
+
+.repo-search-wrap input {
+  width: 100%;
+  padding: 0.55rem 1rem 0.55rem 2.4rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+.repo-search-wrap input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.repo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.2rem;
+}
+
+.repo-card {
+  padding: 1.4rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  backdrop-filter: blur(12px);
+  transition: all var(--transition-fast);
+}
+
+.repo-card:hover {
+  border-color: var(--border-bright);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6), 0 0 20px var(--accent-glow);
+}
+
+.repo-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-bottom: 0.75rem;
+}
+
+.repo-card-title {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-decoration: none;
+  word-break: break-word;
+  transition: color var(--transition-fast);
+}
+
+.repo-card-title:hover {
+  color: var(--accent);
+}
+
+.repo-card-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1.2rem;
+  flex-grow: 1;
+}
+
+.repo-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 0.75rem;
+}
+
+/* ═══════════════════════════════════════════════
    RESPONSIVE DESIGN BREAKPOINTS (100% FLUID MOBILE)
    ═══════════════════════════════════════════════ */
 @media (max-width: 1024px) {
@@ -2128,6 +2329,78 @@ body.light-mode .theme-toggle .icon-moon {
     gap: 1.5rem;
   }
 
+  /* Repository Showcase Mobile */
+  .repo-showcase {
+    padding: 1.6rem 1.1rem;
+    margin-top: 3rem;
+  }
+
+  .repo-showcase-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .repo-showcase-header .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .repo-stats {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
+    margin-bottom: 1.4rem;
+  }
+
+  .repo-stat-card {
+    padding: 0.85rem 0.4rem;
+  }
+
+  .repo-stat-card span {
+    font-size: 1.45rem;
+  }
+
+  .repo-stat-card small {
+    font-size: 0.62rem;
+    letter-spacing: 0.02em;
+  }
+
+  .repo-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.85rem;
+    margin-bottom: 1.4rem;
+  }
+
+  .repo-tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.4rem;
+    scrollbar-width: none;
+    gap: 0.4rem;
+  }
+
+  .repo-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .repo-tab {
+    flex-shrink: 0;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.76rem;
+  }
+
+  .repo-search-wrap {
+    max-width: 100%;
+  }
+
+  .repo-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
   /* Process & Timeline */
   .process-steps {
     grid-template-columns: 1fr;
@@ -2192,6 +2465,23 @@ body.light-mode .theme-toggle .icon-moon {
 
   .metric-item span {
     font-size: 0.75rem;
+  }
+
+  .repo-stats {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.4rem;
+  }
+
+  .repo-stat-card {
+    padding: 0.75rem 0.25rem;
+  }
+
+  .repo-stat-card span {
+    font-size: 1.3rem;
+  }
+
+  .repo-stat-card small {
+    font-size: 0.58rem;
   }
 
   .contact-methods {
