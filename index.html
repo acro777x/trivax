@@ -45,11 +45,11 @@
       align-items: center;
       gap: 1.2rem;
       width: 90%;
-      max-width: 300px;
+      max-width: 320px;
     }
     .preloader-logo {
       font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
-      font-size: 1.75rem;
+      font-size: 1.85rem;
       font-weight: 800;
       letter-spacing: 0.12em;
       color: #e5f9f0;
@@ -72,25 +72,49 @@
     .preloader-bar-fill {
       height: 100%;
       width: 0%;
-      background: #52f2b1;
+      background: linear-gradient(90deg, #52f2b1, #38bdf8);
       box-shadow: 0 0 12px #52f2b1;
       border-radius: 999px;
-      transition: width 0.12s ease-out;
+      transition: width 0.08s ease-out;
+    }
+    .preloader-meta-row {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
     }
     .preloader-status {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
       color: #52f2b1;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
+    }
+    .preloader-percent {
+      color: #38bdf8;
+      font-weight: 700;
+    }
+    .hero-typing-cursor {
+      display: inline-block;
+      width: 3px;
+      height: 1em;
+      background: #52f2b1;
+      margin-left: 5px;
+      vertical-align: -0.1em;
+      box-shadow: 0 0 8px #52f2b1;
+      animation: blinkHeroCursor 0.75s infinite;
+    }
+    @keyframes blinkHeroCursor {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
     }
   </style>
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=2.2">
+  <link rel="stylesheet" href="style.css?v=2.3">
 </head>
 <body>
 
-  <!-- Loading Screen (Preloader) -->
+  <!-- Loading Screen (Preloader with 0 to 100% Counting) -->
   <div id="site-preloader">
     <div class="preloader-box">
       <div class="preloader-logo">
@@ -99,7 +123,10 @@
       <div class="preloader-bar-bg">
         <div class="preloader-bar-fill" id="preloader-fill"></div>
       </div>
-      <div class="preloader-status" id="preloader-msg">INITIALIZING...</div>
+      <div class="preloader-meta-row">
+        <span class="preloader-status" id="preloader-msg">INITIALIZING KAVIROX CORE...</span>
+        <span class="preloader-percent" id="preloader-num">0%</span>
+      </div>
     </div>
   </div>
 
@@ -173,9 +200,9 @@
             <span data-translate="hero_badge">Build. Secure. Automate. Innovate.</span>
           </div>
           
-          <h1 class="hero-title" data-translate="hero_title">
+          <h1 class="hero-title">
             Building Secure.<br>
-            <span class="text-gradient">Intelligent. Impactful.</span><br>
+            <span class="text-gradient" id="hero-typing-target">Intelligent. Impactful.</span><span class="hero-typing-cursor"></span><br>
             Digital Solutions.
           </h1>
 

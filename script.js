@@ -8,34 +8,97 @@
 document.addEventListener('DOMContentLoaded', () => {
   'use strict';
 
-  /* ── 0. High-Tech Preloader Controller (Crash-Proof) ── */
+  /* ── 0. High-Tech Preloader Controller (0 to 100% Counting) ── */
   const preloader = document.getElementById('site-preloader');
   const preloaderFill = document.getElementById('preloader-fill');
   const preloaderMsg = document.getElementById('preloader-msg');
+  const preloaderNum = document.getElementById('preloader-num');
+
+  function initHeroTypewriter() {
+    const heroTarget = document.getElementById('hero-typing-target');
+    if (!heroTarget) return;
+
+    const phrases = [
+      "Intelligent. Impactful.",
+      "Autonomous AI Systems.",
+      "Offensive Cyber Defense.",
+      "High-Velocity Web & Apps.",
+      "Hardware Security Modules."
+    ];
+
+    let phraseIndex = 0;
+    let charIndex = phrases[0].length;
+    let isDeleting = false;
+
+    function typeLoop() {
+      const currentPhrase = phrases[phraseIndex];
+
+      if (isDeleting) {
+        charIndex--;
+        heroTarget.textContent = currentPhrase.substring(0, charIndex);
+      } else {
+        charIndex++;
+        heroTarget.textContent = currentPhrase.substring(0, charIndex);
+      }
+
+      let typeSpeed = isDeleting ? 30 : 50;
+
+      if (!isDeleting && charIndex === currentPhrase.length) {
+        typeSpeed = 2400; // Pause when word is completely typed
+        isDeleting = true;
+      } else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        phraseIndex = (phraseIndex + 1) % phrases.length;
+        typeSpeed = 400; // Pause before typing next word
+      }
+
+      setTimeout(typeLoop, typeSpeed);
+    }
+
+    // Start typing rotation after a brief beat
+    setTimeout(typeLoop, 1500);
+  }
 
   if (preloader && preloaderFill) {
     let p = 0;
-    const msgs = ['INITIALIZING CORE...', 'LOADING NEURAL RUNTIME...', 'SYSTEM READY.'];
+    const msgs = [
+      'INITIALIZING KAVIROX CORE...',
+      'LOADING NEURAL RUNTIME...',
+      'VERIFYING SECURITY SHIELDS...',
+      'SYSTEM OPERATIONAL & READY.'
+    ];
+
     const pTimer = setInterval(() => {
-      p += 25;
+      p += 2;
       if (p <= 100) {
         preloaderFill.style.width = p + '%';
-        if (p >= 60 && preloaderMsg) preloaderMsg.textContent = msgs[1];
-        if (p >= 100 && preloaderMsg) preloaderMsg.textContent = msgs[2];
+        if (preloaderNum) preloaderNum.textContent = p + '%';
+
+        if (p < 35 && preloaderMsg) preloaderMsg.textContent = msgs[0];
+        else if (p < 70 && preloaderMsg) preloaderMsg.textContent = msgs[1];
+        else if (p < 98 && preloaderMsg) preloaderMsg.textContent = msgs[2];
+        else if (p >= 98 && preloaderMsg) preloaderMsg.textContent = msgs[3];
       } else {
         clearInterval(pTimer);
         setTimeout(() => {
           preloader.classList.add('fade-out');
-        }, 120);
+          initHeroTypewriter();
+          setTimeout(() => {
+            if (preloader.parentNode) preloader.parentNode.removeChild(preloader);
+          }, 500);
+        }, 150);
       }
-    }, 80);
+    }, 14);
 
-    // Hard fallback after 1s so it never blocks
+    // Hard fallback safety
     setTimeout(() => {
       if (preloader && !preloader.classList.contains('fade-out')) {
         preloader.classList.add('fade-out');
+        initHeroTypewriter();
       }
-    }, 1000);
+    }, 1400);
+  } else {
+    initHeroTypewriter();
   }
 
   /* ── 1. Theme Switcher (Dark / Light Mode) ── */
