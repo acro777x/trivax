@@ -392,7 +392,10 @@ a { color: inherit; text-decoration: none; }
   vertical-align: middle;
   object-fit: contain;
   background: transparent !important;
+  border: none !important;
+  outline: none !important;
   border-radius: 0 !important;
+  box-shadow: none !important;
   filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.75)) drop-shadow(0 0 20px rgba(0, 255, 136, 0.4));
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
 }
@@ -408,7 +411,10 @@ a { color: inherit; text-decoration: none; }
   display: block;
   object-fit: contain;
   background: transparent !important;
+  border: none !important;
+  outline: none !important;
   border-radius: 0 !important;
+  box-shadow: none !important;
   filter: drop-shadow(0 0 20px rgba(0, 255, 136, 0.9)) drop-shadow(0 0 40px rgba(0, 255, 136, 0.5));
   animation: preloaderLogoPulse 2s ease-in-out infinite alternate;
 }
@@ -426,7 +432,10 @@ a { color: inherit; text-decoration: none; }
   vertical-align: middle;
   object-fit: contain;
   background: transparent !important;
+  border: none !important;
+  outline: none !important;
   border-radius: 0 !important;
+  box-shadow: none !important;
   filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.7));
 }
 
