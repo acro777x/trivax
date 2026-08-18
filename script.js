@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
       "Autonomous AI Systems.",
       "Offensive Cyber Defense.",
       "High-Velocity Web & Apps.",
-      "Hardware Security Modules."
+      "Creative Media & Video Production."
     ];
 
     let phraseIndex = 0;
