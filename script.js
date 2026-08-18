@@ -14,7 +14,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const preloaderMsg = document.getElementById('preloader-msg');
   const preloaderNum = document.getElementById('preloader-num');
 
+  let typewriterStarted = false;
+
   function initHeroTypewriter() {
+    if (typewriterStarted) return;
+    typewriterStarted = true;
+
     const heroTarget = document.getElementById('hero-typing-target');
     if (!heroTarget) return;
 
@@ -27,8 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     let phraseIndex = 0;
-    let charIndex = phrases[0].length;
+    let charIndex = 0;
     let isDeleting = false;
+    heroTarget.textContent = "";
 
     function typeLoop() {
       const currentPhrase = phrases[phraseIndex];
@@ -41,22 +47,22 @@ document.addEventListener('DOMContentLoaded', () => {
         heroTarget.textContent = currentPhrase.substring(0, charIndex);
       }
 
-      let typeSpeed = isDeleting ? 30 : 50;
+      let typeSpeed = isDeleting ? 25 : 55;
 
       if (!isDeleting && charIndex === currentPhrase.length) {
-        typeSpeed = 2400; // Pause when word is completely typed
+        typeSpeed = 2200; // Pause when word is completely typed
         isDeleting = true;
       } else if (isDeleting && charIndex === 0) {
         isDeleting = false;
         phraseIndex = (phraseIndex + 1) % phrases.length;
-        typeSpeed = 400; // Pause before typing next word
+        typeSpeed = 350; // Pause before typing next word
       }
 
       setTimeout(typeLoop, typeSpeed);
     }
 
-    // Start typing rotation after a brief beat
-    setTimeout(typeLoop, 1500);
+    // Start typing immediately
+    typeLoop();
   }
 
   if (preloader && preloaderFill) {
@@ -85,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
           initHeroTypewriter();
           setTimeout(() => {
             if (preloader.parentNode) preloader.parentNode.removeChild(preloader);
-          }, 500);
+          }, 450);
         }, 150);
       }
     }, 14);
