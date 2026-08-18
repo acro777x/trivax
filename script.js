@@ -8,6 +8,36 @@
 document.addEventListener('DOMContentLoaded', () => {
   'use strict';
 
+  /* ── 0. High-Tech Preloader Controller (Crash-Proof) ── */
+  const preloader = document.getElementById('site-preloader');
+  const preloaderFill = document.getElementById('preloader-fill');
+  const preloaderMsg = document.getElementById('preloader-msg');
+
+  if (preloader && preloaderFill) {
+    let p = 0;
+    const msgs = ['INITIALIZING CORE...', 'LOADING NEURAL RUNTIME...', 'SYSTEM READY.'];
+    const pTimer = setInterval(() => {
+      p += 25;
+      if (p <= 100) {
+        preloaderFill.style.width = p + '%';
+        if (p >= 60 && preloaderMsg) preloaderMsg.textContent = msgs[1];
+        if (p >= 100 && preloaderMsg) preloaderMsg.textContent = msgs[2];
+      } else {
+        clearInterval(pTimer);
+        setTimeout(() => {
+          preloader.classList.add('fade-out');
+        }, 120);
+      }
+    }, 80);
+
+    // Hard fallback after 1s so it never blocks
+    setTimeout(() => {
+      if (preloader && !preloader.classList.contains('fade-out')) {
+        preloader.classList.add('fade-out');
+      }
+    }, 1000);
+  }
+
   /* ── 1. Theme Switcher (Dark / Light Mode) ── */
   const themeToggle = document.getElementById('theme-toggle');
   const body = document.body;
