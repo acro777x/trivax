@@ -439,25 +439,42 @@ a { color: inherit; text-decoration: none; }
   background: var(--bg-card);
   border: 1px solid var(--border-medium);
   color: var(--text-primary);
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   border-radius: var(--radius-md);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all var(--transition-fast);
+  position: relative;
 }
 
 .theme-toggle:hover {
   border-color: var(--accent);
   color: var(--accent);
+  box-shadow: 0 0 12px var(--accent-glow);
 }
 
-.theme-toggle .icon-light { display: none; }
-.theme-toggle .icon-dark { display: block; }
-body.light-mode .theme-toggle .icon-light { display: block; }
-body.light-mode .theme-toggle .icon-dark { display: none; }
+.theme-toggle .icon-sun {
+  display: block;
+  font-size: 1.05rem;
+  color: #f59e0b;
+}
+
+.theme-toggle .icon-moon {
+  display: none;
+  font-size: 1.05rem;
+  color: var(--accent);
+}
+
+body.light-mode .theme-toggle .icon-sun {
+  display: none;
+}
+
+body.light-mode .theme-toggle .icon-moon {
+  display: block;
+}
 
 /* Mobile Menu Toggle */
 .mobile-menu-toggle {
