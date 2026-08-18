@@ -22,6 +22,25 @@
 <body>
 
   <!-- Ambient Particle Field Canvas -->
+  <!-- ═══════════════════════════════════════════════
+       0. SITE PRELOADER / LOADING SCREEN
+       ═══════════════════════════════════════════════ -->
+  <div id="site-preloader" class="site-preloader">
+    <div class="preloader-content">
+      <div class="preloader-brand">
+        <span class="preloader-logo-icon">&lt;/&gt;</span>
+        <span class="preloader-brand-name">KAVIROX</span>
+      </div>
+      <div class="preloader-progress-track">
+        <div class="preloader-progress-bar" id="preloader-bar"></div>
+      </div>
+      <div class="preloader-telemetry">
+        <span id="preloader-text">INITIALIZING KAVIROX CORE...</span>
+        <span id="preloader-percent">0%</span>
+      </div>
+    </div>
+  </div>
+
   <canvas id="sparkle-canvas" style="position: fixed; inset: 0; pointer-events: none; z-index: 0;"></canvas>
 
   <!-- Header / Navigation -->
@@ -59,16 +78,16 @@
           </div>
         </div>
 
-        <!-- Theme Toggle (Dark/Light) -->
-        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Dark/Light Mode">
-          <i class="fa-solid fa-sun icon-light"></i>
+        <!-- Dark / Light Theme Toggle -->
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Theme">
+          <i class="fa-solid fa-sun icon-sun"></i>
           <i class="fa-solid fa-moon icon-dark"></i>
         </button>
 
-        <a href="#contact" class="btn btn-primary" data-translate="btn_get_touch">Let's Connect</a>
+        <a href="#contact" class="btn btn-primary nav-cta" data-translate="btn_get_touch">Let's Connect</a>
 
-        <!-- Mobile Hamburger Menu Toggle -->
-        <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle Navigation Menu">
+        <!-- Mobile Menu Toggle Button -->
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle Navigation">
           <span class="bar"></span>
           <span class="bar"></span>
           <span class="bar"></span>
@@ -86,28 +105,28 @@
     <section id="home" class="hero-section">
       <div class="container hero-shell">
         <div class="hero-copy scroll-reveal">
-          <div class="hero-badge-pill">
+          <div class="hero-badge-pill hero-anim-1">
             <span class="pulse-dot"></span>
             <span data-translate="hero_badge">Build. Secure. Automate. Innovate.</span>
           </div>
           
-          <h1 class="hero-title" data-translate="hero_title">
+          <h1 class="hero-title hero-anim-2" data-translate="hero_title">
             Building Secure.<br>
             <span class="text-gradient">Intelligent. Impactful.</span><br>
             Digital Solutions.
           </h1>
 
-          <p class="hero-description" data-translate="hero_desc">
+          <p class="hero-description hero-anim-3" data-translate="hero_desc">
             From AI research published at ACM & ACL to offensive security frameworks and hardware security systems — we build things that solve real-world problems with speed, precision, and impact.
           </p>
 
-          <div class="hero-actions">
+          <div class="hero-actions hero-anim-4">
             <a href="#projects" class="btn btn-primary" data-translate="hero_btn_explore">Explore Our Work</a>
             <a href="#contact" class="btn btn-secondary" data-translate="hero_btn_contact">Contact Us</a>
           </div>
 
           <!-- Animated Metrics Grid with Live Easing Count-Up -->
-          <div class="hero-metrics" id="hero-metrics">
+          <div class="hero-metrics hero-anim-5" id="hero-metrics">
             <div class="metric-item">
               <strong class="stat-counter" data-count="10" data-suffix="+">0+</strong>
               <span data-translate="stat_projects">Projects Delivered</span>
@@ -128,16 +147,76 @@
         </div>
 
         <div class="hero-visual scroll-reveal delay-1">
-          <div class="visual-frame">
+          <div class="hero-terminal-frame">
+            <div class="terminal-header">
+              <div class="terminal-controls">
+                <span class="terminal-dot dot-red"></span>
+                <span class="terminal-dot dot-yellow"></span>
+                <span class="terminal-dot dot-green"></span>
+              </div>
+              <span class="terminal-title">kavirox-core@v5.4 ~/runtime (zsh)</span>
+              <span class="terminal-badge-live"><span class="pulse-dot" style="width:5px;height:5px;"></span> LIVE</span>
+            </div>
+            
+            <div class="terminal-body">
+              <div class="terminal-cmd-row">
+                <span class="terminal-prompt">kavirox@space:~$</span>
+                <span class="terminal-cmd" id="terminal-typewriter-text">init system --orchestrate --mode=production</span>
+                <span class="terminal-caret"></span>
+              </div>
+              
+              <div class="terminal-log-list" id="terminal-logs">
+                <div class="terminal-log-item">
+                  <span class="log-tag-ok">[OK]</span>
+                  <span>Neural Engine: LLaMA-3.2 + Patronus active</span>
+                </div>
+                <div class="terminal-log-item">
+                  <span class="log-tag-ok">[OK]</span>
+                  <span>Offensive Security: AcroMap 32-Phase ready</span>
+                </div>
+                <div class="terminal-log-item">
+                  <span class="log-tag-ok">[OK]</span>
+                  <span>Edge AI Interceptor: Whisper + MiniLM online</span>
+                </div>
+                <div class="terminal-log-item">
+                  <span class="log-tag-ok">[OK]</span>
+                  <span>Zero-Trust Architecture verified (Greater Noida)</span>
+                </div>
+                <div class="terminal-log-item">
+                  <span class="log-tag-info">[INF]</span>
+                  <span>Mesh Telemetry: 100% Operational (99.99% SLA)</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="terminal-footer-metrics">
+              <div class="terminal-metric-col">
+                <span>LATENCY</span>
+                <strong>12ms (Direct)</strong>
+              </div>
+              <div class="terminal-metric-col">
+                <span>PIPELINE</span>
+                <strong>4-Agent RAG</strong>
+              </div>
+              <div class="terminal-metric-col">
+                <span>SECURITY</span>
+                <strong>AES-256-GCM</strong>
+              </div>
+            </div>
+
+            <!-- Floating Verified Node Badges -->
             <div class="status-card card-top">
               <span class="status-dot"></span>
-              <span>AI Researcher</span>
+              <span>AI Researcher (ACM / ACL)</span>
             </div>
             <div class="status-card card-mid">
               <span class="status-dot"></span>
-              <span>Security Engineer</span>
+              <span>Security Engineer (VAPT)</span>
             </div>
-            <img src="assets/01_Hero_Cyber_AI_Illustration.png" alt="KAVIROX Cyber AI Illustration" class="hero-illustration">
+            <div class="status-card card-side">
+              <span class="status-dot dot-cyan"></span>
+              <span>Full Stack Systems</span>
+            </div>
           </div>
         </div>
       </div>
@@ -1076,9 +1155,19 @@
                 </button>
               </form>
               <div class="form-success-alert" id="form-success-alert">
-                <i class="fa-solid fa-circle-check"></i>
-                <h4 data-translate="form_success_title">Message Sent Successfully!</h4>
-                <p data-translate="form_success_desc">Thank you for reaching out. We will get back to you shortly at kavirox.space@gmail.com.</p>
+                <i class="fa-solid fa-circle-check" style="font-size: 2.2rem; color: var(--accent); margin-bottom: 0.8rem;"></i>
+                <h4 data-translate="form_success_title" style="font-family: var(--font-heading); font-size: 1.35rem; color: var(--text-primary); margin-bottom: 0.5rem;">Message Compiled & Ready!</h4>
+                <p data-translate="form_success_desc" style="color: var(--text-secondary); font-size: 0.92rem; line-height: 1.6; margin-bottom: 1.2rem;">
+                  Your message has been drafted for <strong>kavirox.space@gmail.com</strong>. Click below if your email client didn't open automatically:
+                </p>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                  <a id="email-draft-btn" href="mailto:kavirox.space@gmail.com" class="btn btn-primary" style="justify-content: center; width: 100%;">
+                    <i class="fa-solid fa-envelope-circle-check"></i> Open in Gmail / Mail App
+                  </a>
+                  <button type="button" class="btn btn-secondary" id="form-reset-btn" style="justify-content: center; width: 100%;">
+                    <i class="fa-solid fa-rotate-left"></i> Send Another Message
+                  </button>
+                </div>
               </div>
             </div>
           </div>

@@ -8,6 +8,41 @@
 document.addEventListener('DOMContentLoaded', () => {
   'use strict';
 
+  /* ── 0. High-Tech Preloader Controller ── */
+  const preloader = document.getElementById('site-preloader');
+  const preloaderBar = document.getElementById('preloader-bar');
+  const preloaderText = document.getElementById('preloader-text');
+  const preloaderPercent = document.getElementById('preloader-percent');
+
+  if (preloader && preloaderBar) {
+    const bootSteps = [
+      { progress: 15, text: 'INITIALIZING KAVIROX CORE...' },
+      { progress: 40, text: 'LOADING NEURAL RUNTIME (LLaMA/Patronus)...' },
+      { progress: 70, text: 'VERIFYING VAPT ORCHESTRATOR...' },
+      { progress: 90, text: 'SYNCHRONIZING EDGE TELEMETRY...' },
+      { progress: 100, text: 'SYSTEM OPERATIONAL & READY.' }
+    ];
+
+    let currentStep = 0;
+    const interval = setInterval(() => {
+      if (currentStep < bootSteps.length) {
+        const step = bootSteps[currentStep];
+        preloaderBar.style.width = `${step.progress}%`;
+        if (preloaderText) preloaderText.textContent = step.text;
+        if (preloaderPercent) preloaderPercent.textContent = `${step.progress}%`;
+        currentStep++;
+      } else {
+        clearInterval(interval);
+        setTimeout(() => {
+          preloader.classList.add('loaded');
+          setTimeout(() => {
+            if (preloader.parentNode) preloader.parentNode.removeChild(preloader);
+          }, 600);
+        }, 200);
+      }
+    }, 120);
+  }
+
   /* ── 1. Theme Switcher (Dark / Light Mode) ── */
   const themeToggle = document.getElementById('theme-toggle');
   const body = document.body;
@@ -603,9 +638,30 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  /* ── 13. Contact Form Submission ── */
+  /* ── 13. Hero Terminal HUD Typewriter Effect ── */
+  const terminalTextElem = document.getElementById('terminal-typewriter-text');
+  if (terminalTextElem) {
+    const fullCmd = "init system --orchestrate --mode=production";
+    let cmdIdx = 0;
+    terminalTextElem.textContent = "";
+    
+    function typeCommand() {
+      if (cmdIdx < fullCmd.length) {
+        terminalTextElem.textContent += fullCmd.charAt(cmdIdx);
+        cmdIdx++;
+        setTimeout(typeCommand, 45);
+      }
+    }
+    // Start typing after initial preloader entrance
+    setTimeout(typeCommand, 800);
+  }
+
+
+  /* ── 14. Contact Form Submission & Email Draft Pipeline ── */
   const contactForm = document.getElementById('contact-form');
   const formSuccessAlert = document.getElementById('form-success-alert');
+  const emailDraftBtn = document.getElementById('email-draft-btn');
+  const formResetBtn = document.getElementById('form-reset-btn');
 
   if (contactForm) {
     contactForm.addEventListener('submit', (e) => {
@@ -630,17 +686,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (!isValid) return;
 
+      const nameVal = nameInput?.value.trim() || '';
+      const emailVal = emailInput?.value.trim() || '';
+      const subjectVal = subjectInput?.value.trim() || 'General Inquiry';
+      const messageVal = messageInput?.value.trim() || '';
+
+      // Format formatted email payload
+      const mailtoSubject = `[KAVIROX Project Inquiry] ${subjectVal}`;
+      const mailtoBody = `Hello KAVIROX Team,\n\nName: ${nameVal}\nEmail: ${emailVal}\nSubject: ${subjectVal}\n\nProject Scope & Message:\n${messageVal}\n\n---\nTransmitted via kavirox.space client portal`;
+      const mailtoUrl = `mailto:kavirox.space@gmail.com?subject=${encodeURIComponent(mailtoSubject)}&body=${encodeURIComponent(mailtoBody)}`;
+
+      if (emailDraftBtn) {
+        emailDraftBtn.setAttribute('href', mailtoUrl);
+      }
+
       const submitBtn = document.getElementById('form-submit-btn');
       if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:#020503;"></i> <span style="color:#020503;font-weight:700;">Transmitting...</span>`;
+        submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:#020503;"></i> <span style="color:#020503;font-weight:700;">Compiling Draft...</span>`;
       }
 
       setTimeout(() => {
         if (contactForm) contactForm.style.display = 'none';
         if (formSuccessAlert) formSuccessAlert.classList.add('show');
-      }, 900);
+        
+        // Attempt to trigger mail client directly
+        try {
+          window.location.href = mailtoUrl;
+        } catch (err) {
+          console.warn('Mail client redirect handled gracefully');
+        }
+      }, 700);
     });
+
+    if (formResetBtn) {
+      formResetBtn.addEventListener('click', () => {
+        contactForm.reset();
+        contactForm.style.display = '';
+        formSuccessAlert.classList.remove('show');
+        const submitBtn = document.getElementById('form-submit-btn');
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane" style="margin-right: 0.4rem;"></i> <span class="btn-text">Send Message</span>`;
+        }
+      });
+    }
   }
 
 });
