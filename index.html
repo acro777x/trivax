@@ -7,7 +7,9 @@
   <meta name="description" content="KAVIROX (kavirox.space) delivers AI/ML, Cybersecurity, Secure Systems, Web/Product Engineering, and complete digital growth solutions.">
   <meta name="theme-color" content="#020503">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="icon" type="image/png" href="assets/kavirox_logo.png">
+  <link rel="shortcut icon" type="image/png" href="assets/kavirox_logo.png">
+  <link rel="apple-touch-icon" href="assets/kavirox_logo.png">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -111,15 +113,16 @@
   </style>
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=2.7">
+  <link rel="stylesheet" href="style.css?v=2.8">
 </head>
 <body>
 
   <!-- Loading Screen (Preloader with 0 to 100% Counting) -->
   <div id="site-preloader">
     <div class="preloader-box">
-      <div class="preloader-logo">
-        <span>&lt;/&gt;</span> KAVIROX
+      <div class="preloader-logo" style="display: flex; align-items: center; justify-content: center; gap: 0.75rem; font-size: 1.4rem; font-weight: 700; color: #fff; letter-spacing: 0.05em;">
+        <img src="assets/kavirox_logo.png" alt="KAVIROX" style="height: 42px; width: 42px; object-fit: contain; border-radius: 8px;">
+        <span>KAVIROX</span>
       </div>
       <div class="preloader-bar-bg">
         <div class="preloader-bar-fill" id="preloader-fill"></div>
@@ -137,8 +140,8 @@
   <!-- Header / Navigation -->
   <header id="header" class="site-header">
     <div class="container header-container">
-      <a href="#home" class="logo" id="logo-link">
-        <span class="logo-icon">&lt;/&gt;</span>
+      <a href="#home" class="logo" id="logo-link" style="display: flex; align-items: center; gap: 0.65rem;">
+        <img src="assets/kavirox_logo.png" alt="KAVIROX Logo" class="navbar-logo-img" style="height: 32px; width: 32px; object-fit: contain; border-radius: 6px;">
         <span class="logo-text">KAVIROX</span>
       </a>
 
@@ -269,9 +272,9 @@
         <!-- 12 Spotlight Bento Service Cards -->
         <div class="services-grid">
           <div class="service-card scroll-reveal">
-            <div class="service-icon"><i class="fa-solid fa-film"></i></div>
-            <h3 class="service-title" data-translate="srv_video_title">Video Editing</h3>
-            <p class="service-text" data-translate="srv_video_desc">Professional video editing for YouTube, Reels, Ads, Corporate and more.</p>
+            <div class="service-icon"><i class="fa-solid fa-clapperboard"></i></div>
+            <h3 class="service-title" data-translate="srv_video_title">Creative Media & Video Production</h3>
+            <p class="service-text" data-translate="srv_video_desc">High-impact cinematic editing, motion graphics, commercial reels, brand storytelling & multi-channel media production.</p>
           </div>
           <div class="service-card scroll-reveal delay-1">
             <div class="service-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
@@ -1225,8 +1228,8 @@
   <footer class="site-footer">
     <div class="container footer-grid">
       <div class="footer-brand">
-        <a href="#home" class="logo">
-          <span class="logo-icon">&lt;/&gt;</span>
+        <a href="#home" class="logo" style="display: flex; align-items: center; gap: 0.65rem; margin-bottom: 1rem;">
+          <img src="assets/kavirox_logo.png" alt="KAVIROX" style="height: 32px; width: 32px; object-fit: contain; border-radius: 6px;">
           <span class="logo-text">KAVIROX</span>
         </a>
         <p class="brand-desc" data-translate="footer_brand_desc">We build and deploy practical software solutions that help businesses grow, stay secure and scale effortlessly.</p>
@@ -1253,6 +1256,7 @@
       <div class="footer-links">
         <h4 data-translate="footer_lbl_services">Our Services</h4>
         <ul>
+          <li><a href="#services" data-translate="srv_video_title">Creative Media & Video Production</a></li>
           <li><a href="#services" data-translate="srv_web_title">Web Development</a></li>
           <li><a href="#services" data-translate="srv_app_title">App Development</a></li>
           <li><a href="#services" data-translate="srv_seo_title">SEO Services</a></li>
@@ -1289,14 +1293,16 @@
 
   <!-- Interactive AI Chatbot Widget -->
   <div class="chatbot-widget" id="chatbot-widget">
-    <button class="chatbot-toggle" id="chatbot-toggle" aria-label="Open Chatbot">
-      <i class="fa-solid fa-comments"></i>
+    <button class="chatbot-toggle" id="chatbot-toggle" aria-label="Open Chatbot" style="display: flex; align-items: center; justify-content: center; padding: 0; overflow: hidden; background: var(--bg-surface); border: 2px solid var(--accent);">
+      <img src="assets/kavirox_logo.png" alt="KAVIROX AI Assistant" style="width: 34px; height: 34px; object-fit: contain; border-radius: 50%;">
       <span class="chatbot-pulse"></span>
     </button>
     <div class="chatbot-box" id="chatbot-box">
       <div class="chatbot-header">
         <div class="chatbot-header-info">
-          <div class="chatbot-avatar"><i class="fa-solid fa-robot"></i></div>
+          <div class="chatbot-avatar" style="overflow: hidden; padding: 2px; background: rgba(0,255,136,0.1); border: 1px solid var(--border-medium); border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 34px; height: 34px;">
+            <img src="assets/kavirox_logo.png" alt="KAVIROX" style="width: 28px; height: 28px; object-fit: contain; border-radius: 50%;">
+          </div>
           <div>
             <h4 class="chatbot-name">KAVIROX AI Assistant</h4>
             <span class="chatbot-status" data-translate="chat_online">Online</span>
@@ -1341,8 +1347,8 @@
       "services_tag": "WHAT WE DO",
       "services_title": "End-to-End Solutions for Your Digital Success",
       "services_desc": "From powerful software and secure systems to impactful marketing and business support, we help you build, grow and scale without limits.",
-      "srv_video_title": "Video Editing",
-      "srv_video_desc": "Professional video editing for YouTube, Reels, Ads, Corporate and more.",
+      "srv_video_title": "Creative Media & Video Production",
+      "srv_video_desc": "High-impact cinematic editing, motion graphics, commercial reels, brand storytelling & multi-channel media production.",
       "srv_seo_title": "SEO Services",
       "srv_seo_desc": "On-page, Off-page, Technical SEO to boost rankings and drive organic traffic.",
       "srv_app_title": "App Development",
@@ -1508,8 +1514,8 @@
       "services_tag": "QUÉ HACEMOS",
       "services_title": "Soluciones Integrales para tu Éxito Digital",
       "services_desc": "Desde software potente y sistemas seguros hasta marketing de impacto y soporte comercial, te ayudamos a construir, crecer y escalar sin límites.",
-      "srv_video_title": "Edición de Video",
-      "srv_video_desc": "Edición de video profesional para YouTube, Reels, Anuncios, Corporativo y más.",
+      "srv_video_title": "Medios Creativos y Producción de Video",
+      "srv_video_desc": "Edición cinematográfica de alto impacto, gráficos en movimiento, reels comerciales y producción multimedia.",
       "srv_seo_title": "Servicios de SEO",
       "srv_seo_desc": "SEO On-page, Off-page y Técnico para mejorar posiciones y atraer tráfico orgánico.",
       "srv_app_title": "Desarrollo de Apps",
@@ -1675,8 +1681,8 @@
       "services_tag": "हम क्या करते हैं",
       "services_title": "आपकी डिजिटल सफलता के लिए संपूर्ण समाधान",
       "services_desc": "शक्तिशाली सॉफ़्टवेयर और सुरक्षित सिस्टम से लेकर प्रभावशाली मार्केटिंग और व्यावसायिक सहायता तक, हम आपको बिना किसी सीमा के बढ़ने और स्केल करने में मदद करते हैं।",
-      "srv_video_title": "वीडियो संपादन",
-      "srv_video_desc": "यूट्यूब, रील्स, विज्ञापनों और कॉर्पोरेट के लिए पेशेवर वीडियो संपादन।",
+      "srv_video_title": "क्रिएटिव मीडिया और वीडियो प्रोडक्शन",
+      "srv_video_desc": "हाई-इम्पैक्ट सिनेमैटिक एडिटिंग, मोशन ग्राफिक्स, कमर्शियल रील्स और ब्रांड स्टोरीटेलिंग प्रोडक्शन।",
       "srv_seo_title": "एसईओ सेवाएँ",
       "srv_seo_desc": "रैंकिंग बढ़ाने और आर्गेनिक ट्रैफ़िक लाने के लिए ऑन-पेज, ऑफ-पेज, टेक्निकल एसईओ।",
       "srv_app_title": "ऐप विकास",

@@ -647,7 +647,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const chatbotMessages = document.getElementById('chatbot-messages');
 
   const botResponses = {
-    services: "KAVIROX delivers end-to-end digital solutions: AI/ML Engineering, Cybersecurity & VAPT, Full Stack Web & Mobile Architecture, SEO, Digital Marketing, and Dedicated Business Operations.",
+    services: "KAVIROX delivers end-to-end digital solutions: AI/ML Engineering, Cybersecurity & VAPT, Creative Media & Video Production, Full Stack Web & Mobile Architecture, SEO, Digital Marketing, and Dedicated Business Operations.",
     pricing: "Our pricing is transparent and tailored to project scale. We offer milestone-based delivery and retainer engagements.",
     security: "Security is central to our engineering: Zero-Trust principles, automated penetration testing (AcroMap, AcroStrike), and hardened API architectures.",
     contact: "Reach out directly at kavirox.space@gmail.com, call +91 95484 25711, or use the contact transmission form!",
