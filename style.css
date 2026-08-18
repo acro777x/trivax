@@ -1959,41 +1959,246 @@ body.light-mode .theme-toggle .icon-moon {
   cursor: pointer;
 }
 
-/* Responsive */
+/* ═══════════════════════════════════════════════
+   RESPONSIVE DESIGN BREAKPOINTS (100% FLUID MOBILE)
+   ═══════════════════════════════════════════════ */
 @media (max-width: 1024px) {
   .hero-shell, .about-shell, .why-us-grid, .contact-grid, .research-publications-grid {
     grid-template-columns: 1fr;
     gap: 2.5rem;
   }
-  .process-steps { grid-template-columns: repeat(3, 1fr); }
+  .product-spotlight-grid,
+  .product-spotlight-grid.reversed {
+    grid-template-columns: 1fr;
+    gap: 2.2rem;
+  }
+  .process-steps { grid-template-columns: repeat(2, 1fr); }
   .addons-grid { grid-template-columns: repeat(2, 1fr); }
   .footer-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  .section-padding {
+    padding: 4.5rem 0;
+  }
+
+  .site-header {
+    height: 68px;
+  }
+
+  .header-container {
+    padding: 0 1rem;
+  }
+
   .main-nav {
     position: fixed;
-    top: 70px;
+    top: 68px;
     left: 0;
     width: 100%;
-    background: rgba(2, 5, 3, 0.96);
-    backdrop-filter: blur(20px);
+    background: rgba(2, 5, 3, 0.98);
+    backdrop-filter: blur(24px);
     border-bottom: 1px solid var(--border-medium);
-    padding: 1.5rem 0;
+    padding: 1.8rem 1.2rem;
     display: none;
     flex-direction: column;
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.8);
   }
+
   .main-nav.open {
     display: flex;
   }
+
   .main-nav ul {
     flex-direction: column;
     gap: 1.2rem;
+    align-items: flex-start;
   }
-  .mobile-menu-toggle { display: flex; }
-  .hero-metrics { grid-template-columns: repeat(2, 1fr); }
-  .projects-grid { grid-template-columns: 1fr; }
-  .process-steps { grid-template-columns: 1fr; }
-  .form-row { grid-template-columns: 1fr; }
-  .form-wrapper { padding: 1.8rem 1.4rem; }
+
+  .nav-link {
+    font-size: 1.1rem;
+    display: block;
+    width: 100%;
+    padding: 0.4rem 0;
+  }
+
+  .mobile-menu-toggle {
+    display: flex;
+  }
+
+  .nav-cta {
+    display: none;
+  }
+
+  /* Hero Mobile */
+  .hero-section {
+    padding: 6.5rem 0 3.5rem 0;
+    min-height: auto;
+  }
+
+  .hero-title {
+    font-size: clamp(2rem, 6vw, 2.8rem);
+    line-height: 1.15;
+  }
+
+  .hero-description {
+    font-size: 0.98rem;
+    margin-bottom: 1.6rem;
+  }
+
+  .hero-actions {
+    gap: 0.8rem;
+    margin-bottom: 2.2rem;
+  }
+
+  .hero-metrics {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+    padding-top: 1.4rem;
+  }
+
+  .metric-item strong {
+    font-size: 1.7rem;
+  }
+
+  .visual-frame {
+    max-width: 100%;
+    padding: 0.6rem;
+  }
+
+  .status-card {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.72rem;
+  }
+
+  .card-top { top: -8px; right: 0; }
+  .card-mid { bottom: -8px; left: 0; }
+
+  /* Services Bento */
+  .services-bento-grid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+
+  .bento-card.bento-card-large,
+  .bento-card.bento-card-tall {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+
+  /* Spotlight Grids */
+  .spotlight-heading {
+    font-size: 1.8rem;
+  }
+
+  .spotlight-feature-grid {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+
+  /* Projects Filter Carousel */
+  .project-filters {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.6rem;
+    gap: 0.4rem;
+    justify-content: flex-start;
+    scrollbar-width: none;
+  }
+
+  .project-filters::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-btn {
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding: 0.45rem 0.85rem;
+    font-size: 0.8rem;
+  }
+
+  .projects-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  /* Process & Timeline */
+  .process-steps {
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+  }
+
+  /* Contact Form */
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-wrapper {
+    padding: 1.6rem 1.2rem;
+  }
+
+  .contact-form input,
+  .contact-form textarea {
+    font-size: 16px; /* Prevents iOS auto zoom */
+  }
+
+  /* Footer */
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  /* Chatbot on mobile */
+  .chatbot-window {
+    width: calc(100vw - 2rem);
+    right: 1rem;
+    bottom: 80px;
+    max-height: 72vh;
+  }
+
+  .modal-container {
+    width: 94%;
+    padding: 1.6rem 1.2rem;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .spotlight-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero-metrics {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .metric-item strong {
+    font-size: 1.5rem;
+  }
+
+  .metric-item span {
+    font-size: 0.75rem;
+  }
+
+  .contact-methods {
+    gap: 1rem;
+  }
+
+  .method-item {
+    padding: 0.75rem;
+  }
 }
