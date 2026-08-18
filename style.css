@@ -517,6 +517,32 @@ body.light-mode .theme-toggle .icon-moon {
   align-items: center;
 }
 
+.hero-brand-emblem-wrap {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 1.4rem;
+}
+
+.hero-brand-emblem {
+  height: 65px;
+  width: auto;
+  max-width: 270px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 16px rgba(0, 255, 136, 0.65)) drop-shadow(0 0 32px rgba(0, 255, 136, 0.35));
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+  animation: heroLogoFloat 4s ease-in-out infinite alternate;
+}
+
+.hero-brand-emblem:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 24px rgba(0, 255, 136, 0.95)) drop-shadow(0 0 48px rgba(0, 255, 136, 0.6));
+}
+
+@keyframes heroLogoFloat {
+  0% { transform: translateY(0px); }
+  100% { transform: translateY(-5px); }
+}
+
 .hero-badge-pill {
   display: inline-flex;
   align-items: center;
