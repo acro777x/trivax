@@ -418,7 +418,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const projectDetailsMap = {
     acromap: {
-      title: 'AcroMap — 3D Automated Penetration Testing Framework',
+      title: 'AcroMap — 32-Phase Automated Penetration Testing Framework',
       tag: 'Offensive Security / VAPT',
       image: 'assets/project_acromap.jpg',
       desc: 'Automated Reconnaissance and Vulnerability Assessment engine executing across 32 modular phases with multi-threading and live exploitation path mapping.',
@@ -433,6 +433,22 @@ document.addEventListener('DOMContentLoaded', () => {
       tech: ['Python', 'LangChain', 'FastAPI', 'Elasticsearch', 'Threat Intel'],
       url: 'https://github.com/Eurt-labs/AI-DFIR'
     },
+    rakshak_setu: {
+      title: 'Rakshak Setu (रक्षक सेतु) — On-Device Telecom Scam Interceptor',
+      tag: 'Edge AI / Telecom Cybersecurity (SIH 2026 Finalist)',
+      image: 'assets/project_rakshak_setu.jpg',
+      desc: 'A privacy-first, 100% on-device Android system that intercepts and analyzes scam call scripts in Hindi/Hinglish using quantized Whisper ASR and MiniLM semantic embeddings. Features Golden-Hour guided recovery, 1930 helpline auto-dial, and RBI-compliant bank freeze evidence generation.',
+      tech: ['Kotlin', 'Android', 'Whisper ASR (int8)', 'MiniLM Embeddings', 'A4 Voting', 'Edge AI', 'NCRP Integration'],
+      url: 'https://github.com/acro777x/Rakshak-Setu'
+    },
+    studyhub: {
+      title: 'StudyHub AI — Unified Student Learning & Academic Productivity Dashboard',
+      tag: 'AI EdTech / SaaS Platform',
+      image: 'assets/project_studyhub.jpg',
+      desc: 'A comprehensive modern student dashboard featuring real-time assignment submission tracking, intelligent study planner timeline, AI tutor assistant, and GPA analytics charts.',
+      tech: ['React / Next.js', 'FastAPI', 'TailwindCSS', 'AI Tutor', 'Analytics Charts', 'Study Planner'],
+      url: 'https://github.com/acro777x'
+    },
     acrostrike: {
       title: 'AcroStrike — 2D-Phase Zero-Dependency VAPT Engine',
       tag: 'Vulnerability Assessment',
@@ -441,14 +457,6 @@ document.addEventListener('DOMContentLoaded', () => {
       tech: ['C/C++', 'Python', 'Raw Sockets', 'Multi-threading', 'SYN Sweep'],
       url: 'https://github.com/acro777x/AcroStrike'
     },
-    studyhub: {
-      title: 'Tkinter QR Attendance System',
-      tag: 'Application Engineering',
-      image: 'assets/project_qr_attendance.jpg',
-      desc: 'A standalone desktop attendance management system featuring high-speed OpenCV computer-vision QR parsing, student database management, and spreadsheet report export.',
-      tech: ['Python', 'Tkinter', 'OpenCV', 'SQLite', 'CSV Engine'],
-      url: 'https://github.com/YuganshGoyal2007/Tkinter'
-    },
     ghostchat: {
       title: 'Ghost Chat — Offline Captive Portal Mesh',
       tag: 'Hardware & IoT Security',
@@ -456,14 +464,6 @@ document.addEventListener('DOMContentLoaded', () => {
       desc: 'An off-grid communication terminal hosted locally on an ESP32 microcontroller, creating an encrypted captive portal for instant peer-to-peer messaging.',
       tech: ['ESP32', 'C++', 'Embedded WebSockets', 'AES-256', 'Captive Portal'],
       url: 'https://github.com/acro777x/Ghost_Chat'
-    },
-    resumebuilder: {
-      title: 'COVID Data Exploration Pipeline',
-      tag: 'Data Engineering & Analytics',
-      image: 'assets/project_covid_analytics.jpg',
-      desc: 'Data science exploration pipeline engineered for massive patient health CSV datasets, epidemiological regression curves, and spatial infection cluster forecasting.',
-      tech: ['Python', 'Pandas', 'NumPy', 'Matplotlib', 'ETL Pipeline'],
-      url: 'https://github.com/YuganshGoyal2007/covid-project'
     },
     acm_paper: {
       title: 'Multimodal Emotion & Trait Recognition (ACM MM 2025)',
