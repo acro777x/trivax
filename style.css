@@ -323,12 +323,59 @@ a { color: inherit; text-decoration: none; }
 .logo {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.65rem;
   font-family: var(--font-heading);
   font-weight: 800;
   font-size: 1.25rem;
   letter-spacing: 0.08em;
   color: var(--text-primary);
+}
+
+.navbar-logo-img {
+  height: 34px;
+  width: auto;
+  object-fit: contain;
+  background: transparent !important;
+  border-radius: 0 !important;
+  filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.7)) drop-shadow(0 0 16px rgba(0, 255, 136, 0.35));
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
+}
+
+.logo:hover .navbar-logo-img {
+  transform: scale(1.08);
+  filter: drop-shadow(0 0 14px rgba(0, 255, 136, 0.95)) drop-shadow(0 0 28px rgba(0, 255, 136, 0.6));
+}
+
+.preloader-logo-img {
+  height: 52px;
+  width: auto;
+  object-fit: contain;
+  background: transparent !important;
+  border-radius: 0 !important;
+  filter: drop-shadow(0 0 16px rgba(0, 255, 136, 0.85)) drop-shadow(0 0 32px rgba(0, 255, 136, 0.45));
+  animation: preloaderLogoPulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes preloaderLogoPulse {
+  0% { transform: scale(0.98); filter: drop-shadow(0 0 12px rgba(0, 255, 136, 0.65)); }
+  100% { transform: scale(1.04); filter: drop-shadow(0 0 22px rgba(0, 255, 136, 1)) drop-shadow(0 0 42px rgba(0, 255, 136, 0.55)); }
+}
+
+.footer-logo-img {
+  height: 34px;
+  width: auto;
+  object-fit: contain;
+  background: transparent !important;
+  border-radius: 0 !important;
+  filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.7));
+}
+
+.chatbot-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: transparent !important;
+  filter: drop-shadow(0 0 6px rgba(0, 255, 136, 0.7));
 }
 
 .logo-icon {
