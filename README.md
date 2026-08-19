@@ -41,6 +41,6 @@ KAVIROX delivers end-to-end digital solutions across:
 
 ## Contact & Transmission
 - **Domain**: [kavirox.space](https://kavirox.space)
-- **Email**: kavirox.space@gmail.com
+- **Email**: info@kavirox.space
 - **Phone**: +91 95484 25711
 - **Headquarters**: Greater Noida, Uttar Pradesh, India
