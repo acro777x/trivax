@@ -2,7 +2,8 @@
  * KAVIROX.SPACE - Secure AI Chatbot Backend Proxy
  * Cloudflare Pages Serverless Function: /api/chat
  * 
- * Model: poolside/laguna-s-2.1:free (via OpenRouter)
+ * Primary Model: poolside/laguna-s-2.1:free (via OpenRouter)
+ * Fallback Models: meta-llama/llama-3.2-3b-instruct:free, google/gemini-2.0-flash-lite-preview-02-05:free
  * Security Standard: OWASP Top 10 for LLM Applications (2025/2026)
  * - LLM01: Strict Read-Only System Confinement & Anti-Injection Guardrails
  * - LLM02: Output Sanitization & Structured Response
@@ -55,10 +56,15 @@ Your primary role is to provide accurate, professional, concise, and helpful inf
 - Phone/WhatsApp: +91 95484 25711
 - Website: Use the contact form at https://kavirox.space/#contact`;
 
+const FALLBACK_MODELS = [
+  "poolside/laguna-s-2.1:free",
+  "meta-llama/llama-3.2-3b-instruct:free",
+  "google/gemini-2.0-flash-lite-preview-02-05:free"
+];
+
 export async function onRequest(context) {
   const { request, env } = context;
 
-  // Handle CORS preflight
   if (request.method === "OPTIONS") {
     return new Response(null, {
       status: 204,
@@ -71,7 +77,6 @@ export async function onRequest(context) {
     });
   }
 
-  // Only allow POST requests
   if (request.method !== "POST") {
     return new Response(JSON.stringify({ error: "Method not allowed. Use POST." }), {
       status: 405,
@@ -83,7 +88,7 @@ export async function onRequest(context) {
     const payload = await request.json();
     const userMessage = (payload.message || "").trim();
 
-    // OWASP LLM04: Input length validation (max 500 characters)
+    // OWASP LLM04: Input length validation
     if (!userMessage) {
       return new Response(JSON.stringify({ error: "Message content cannot be empty." }), {
         status: 400,
@@ -100,12 +105,10 @@ export async function onRequest(context) {
       });
     }
 
-    // Retrieve API key from Cloudflare environment variables
     const apiKey = (env && env.OPENROUTER_API_KEY) || (typeof process !== "undefined" && process.env && process.env.OPENROUTER_API_KEY);
-    const model = (env && env.OPENROUTER_MODEL) || "poolside/laguna-s-2.1:free";
+    const primaryModel = (env && env.OPENROUTER_MODEL) || "poolside/laguna-s-2.1:free";
 
     if (!apiKey) {
-      // Graceful fallback response if API key has not been added to hosting environment variables yet
       return new Response(JSON.stringify({
         reply: "Hello! I am the KAVIROX AI Assistant. For project inquiries, security audits, AI engineering, or media production, please contact our team directly at info@kavirox.space or call +91 95484 25711!",
         fallback: true
@@ -118,46 +121,51 @@ export async function onRequest(context) {
       });
     }
 
-    // Construct conversation payload for OpenRouter
     const chatMessages = [
       { role: "system", content: SYSTEM_PROMPT },
       ...(Array.isArray(payload.history) ? payload.history.slice(-4) : []),
       { role: "user", content: userMessage }
     ];
 
-    const openRouterResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-        "HTTP-Referer": (env && env.OPENROUTER_SITE_URL) || "https://kavirox.space",
-        "X-Title": (env && env.OPENROUTER_SITE_NAME) || "KAVIROX AI Assistant",
-      },
-      body: JSON.stringify({
-        model: model,
-        messages: chatMessages,
-        max_tokens: 350,
-        temperature: 0.3,
-      }),
-    });
+    const modelsToTry = [primaryModel, ...FALLBACK_MODELS.filter(m => m !== primaryModel)];
+    let replyText = null;
 
-    if (!openRouterResponse.ok) {
-      const errorText = await openRouterResponse.text();
-      console.error("OpenRouter API error:", errorText);
-      return new Response(JSON.stringify({
-        reply: "Our AI model is experiencing heavy traffic. You can contact our lead architects directly at info@kavirox.space or call +91 95484 25711.",
-        error: "Upstream API error"
-      }), {
-        status: 200,
-        headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
-      });
+    for (const modelName of modelsToTry) {
+      try {
+        const openRouterResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${apiKey}`,
+            "Content-Type": "application/json",
+            "HTTP-Referer": (env && env.OPENROUTER_SITE_URL) || "https://kavirox.space",
+            "X-Title": (env && env.OPENROUTER_SITE_NAME) || "KAVIROX AI Assistant",
+          },
+          body: JSON.stringify({
+            model: modelName,
+            messages: chatMessages,
+            max_tokens: 350,
+            temperature: 0.2,
+          }),
+        });
+
+        if (openRouterResponse.ok) {
+          const data = await openRouterResponse.json();
+          const content = data?.choices?.[0]?.message?.content?.trim();
+          if (content) {
+            replyText = content;
+            break;
+          }
+        }
+      } catch (e) {
+        console.warn(`Model ${modelName} attempt failed:`, e);
+      }
     }
 
-    const data = await openRouterResponse.json();
-    let replyText = data?.choices?.[0]?.message?.content?.trim() || 
-                    "Thank you for contacting KAVIROX. Reach out to info@kavirox.space for immediate project assistance.";
+    if (!replyText) {
+      replyText = "Thank you for reaching out to KAVIROX. We specialize in AI/ML engineering, VAPT cybersecurity, and creative media production. Connect directly with our architects at info@kavirox.space or +91 95484 25711!";
+    }
 
-    // LLM02: Sanitize output against HTML/script injection
+    // LLM02: Output sanitization
     replyText = replyText.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
     return new Response(JSON.stringify({ reply: replyText }), {
