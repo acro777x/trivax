@@ -3,8 +3,9 @@
 Thumbs.db
 desktop.ini
 
-# Logs & Temp
-*.log
-*.tmp
-.tempmediaStorage/
-.agents/
+# Environment Variables & Secrets (OWASP LLM06)
+.env
+.env.local
+.env.*.local
+*.env
+
