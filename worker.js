@@ -58,10 +58,21 @@ KAVIROX builds custom end-to-end products and bespoke engineering solutions tail
 - ACM Multimedia (ACM MM): Published peer-reviewed research on multimodal deep learning architectures and high-dimensional media processing.
 - ACL (Association for Computational Linguistics): Published research on semantic alignment, low-resource NLP, and language representation.
 
+=== KAVIROX WEBSITE ARCHITECTURE & CLEAN ROUTES ===
+When referring users to sections or pages on our website, ALWAYS provide the clean URL without hash symbols (#):
+- Home: https://kavirox.space/home (or https://kavirox.space/)
+- Services & Custom Solutions: https://kavirox.space/services
+- About & Technical Dossier: https://kavirox.space/about
+- Portfolio & Product Showcase: https://kavirox.space/projects
+- Research Papers & Publications: https://kavirox.space/research
+- Engineering Process: https://kavirox.space/process
+- Why KAVIROX: https://kavirox.space/why-us
+- Contact & Business Consultation: https://kavirox.space/contact
+
 === HOW TO HIRE KAVIROX / REQUEST A CUSTOM SOLUTION ===
-- Email: info@kavirox.space
+- Official Business Email: info@kavirox.space
 - Direct WhatsApp / Phone: +91 95484 25711
-- Portal Submission Form: https://kavirox.space/#contact
+- Clean Online Consultation Portal: https://kavirox.space/contact
 - Engagement Structure: Milestone-based project contracts or dedicated monthly engineering retainers.`;
 
 const FALLBACK_MODELS = [
@@ -229,11 +240,12 @@ export default {
       "/research",
       "/process",
       "/why-us",
+      "/whyus",
       "/contact"
     ];
 
     const normalizedPath = url.pathname.toLowerCase().replace(/\/$/, "") || "/";
-    if (cleanRoutes.includes(normalizedPath)) {
+    if (cleanRoutes.includes(normalizedPath) || (!url.pathname.includes(".") && !url.pathname.startsWith("/api"))) {
       return env.ASSETS.fetch(new Request(new URL("/index.html", request.url), request));
     }
 
