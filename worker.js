@@ -97,8 +97,22 @@ async function handleChat(request, env) {
     }
 
     // OWASP LLM06: API key from server environment only
-    const apiKey = env.OPENROUTER_API_KEY;
-    const primaryModel = env.OPENROUTER_MODEL || "poolside/laguna-s-2.1:free";
+    const apiKey = (env && env.OPENROUTER_API_KEY) 
+      || (typeof process !== "undefined" && process.env && process.env.OPENROUTER_API_KEY)
+      || (typeof OPENROUTER_API_KEY !== "undefined" ? OPENROUTER_API_KEY : undefined);
+
+    const primaryModel = (env && env.OPENROUTER_MODEL)
+      || (typeof process !== "undefined" && process.env && process.env.OPENROUTER_MODEL)
+      || (typeof OPENROUTER_MODEL !== "undefined" ? OPENROUTER_MODEL : undefined)
+      || "poolside/laguna-s-2.1:free";
+
+    const siteUrl = (env && env.OPENROUTER_SITE_URL)
+      || (typeof process !== "undefined" && process.env && process.env.OPENROUTER_SITE_URL)
+      || "https://kavirox.space";
+
+    const siteName = (env && env.OPENROUTER_SITE_NAME)
+      || (typeof process !== "undefined" && process.env && process.env.OPENROUTER_SITE_NAME)
+      || "KAVIROX AI Assistant";
 
     if (!apiKey) {
       return new Response(JSON.stringify({
@@ -127,8 +141,8 @@ async function handleChat(request, env) {
           headers: {
             "Authorization": `Bearer ${apiKey}`,
             "Content-Type": "application/json",
-            "HTTP-Referer": env.OPENROUTER_SITE_URL || "https://kavirox.space",
-            "X-Title": env.OPENROUTER_SITE_NAME || "KAVIROX AI Assistant",
+            "HTTP-Referer": siteUrl,
+            "X-Title": siteName,
           },
           body: JSON.stringify({
             model: modelName,
