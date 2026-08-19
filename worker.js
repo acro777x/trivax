@@ -217,6 +217,26 @@ export default {
       return handleChat(request, env);
     }
 
+    // Clean SPA Section Routes: rewrite to /index.html
+    const cleanRoutes = [
+      "",
+      "/",
+      "/home",
+      "/services",
+      "/about",
+      "/projects",
+      "/portfolio",
+      "/research",
+      "/process",
+      "/why-us",
+      "/contact"
+    ];
+
+    const normalizedPath = url.pathname.toLowerCase().replace(/\/$/, "") || "/";
+    if (cleanRoutes.includes(normalizedPath)) {
+      return env.ASSETS.fetch(new Request(new URL("/index.html", request.url), request));
+    }
+
     // Serve static assets for everything else
     return env.ASSETS.fetch(request);
   },

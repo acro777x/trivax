@@ -127,13 +127,107 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  /* ── 2. Header Top-Bar Active Navigation on Scroll ── */
+  /* ── 2. Clean URL & Section Routing (Hashless HTML5 PushState Router) ── */
   const header = document.getElementById('header');
   const mobileToggle = document.getElementById('mobile-menu-toggle');
   const mainNav = document.getElementById('main-nav');
   const navLinks = document.querySelectorAll('.nav-link');
   const sections = document.querySelectorAll('section[id]');
 
+  const sectionRouteMap = {
+    '/': 'home',
+    '/home': 'home',
+    '/services': 'services',
+    '/about': 'about',
+    '/projects': 'projects',
+    '/portfolio': 'projects',
+    '/research': 'research',
+    '/process': 'process',
+    '/why-us': 'why-us',
+    '/contact': 'contact'
+  };
+
+  const idToRouteMap = {
+    'home': '/home',
+    'services': '/services',
+    'about': '/about',
+    'projects': '/projects',
+    'research': '/research',
+    'process': '/process',
+    'why-us': '/why-us',
+    'contact': '/contact'
+  };
+
+  let isProgrammaticScroll = false;
+  let programmaticScrollTimer = null;
+
+  function scrollToSection(sectionId, updateUrl = true, pushHistory = true) {
+    const target = document.getElementById(sectionId);
+    if (!target) return;
+
+    isProgrammaticScroll = true;
+    clearTimeout(programmaticScrollTimer);
+
+    const navHeight = header?.offsetHeight || 75;
+    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - (navHeight - 2);
+
+    window.scrollTo({
+      top: Math.max(0, targetPosition),
+      behavior: 'smooth'
+    });
+
+    if (updateUrl) {
+      const cleanPath = idToRouteMap[sectionId] || `/${sectionId}`;
+      if (pushHistory) {
+        history.pushState({ section: sectionId }, '', cleanPath);
+      } else {
+        history.replaceState({ section: sectionId }, '', cleanPath);
+      }
+    }
+
+    programmaticScrollTimer = setTimeout(() => {
+      isProgrammaticScroll = false;
+    }, 850);
+  }
+
+  // Intercept all internal navigation links (both href="/..." and href="#...")
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a');
+    if (!link) return;
+
+    const href = link.getAttribute('href');
+    if (!href) return;
+
+    // Check if it's an internal clean route or hash link
+    let targetSectionId = null;
+    if (href.startsWith('#')) {
+      targetSectionId = href.substring(1);
+    } else if (href.startsWith('/') && !href.startsWith('//') && !href.includes('.') && !href.startsWith('/api')) {
+      const cleanHref = href.replace(/\/$/, '') || '/';
+      targetSectionId = sectionRouteMap[cleanHref];
+    }
+
+    if (targetSectionId && document.getElementById(targetSectionId)) {
+      e.preventDefault();
+      scrollToSection(targetSectionId, true, true);
+      if (mobileToggle && mainNav) {
+        mobileToggle.classList.remove('active');
+        mainNav.classList.remove('open');
+      }
+    }
+  });
+
+  // Handle Browser Back / Forward navigation
+  window.addEventListener('popstate', () => {
+    const currentPath = window.location.pathname.replace(/\/$/, '') || '/';
+    const sectionId = sectionRouteMap[currentPath] || (window.location.hash ? window.location.hash.substring(1) : 'home');
+    if (sectionId) {
+      scrollToSection(sectionId, false, false);
+    }
+  });
+
+  // Scroll Spy: dynamically update active link & clean URL as user scrolls
+  let scrollUrlDebounce = null;
   function updateHeaderOnScroll() {
     const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
 
@@ -144,22 +238,43 @@ document.addEventListener('DOMContentLoaded', () => {
       header?.classList.remove('scrolled');
     }
 
+    if (isProgrammaticScroll) return;
+
     // Dynamic Active Nav Link on Scroll
+    let currentActiveSectionId = 'home';
     sections.forEach(sec => {
       const secTop = sec.offsetTop - 140;
       const secHeight = sec.offsetHeight;
       const secId = sec.getAttribute('id');
 
       if (scrollPosition >= secTop && scrollPosition < secTop + secHeight) {
-        navLinks.forEach(link => {
-          if (link.getAttribute('href') === `#${secId}`) {
-            link.classList.add('active');
-          } else {
-            link.classList.remove('active');
-          }
-        });
+        currentActiveSectionId = secId;
       }
     });
+
+    navLinks.forEach(link => {
+      const href = link.getAttribute('href') || '';
+      const linkSectionId = href.startsWith('#') 
+        ? href.substring(1) 
+        : sectionRouteMap[href.replace(/\/$/, '') || '/'];
+        
+      if (linkSectionId === currentActiveSectionId) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+
+    // Update URL bar cleanly without hash on scroll (debounced)
+    clearTimeout(scrollUrlDebounce);
+    scrollUrlDebounce = setTimeout(() => {
+      if (isProgrammaticScroll) return;
+      const targetRoute = idToRouteMap[currentActiveSectionId] || '/home';
+      const currentPath = window.location.pathname.replace(/\/$/, '') || '/';
+      if (currentPath !== targetRoute && !window.location.hash) {
+        history.replaceState({ section: currentActiveSectionId }, '', targetRoute);
+      }
+    }, 200);
   }
 
   window.addEventListener('scroll', updateHeaderOnScroll, { passive: true });
@@ -170,14 +285,29 @@ document.addEventListener('DOMContentLoaded', () => {
       mobileToggle.classList.toggle('active');
       mainNav.classList.toggle('open');
     });
-
-    navLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        mobileToggle.classList.remove('active');
-        mainNav.classList.remove('open');
-      });
-    });
   }
+
+  // Initial Load Handler: check path or hash and scroll smoothly to section
+  function handleInitialRoute() {
+    // If there's an old hash like #contact, convert it cleanly
+    if (window.location.hash) {
+      const hashId = window.location.hash.substring(1);
+      if (document.getElementById(hashId)) {
+        const cleanPath = idToRouteMap[hashId] || `/${hashId}`;
+        history.replaceState({ section: hashId }, '', cleanPath);
+        setTimeout(() => scrollToSection(hashId, false, false), 350);
+        return;
+      }
+    }
+
+    const currentPath = window.location.pathname.replace(/\/$/, '') || '/';
+    const sectionId = sectionRouteMap[currentPath];
+    if (sectionId && sectionId !== 'home') {
+      setTimeout(() => scrollToSection(sectionId, false, false), 350);
+    }
+  }
+
+  handleInitialRoute();
 
 
   /* ── 3. Live Number Counting Animation (Easing CountUp) ── */
