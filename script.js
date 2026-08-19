@@ -806,14 +806,42 @@ document.addEventListener('DOMContentLoaded', () => {
       const subjectVal = subjectInput?.value.trim() || 'General Inquiry';
       const messageVal = messageInput?.value.trim() || '';
 
-      // Format formatted email payload
-      const mailtoSubject = `[KAVIROX Project Inquiry] ${subjectVal}`;
-      const mailtoBody = `Hello KAVIROX Team,\n\nName: ${nameVal}\nEmail: ${emailVal}\nSubject: ${subjectVal}\n\nProject Scope & Message:\n${messageVal}\n\n---\nTransmitted via kavirox.space client portal`;
+      // Professional Executive Business Inquiry Format
+      const mailtoSubject = `[Inquiry: ${subjectVal}] - From ${nameVal}`;
+      const mailtoBody = `Dear KAVIROX Team,
+
+I am writing to initiate an inquiry regarding: ${subjectVal}.
+
+--------------------------------------------------
+1. CONTACT INFORMATION
+--------------------------------------------------
+• Name: ${nameVal}
+• Email: ${emailVal}
+• Inquiry Subject: ${subjectVal}
+• Submission Source: https://kavirox.space
+
+--------------------------------------------------
+2. PROJECT SCOPE & REQUIREMENTS
+--------------------------------------------------
+${messageVal}
+
+--------------------------------------------------
+3. NEXT STEPS
+--------------------------------------------------
+Please review the requirements above and let me know your availability for a technical consultation or preliminary scoping call. You may reach me directly at ${emailVal}.
+
+Best regards,
+${nameVal}
+${emailVal}`;
+
       const mailtoUrl = `mailto:info@kavirox.space?subject=${encodeURIComponent(mailtoSubject)}&body=${encodeURIComponent(mailtoBody)}`;
 
       if (emailDraftBtn) {
         emailDraftBtn.setAttribute('href', mailtoUrl);
       }
+
+      // Store current draft for copy button
+      window.__kaviroxLastDraft = `To: info@kavirox.space\nSubject: ${mailtoSubject}\n\n${mailtoBody}`;
 
       const submitBtn = document.getElementById('form-submit-btn');
       if (submitBtn) {
@@ -833,6 +861,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }, 700);
     });
+
+    const copyDraftBtn = document.getElementById('copy-draft-btn');
+    if (copyDraftBtn) {
+      copyDraftBtn.addEventListener('click', () => {
+        const textToCopy = window.__kaviroxLastDraft || "To: info@kavirox.space";
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          const origHtml = copyDraftBtn.innerHTML;
+          copyDraftBtn.innerHTML = `<i class="fa-solid fa-check" style="color:var(--accent);"></i> Copied to Clipboard!`;
+          setTimeout(() => {
+            copyDraftBtn.innerHTML = origHtml;
+          }, 2500);
+        }).catch(() => {
+          alert('Draft ready for info@kavirox.space');
+        });
+      });
+    }
 
     if (formResetBtn) {
       formResetBtn.addEventListener('click', () => {
