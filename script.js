@@ -638,7 +638,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (modalBackdrop) modalBackdrop.addEventListener('click', closeProjectModal);
 
 
-  /* ── 12. Interactive AI Chatbot Widget (OpenRouter poolside/laguna-s-2.1:free & OWASP Hardened) ── */
+  /* ── 12. Interactive AI Chatbot Widget (Secure Serverless Architecture & OWASP LLM Guardrails) ── */
   const chatbotToggle = document.getElementById('chatbot-toggle');
   const chatbotBox = document.getElementById('chatbot-box');
   const chatbotClose = document.getElementById('chatbot-close');
@@ -676,6 +676,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!chatbotMessages) return;
     const msg = document.createElement('div');
     msg.className = `chat-message ${sender}`;
+    // OWASP LLM02: Safe textContent insertion prevents XSS / HTML injection
     msg.textContent = text;
     chatbotMessages.appendChild(msg);
     chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
@@ -717,7 +718,8 @@ document.addEventListener('DOMContentLoaded', () => {
     showTypingIndicator();
 
     try {
-      // Call serverless OpenRouter proxy
+      // OWASP LLM06: Security Proxy - All AI requests go to serverless backend /api/chat
+      // The API key is stored strictly on the server and is NEVER exposed to the client browser.
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
