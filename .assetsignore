@@ -1,0 +1,14 @@
+worker.js
+_worker.js
+wrangler.jsonc
+.env
+.env.*
+*.env
+functions
+functions/**
+.git
+.gitignore
+.assetsignore
+*.py
+*.zip
+*.md

@@ -5,7 +5,7 @@
   "observability": {
     "enabled": true
   },
-  "main": "_worker.js",
+  "main": "worker.js",
   "assets": {
     "directory": ".",
     "binding": "ASSETS"
