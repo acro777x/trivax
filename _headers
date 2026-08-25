@@ -15,3 +15,10 @@
 
 /assets/*
   Cache-Control: public, max-age=2592000, immutable
+
+/robots.txt
+  Cache-Control: public, max-age=86400
+
+/sitemap.xml
+  Cache-Control: public, max-age=86400
+  Content-Type: application/xml; charset=utf-8
