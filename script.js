@@ -183,6 +183,12 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         history.replaceState({ section: sectionId }, '', cleanPath);
       }
+      if (typeof gtag === 'function') {
+        gtag('event', 'page_view', {
+          page_path: cleanPath,
+          page_title: document.title + ' - ' + (sectionId.charAt(0).toUpperCase() + sectionId.slice(1))
+        });
+      }
     }
 
     programmaticScrollTimer = setTimeout(() => {
@@ -977,6 +983,13 @@ ${emailVal}`;
       if (submitBtn) {
         submitBtn.disabled = true;
         submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:#020503;"></i> <span style="color:#020503;font-weight:700;">Compiling Draft...</span>`;
+      }
+
+      if (typeof gtag === 'function') {
+        gtag('event', 'generate_lead', {
+          event_category: 'Contact',
+          event_label: serviceVal
+        });
       }
 
       setTimeout(() => {
