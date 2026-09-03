@@ -280,6 +280,17 @@
     </div>
   </div>
 
+  <!-- Bulletproof Preloader Failsafe -->
+  <script>
+    setTimeout(function() {
+      var p = document.getElementById('site-preloader');
+      if (p && !p.classList.contains('fade-out')) {
+        p.classList.add('fade-out');
+        setTimeout(function() { if (p && p.parentNode) p.parentNode.removeChild(p); }, 500);
+      }
+    }, 2200);
+  </script>
+
   <!-- Ambient Particle Field Canvas -->
   <canvas id="sparkle-canvas" style="position: fixed; inset: 0; pointer-events: none; z-index: 0;"></canvas>
 
@@ -1981,7 +1992,7 @@
   }
   </script>
 
-  <!-- Main TypeScript Application Entry Point -->
-  <script type="module" src="/src/main.ts"></script>
+  <!-- Compiled TypeScript Application Bundle -->
+  <script type="module" src="/script.js"></script>
 </body>
 </html>

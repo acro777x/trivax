@@ -8,7 +8,8 @@
     "dev": "vite",
     "dev:server": "tsx watch server/src/server.ts",
     "dev:all": "tsx watch server/src/server.ts",
-    "build:client": "vite build",
+    "bundle": "esbuild src/main.ts --bundle --outfile=script.js --format=esm --target=es2020",
+    "build:client": "npm run bundle && vite build",
     "build:server": "tsc -p tsconfig.server.json",
     "build": "npm run build:client && npm run build:server",
     "start": "node dist/server/server.js",
@@ -23,6 +24,7 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/node": "^22.13.9",
+    "esbuild": "^0.25.0",
     "tsx": "^4.19.3",
     "typescript": "^5.7.3",
     "vite": "^6.2.0"
