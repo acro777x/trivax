@@ -12,3 +12,5 @@ functions/**
 *.py
 *.zip
 *.md
+.wrangler
+.wrangler/**

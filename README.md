@@ -20,24 +20,65 @@ KAVIROX delivers end-to-end digital solutions across:
 - **Scroll-Reveal Animations**: Staggered entrance physics for battle-log contest wins.
 - **Virtual AI Assistant**: 24/7 client concierge chatbot widget.
 
+## Tech Stack
+- **Backend**: Node.js & Express in **TypeScript** (`server/src/`)
+- **Frontend**: **Vite** & Modular **TypeScript** (`src/`)
+- **Styling**: Obsidian glassmorphism design system & micro-interactions (`style.css`)
+- **Deployment**: Node.js server with clean SPA routing and static bundle serving
+
+## Quick Start
+```bash
+# Install dependencies
+npm install
+
+# Run fullstack development (Vite frontend + Express Node.js backend)
+npm run dev
+
+# Run Node.js TypeScript server directly
+npm run dev:server
+
+# Build for production
+npm run build
+
+# Start production server
+npm start
+```
+
 ## Directory Structure
-`
-+-- index.html                   # Core semantic landing page
+```
++-- package.json                 # Project dependencies and fullstack scripts
++-- tsconfig.json                # Root TypeScript configuration
++-- tsconfig.server.json         # Node.js backend TypeScript configuration
++-- vite.config.ts               # Vite bundler and dev server configuration
++-- index.html                   # Core semantic landing page (loads /src/main.ts)
 +-- style.css                    # Obsidian design system & animations
-+-- script.js                    # Dynamic interaction engine & observers
-+-- README.md                    # Repository documentation
-+-- assets/                      # 8K diagrams, illustrations, and operational assets
-    +-- about_workspace_hq.jpg   # Cyber & AI laboratory workstation
-    +-- project_acromap.jpg      # 3D penetration testing surface
-    +-- project_aidfir.jpg       # Threat hunting HUD
-    +-- project_acrostrike.jpg   # Raw socket scanner telemetry
-    +-- project_qr_attendance.jpg# Computer vision attendance HUD
-    +-- project_ghostchat.jpg    # ESP32 captive portal mesh
-    +-- project_covid_analytics.jpg # Epidemiological data curves
-    +-- research_acm.jpg         # ACM MM 2025 multi-agent pipeline
-    +-- research_acl.jpg         # ACL 2025 transformer attention benchmarks
-    +-- team_operations.jpg      # Command center war room
-`
++-- src/                         # Client-side TypeScript application
+|   +-- main.ts                  # Application entry point & module bootstrapper
+|   +-- types/client.ts          # Typed contracts (GitHub, translations, modals)
+|   +-- modules/                 # Modular feature controllers
+|       +-- preloader.ts         # Loading screen & hero typewriter
+|       +-- theme.ts             # Dark/Light theme manager
+|       +-- router.ts            # Clean SPA routing & scroll-spy
+|       +-- counter.ts           # Easing count-up metric numbers
+|       +-- timeline.ts          # Battle log scroll entrance observer
+|       +-- i18n.ts              # Multi-language translation engine
+|       +-- spotlight.ts         # 3D tilt & mouse spotlight effects
+|       +-- projects.ts          # Categorization filters
+|       +-- github.ts            # Live GitHub API showcase
+|       +-- faq.ts               # Interactive FAQ accordion
+|       +-- modal.ts             # Technical case-study dossiers
+|       +-- chatbot.ts           # AI Virtual Assistant client widget
+|       +-- contact.ts           # Executive inquiry validation & email generator
++-- server/                      # Node.js TypeScript Backend
+|   +-- src/
+|       +-- server.ts            # Express server application & SPA route resolver
+|       +-- config.ts            # Typed environment configuration
+|       +-- types/api.ts         # API request/response types
+|       +-- routes/
+|           +-- chat.ts          # /api/chat OpenRouter integration & OWASP LLM guardrails
+|           +-- health.ts        # /api/health diagnostic status check
++-- assets/                      # Diagrams, illustrations, and media assets
+```
 
 ## Contact & Transmission
 - **Domain**: [kavirox.space](https://kavirox.space)

@@ -9,3 +9,10 @@ desktop.ini
 .env.*.local
 *.env
 
+# Dependencies & Build Outputs
+node_modules/
+dist/
+
+# Wrangler
+.wrangler/
+
