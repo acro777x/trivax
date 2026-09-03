@@ -46,7 +46,7 @@ const staticDir = fs.existsSync(clientDistDir) ? clientDistDir : projectRoot;
 // Serve static assets
 app.use(express.static(staticDir));
 if (staticDir !== projectRoot) {
-  // Also expose assets folder if built separately
+  app.use(express.static(projectRoot));
   const assetsDir = path.join(projectRoot, 'assets');
   if (fs.existsSync(assetsDir)) {
     app.use('/assets', express.static(assetsDir));
