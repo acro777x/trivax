@@ -280,15 +280,50 @@
     </div>
   </div>
 
-  <!-- Bulletproof Preloader Failsafe -->
+  <!-- Bulletproof Preloader Inline Engine & Failsafe -->
   <script>
-    setTimeout(function() {
+    (function() {
       var p = document.getElementById('site-preloader');
-      if (p && !p.classList.contains('fade-out')) {
-        p.classList.add('fade-out');
-        setTimeout(function() { if (p && p.parentNode) p.parentNode.removeChild(p); }, 500);
-      }
-    }, 2200);
+      var fill = document.getElementById('preloader-fill');
+      var num = document.getElementById('preloader-num');
+      var msg = document.getElementById('preloader-msg');
+      if (!p) return;
+      var pct = 0;
+      var msgs = [
+        'INITIALIZING KAVIROX CORE...',
+        'ESTABLISHING ENCRYPTED TUNNEL...',
+        'SYNCHRONIZING AI AGENT TOPOLOGY...',
+        'MOUNTING QUANTUM DEFENSE MATRIX...',
+        'SYSTEM OPTIMAL. LAUNCHING...'
+      ];
+      var iv = setInterval(function() {
+        pct += Math.floor(Math.random() * 7) + 5;
+        if (pct > 100) pct = 100;
+        if (fill) fill.style.width = pct + '%';
+        if (num) num.textContent = pct + '%';
+        if (msg) {
+          var idx = Math.min(Math.floor(pct / 22), msgs.length - 1);
+          msg.textContent = msgs[idx];
+        }
+        if (pct >= 100) {
+          clearInterval(iv);
+          setTimeout(function() {
+            if (p && !p.classList.contains('fade-out')) {
+              p.classList.add('fade-out');
+              setTimeout(function() { if (p && p.parentNode) p.parentNode.removeChild(p); }, 500);
+            }
+          }, 200);
+        }
+      }, 30);
+
+      setTimeout(function() {
+        clearInterval(iv);
+        if (p && !p.classList.contains('fade-out')) {
+          p.classList.add('fade-out');
+          setTimeout(function() { if (p && p.parentNode) p.parentNode.removeChild(p); }, 500);
+        }
+      }, 2000);
+    })();
   </script>
 
   <!-- Ambient Particle Field Canvas -->
