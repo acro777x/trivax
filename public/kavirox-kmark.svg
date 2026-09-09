@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="#fff">
+  <!-- Outer ring -->
+  <path d="M50 6
+           a44 44 0 1 1 -0.001 0 z
+           M50 14
+           a36 36 0 1 0 0.001 0 z"
+        fill-rule="evenodd"/>
+  <!-- Code brackets left -->
+  <path d="M22 38
+           L8 50
+           L22 62
+           L26 58
+           L16 50
+           L26 42 Z"/>
+  <!-- Code brackets right -->
+  <path d="M78 38
+           L92 50
+           L78 62
+           L74 58
+           L84 50
+           L74 42 Z"/>
+  <!-- K mark (vertical stem) -->
+  <path d="M46 30
+           L46 70
+           L54 70
+           L54 56
+           L62 70
+           L72 70
+           L60 51
+           L72 30
+           L62 30
+           L54 45
+           L54 30 Z"/>
+  <!-- Pixel dots (top-left scatter) -->
+  <rect x="14" y="22" width="6" height="6"/>
+  <rect x="22" y="14" width="6" height="6"/>
+  <rect x="30" y="22" width="6" height="6"/>
+  <rect x="22" y="30" width="6" height="6"/>
+  <rect x="14" y="30" width="6" height="6"/>
+  <rect x="30" y="14" width="6" height="6"/>
+</svg>

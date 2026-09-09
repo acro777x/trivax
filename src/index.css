@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-serif: "Instrument Serif", Georgia, serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --color-background: var(--bg-0);
+  --color-foreground: var(--text-100);
+}
+
+:root {
+  --bg-0: #09090b;
+  --bg-100: #18181b;
+  --bg-200: #27272a;
+  --bg-300: #3f3f46;
+  --text-100: #fafafa;
+  --text-200: #e4e4e7;
+  --text-300: #a1a1aa;
+  --text-400: #71717a;
+  --radius: 0.5rem;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: clamp(15px, 0.9vw + 0.5rem, 18px);
+  line-height: 1.6;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.font-instrument-serif {
+  font-family: var(--font-serif);
+}
+
+.animate-fade-slide-in-1 {
+  animation: fadeSlideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-slide-in-2 {
+  animation: fadeSlideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+  animation-fill-mode: both;
+}
+
+.animate-fade-slide-in-3 {
+  animation: fadeSlideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+  animation-fill-mode: both;
+}
+
+.animate-fade-slide-in-4 {
+  animation: fadeSlideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
+  animation-fill-mode: both;
+}
+
+/* Ambient Light Keyframes for Floating Navbar */
+@keyframes ambientGlowPulse {
+  0%, 100% {
+    opacity: 0.65;
+    transform: scale(0.92);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+}
+
+@keyframes ambientBeamShimmer {
+  0%, 100% {
+    opacity: 0.85;
+    transform: scaleX(0.88);
+    box-shadow: 0 0 8px 1.5px rgba(249, 115, 22, 0.7), 0 0 16px 3px rgba(251, 146, 60, 0.35);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleX(1.12);
+    box-shadow: 0 0 14px 2.5px rgba(249, 115, 22, 0.95), 0 0 24px 5px rgba(251, 146, 60, 0.55);
+  }
+}
