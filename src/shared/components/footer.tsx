@@ -1,4 +1,5 @@
 import React from 'react';
+import { getInquiryWebmailUrl } from '../lib/email-inquiry';
 
 export const Footer: React.FC = () => {
   return (
@@ -40,7 +41,14 @@ export const Footer: React.FC = () => {
           >
             Instagram
           </a>
-          <a href="mailto:contact@kavirox.space" className="text-white hover:underline">contact@kavirox.space</a>
+          <a 
+            href={getInquiryWebmailUrl({ source: "Shared Footer" })} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-white hover:underline"
+          >
+            info@kavirox.space
+          </a>
         </div>
       </div>
       <div className="max-w-7xl mx-auto mt-10 pt-6 border-t border-white/5 text-center text-[11px] text-white/30 font-sans">

@@ -1,13 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import FloatingNavbar from '@/domains/marketing/components/floating-navbar';
 import KaviroxEditorialHero from '@/domains/marketing/components/kavirox-editorial-hero';
 import KaviroxServices from '@/domains/services/components/kavirox-services';
 import KaviroxSolutions from '@/domains/solutions/components/kavirox-solutions';
 import KaviroxCapabilities from '@/domains/capabilities/components/kavirox-capabilities';
-import { ArrowUpRight, Heart } from 'lucide-react';
+import { ArrowUpRight, Heart, Copy, Check } from 'lucide-react';
 import { LinkedIn, Instagram, X, Threads } from '@aliimam/logos';
+import { getInquiryWebmailUrl, copyInquiryTemplate } from '@/shared/lib/email-inquiry';
 
 export function App() {
+  const [copiedTemplate, setCopiedTemplate] = useState(false);
+
+  const handleCopyTemplate = async () => {
+    const success = await copyInquiryTemplate({ source: "Studio Footer" });
+    if (success) {
+      setCopiedTemplate(true);
+      setTimeout(() => setCopiedTemplate(false), 2400);
+    }
+  };
   return (
     <div className="min-h-screen bg-[#09090b] text-[#fafafa] font-sans selection:bg-orange-500/30 selection:text-white relative">
       {/* Global Translucent Frosted Floating Navbar */}
@@ -84,19 +94,60 @@ export function App() {
             </div>
 
             <div className="md:col-span-3 space-y-3">
-              <div className="text-xs uppercase font-mono tracking-widest text-zinc-200 mb-3">
+              <div className="text-xs uppercase font-mono tracking-widest text-zinc-200 mb-2">
                 Connect
               </div>
               <div className="text-xs font-mono text-zinc-300">
                 Direct Inquiries:
               </div>
+
+              {/* Primary Email CTA (Redirects to Email Website with Pre-Written Brief) */}
               <a
-                href="mailto:info@kavirox.space"
-                className="inline-flex items-center gap-1.5 text-sm font-mono text-orange-400 hover:text-orange-300 transition-colors"
+                href={getInquiryWebmailUrl({ source: "Studio Footer Direct Inquiry" })}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Open Pre-Written Inquiry Email in Gmail Web"
+                className="inline-flex items-center justify-center gap-2 w-full py-2 px-3.5 rounded-lg text-xs font-semibold bg-orange-600 hover:bg-orange-500 text-white shadow-md shadow-orange-600/20 transition-all font-sans"
               >
-                info@kavirox.space
+                <span>Email Us (Pre-Written Brief)</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </a>
+
+              {/* Direct Email Address & Template Copy */}
+              <div className="flex items-center justify-between gap-2 pt-1 text-xs font-mono">
+                <a
+                  href={getInquiryWebmailUrl({ source: "Studio Footer Email Link" })}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-orange-400 hover:text-orange-300 transition-colors"
+                >
+                  info@kavirox.space
+                  <ArrowUpRight className="w-3 h-3" />
+                </a>
+
+                <button
+                  type="button"
+                  onClick={handleCopyTemplate}
+                  className="text-zinc-400 hover:text-white transition-colors text-[11px] underline underline-offset-2 inline-flex items-center gap-1 cursor-pointer"
+                  title="Copy pre-written inquiry email template to clipboard"
+                >
+                  {copiedTemplate ? (
+                    <>
+                      <Check className="w-3 h-3 text-emerald-400" />
+                      <span className="text-emerald-400">Copied!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3 h-3" />
+                      <span>Copy Template</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              <p className="text-[11px] text-zinc-500 font-mono leading-relaxed pt-0.5">
+                Pre-written inquiry brief opens in Gmail Web. Just edit your brand name & send.
+              </p>
 
               {/* Social Channels */}
               <div className="flex items-center gap-4 pt-3 text-zinc-400">
