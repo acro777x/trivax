@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { ArrowUpRight, Compass, Sparkles } from "lucide-react";
+import { getInquiryWebmailUrl, openEmailInquiry } from "@/shared/lib/email-inquiry";
 
 interface NavItem {
   id: string;
@@ -129,6 +130,19 @@ export function FloatingNavbar() {
     if (item.href.startsWith("#")) {
       e.preventDefault();
 
+      if (item.id === "contact") {
+        // Redirect to pre-written formatted email compose on email website (Gmail Web)
+        openEmailInquiry({ source: "Floating Navbar Contact" });
+        // Smoothly scroll down to contact section
+        const el = document.getElementById("contact");
+        if (el) {
+          const targetY = el.getBoundingClientRect().top + window.scrollY - 76;
+          window.scrollTo({ top: targetY, behavior: "smooth" });
+          setActiveSection("contact");
+        }
+        return;
+      }
+
       if (item.href === "#") {
         window.scrollTo({ top: 0, behavior: "smooth" });
         setActiveSection("index");
@@ -146,7 +160,7 @@ export function FloatingNavbar() {
   // Distance / direction guidance calculation
   const getScrollGuidance = (item: NavItem) => {
     if (item.id === "work") return "Case Studies (Coming Soon)";
-    if (item.id === "contact") return "Direct Inquiries & Studio Info ↓";
+    if (item.id === "contact") return "Opens Pre-Written Email Inquiry ↗";
 
     if (!item.targetId || item.id === "index") {
       return window.scrollY > 120 ? "Scroll to Top ↑" : "Current View";
@@ -285,9 +299,12 @@ export function FloatingNavbar() {
           })}
         </nav>
 
-        {/* Quick Action Start Project CTA Button */}
+        {/* Quick Action Start Project CTA Button (Redirects to Email Website) */}
         <a
-          href="mailto:info@kavirox.space"
+          href={getInquiryWebmailUrl({ source: "Floating Navbar Start" })}
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Open Pre-Written Inquiry Email in Gmail Web"
           className={`ml-1.5 sm:ml-2.5 inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-semibold text-white transition-all duration-300 shrink-0 ${
             isScrolled
               ? "bg-orange-600 hover:bg-orange-500 shadow-sm shadow-orange-600/30 scale-100 opacity-100"

@@ -5,12 +5,13 @@ import { Instagram, Threads, X, LinkedIn } from "@aliimam/logos";
 import { ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 import { ChromaticText } from "./chromatic-text";
+import { getInquiryWebmailUrl } from "@/shared/lib/email-inquiry";
 
 export function KaviroxEditorialHero() {
   const heroContainerRef = useRef<HTMLDivElement>(null);
   const badgeRef = useRef<HTMLDivElement>(null);
   const heartRef = useRef<HTMLDivElement>(null);
-  const ribbonRef = useRef<HTMLDivElement>(null);
+  const ribbonRef = useRef<HTMLAnchorElement>(null);
 
   // GSAP Entrance and continuous chromatic animations
   useEffect(() => {
@@ -146,10 +147,13 @@ export function KaviroxEditorialHero() {
         {/* Balanced spacer for global floating navbar on desktop */}
         <div className="hidden lg:block w-96" aria-hidden="true" />
 
-        {/* Header Action: Start Your Project */}
+        {/* Header Action: Start Your Project (Redirects to Email Website) */}
         <div className="flex items-center gap-3">
           <a
-            href="mailto:info@kavirox.space"
+            href={getInquiryWebmailUrl({ source: "Hero Header Start" })}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Open Pre-Written Inquiry Email in Gmail Web"
             className="inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-2 rounded-full text-xs font-semibold bg-orange-600 hover:bg-orange-500 text-white shadow-lg shadow-orange-600/20 transition-all hover:scale-105"
           >
             <span className="hidden sm:inline">Start Your Project</span>
@@ -290,17 +294,21 @@ export function KaviroxEditorialHero() {
           </a>
         </div>
 
-        {/* Fixed Right Edge Vertical Ribbon Badge */}
-        <div 
+        {/* Fixed Right Edge Vertical Ribbon Badge (Interactive Contact Option) */}
+        <a 
           ref={ribbonRef}
-          className="fixed right-0 top-1/2 -translate-y-1/2 z-20 hidden sm:flex items-center"
+          href={getInquiryWebmailUrl({ source: "Hero Side Ribbon" })}
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Start a Project with Kavirox (Opens Pre-Written Email in Gmail Web)"
+          className="fixed right-0 top-1/2 -translate-y-1/2 z-20 hidden sm:flex items-center group cursor-pointer"
         >
-          <div className="bg-orange-600 text-white py-6 px-2.5 text-xs font-bold tracking-widest uppercase shadow-xl rounded-l-md border-l border-t border-b border-orange-400/40">
+          <div className="bg-orange-600 group-hover:bg-orange-500 text-white py-6 px-2.5 text-xs font-bold tracking-widest uppercase shadow-xl rounded-l-md border-l border-t border-b border-orange-400/40 transition-all duration-200 group-hover:translate-x-[-3px]">
             <span className="rotate-180 [writing-mode:vertical-rl]">
               Kavirox.space • Tech & Growth
             </span>
           </div>
-        </div>
+        </a>
       </footer>
     </div>
   );
