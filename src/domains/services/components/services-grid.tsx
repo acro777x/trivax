@@ -1,5 +1,6 @@
 import React from 'react';
 import type { ServiceItem } from '../types';
+import { getInquiryWebmailUrl } from '@/shared/lib/email-inquiry';
 
 const services: ServiceItem[] = [
   {
@@ -139,8 +140,11 @@ export const ServicesGrid: React.FC = () => {
                 <strong className="text-white/70">Typical Deliverable:</strong> {service.deliverables}
               </p>
               <a
-                href="#contact"
-                className="inline-flex items-center gap-2 text-xs font-medium text-white hover:text-emerald-400 transition-colors font-sans"
+                href={getInquiryWebmailUrl({ serviceTitle: service.title, source: "Services Grid" })}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={`Open Pre-Written Inquiry Email for ${service.title} in Gmail Web`}
+                className="inline-flex items-center gap-2 text-xs font-medium text-white hover:text-orange-400 transition-colors font-sans"
               >
                 Inquire About Service <span className="group-hover:translate-x-1 transition-transform">→</span>
               </a>

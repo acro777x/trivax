@@ -1,5 +1,6 @@
 import React from 'react';
 import type { ContractTier } from '../types';
+import { getInquiryWebmailUrl } from '@/shared/lib/email-inquiry';
 
 const tiers: ContractTier[] = [
   {
@@ -95,7 +96,10 @@ export const SquadOverview: React.FC = () => {
                 <strong className="text-white/80">Best for:</strong> {tier.idealFor}
               </p>
               <a
-                href="#contact"
+                href={getInquiryWebmailUrl({ modelTitle: tier.name, source: "Squad Overview" })}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={`Open Pre-Written Inquiry Email for ${tier.name} in Gmail Web`}
                 className="w-full inline-flex items-center justify-center py-2.5 px-4 rounded-full bg-white/10 hover:bg-white text-white hover:text-neutral-900 font-sans text-sm font-medium transition-all"
               >
                 Inquire for Squad

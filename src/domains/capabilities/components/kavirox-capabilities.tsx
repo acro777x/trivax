@@ -15,8 +15,10 @@ import {
   Rocket, 
   FileCheck,
   Server,
-  Lock
+  Lock,
+  ArrowUpRight
 } from "lucide-react";
+import { getInquiryWebmailUrl } from "@/shared/lib/email-inquiry";
 
 interface TechCategory {
   title: string;
@@ -279,14 +281,18 @@ export function KaviroxCapabilities() {
 
                 <div className="pt-8 mt-6 border-t border-white/5">
                   <a
-                    href="mailto:info@kavirox.space"
+                    href={getInquiryWebmailUrl({ modelTitle: model.title, source: "Capabilities Engagement Model" })}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={`Open Pre-Written Inquiry Email for ${model.title} in Gmail Web`}
                     className={`w-full py-2.5 rounded-lg text-xs font-semibold flex items-center justify-center gap-2 transition-all ${
                       model.highlighted
                         ? "bg-orange-600 hover:bg-orange-500 text-white shadow-lg shadow-orange-600/20"
                         : "bg-white/10 hover:bg-white/20 text-white"
                     }`}
                   >
-                    Work With Us
+                    <span>Work With Us</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
                   </a>
                 </div>
               </div>
