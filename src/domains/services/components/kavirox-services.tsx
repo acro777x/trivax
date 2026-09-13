@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { 
   ShoppingBag, 
   Code2, 
@@ -217,17 +217,50 @@ const serviceLines: ServiceLine[] = [
 
 export function KaviroxServices() {
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
+  const [scrollProgress, setScrollProgress] = useState<number>(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const filteredServices = selectedFilter === "all" 
     ? serviceLines 
     : serviceLines.filter(s => s.category === selectedFilter);
+
+  // Update scroll progress bar percentage
+  const handleScroll = () => {
+    if (!scrollContainerRef.current) return;
+    const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+    const maxScroll = scrollWidth - clientWidth;
+    if (maxScroll <= 0) {
+      setScrollProgress(100);
+    } else {
+      const progress = Math.min(100, Math.max(0, (scrollLeft / maxScroll) * 100));
+      setScrollProgress(progress);
+    }
+  };
+
+  const scroll = (direction: "left" | "right") => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 400;
+      scrollContainerRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth"
+      });
+    }
+  };
+
+  // Reset scroll position on filter switch
+  const handleFilterChange = (tabId: string) => {
+    setSelectedFilter(tabId);
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({ left: 0, behavior: "smooth" });
+    }
+  };
 
   return (
     <section id="services" className="relative py-24 md:py-32 px-6 md:px-12 bg-[#09090b] text-[#fafafa] border-t border-white/10">
       <div className="max-w-7xl mx-auto">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-xs font-mono tracking-widest uppercase mb-4">
               <span className="w-1.5 h-1.5 rounded-full bg-orange-400" />
@@ -238,46 +271,88 @@ export function KaviroxServices() {
               Your Online Brand
             </h2>
           </div>
-          <p className="text-sm md:text-base text-zinc-400 max-w-lg leading-relaxed font-mono">
-            We help D2C brands build fast, reliable websites, connect their sales tools, and create smooth shopping journeys that keep customers coming back.
-          </p>
+          <div className="flex flex-col md:items-end gap-3">
+            <p className="text-sm md:text-base text-zinc-400 max-w-lg leading-relaxed font-mono md:text-right">
+              We help D2C brands build fast, reliable websites, connect their sales tools, and create smooth shopping journeys that keep customers coming back.
+            </p>
+
+            {/* Carousel Navigation Buttons */}
+            <div className="hidden sm:flex items-center gap-2 pt-2">
+              <span className="text-xs font-mono text-zinc-500 mr-2">
+                Scroll Services ({filteredServices.length})
+              </span>
+              <button
+                type="button"
+                onClick={() => scroll("left")}
+                className="w-10 h-10 rounded-full bg-white/5 border border-white/10 hover:border-orange-500/50 hover:bg-white/10 text-zinc-300 hover:text-white flex items-center justify-center transition-all cursor-pointer"
+                title="Scroll Left"
+                aria-label="Previous Service"
+              >
+                ←
+              </button>
+              <button
+                type="button"
+                onClick={() => scroll("right")}
+                className="w-10 h-10 rounded-full bg-white/5 border border-white/10 hover:border-orange-500/50 hover:bg-white/10 text-zinc-300 hover:text-white flex items-center justify-center transition-all cursor-pointer"
+                title="Scroll Right"
+                aria-label="Next Service"
+              >
+                →
+              </button>
+            </div>
+          </div>
         </div>
 
-        {/* Filter Pills */}
-        <div className="flex flex-wrap gap-2.5 mb-12">
-          {[
-            { id: "all", label: "All Services (11)" },
-            { id: "commerce", label: "E-Commerce & CX" },
-            { id: "automation", label: "Automation & Growth" },
-            { id: "data-ai", label: "Data, Analytics & AI" },
-            { id: "engineering", label: "Engineering & Security" },
-          ].map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => setSelectedFilter(tab.id)}
-              className={`px-4 py-2 rounded-full text-xs font-mono transition-all duration-300 ${
-                selectedFilter === tab.id
-                  ? "bg-orange-600 text-white font-semibold shadow-lg shadow-orange-600/20"
-                  : "bg-zinc-900/80 text-zinc-400 border border-white/10 hover:border-white/20 hover:text-white"
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
+        {/* Filter Pills & Mobile Controls */}
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-8">
+          <div className="flex flex-wrap gap-2">
+            {[
+              { id: "all", label: "All Services (11)" },
+              { id: "commerce", label: "E-Commerce & CX" },
+              { id: "automation", label: "Automation & Growth" },
+              { id: "data-ai", label: "Data, Analytics & AI" },
+              { id: "engineering", label: "Engineering & Security" },
+            ].map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => handleFilterChange(tab.id)}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-mono transition-all duration-200 cursor-pointer ${
+                  selectedFilter === tab.id
+                    ? "bg-orange-600 text-white font-semibold shadow-lg shadow-orange-600/20"
+                    : "bg-zinc-900/80 text-zinc-400 border border-white/10 hover:border-white/20 hover:text-white"
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="text-[11px] font-mono text-zinc-500 flex items-center gap-1.5">
+            <span>Drag or swipe horizontally</span>
+            <span className="text-orange-400 animate-pulse">→</span>
+          </div>
         </div>
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Horizontally Scrollable Services Carousel */}
+        <div 
+          ref={scrollContainerRef}
+          onScroll={handleScroll}
+          className="flex gap-6 overflow-x-auto pb-8 pt-2 scroll-smooth snap-x snap-mandatory scrollbar-thin scrollbar-thumb-orange-500/30 scrollbar-track-white/5 focus:outline-none select-none"
+          style={{
+            scrollbarWidth: "thin",
+            scrollbarColor: "rgba(234, 88, 12, 0.3) rgba(255, 255, 255, 0.05)"
+          }}
+        >
           {filteredServices.map((service) => {
             const Icon = service.icon;
             return (
               <div
                 key={service.id}
-                className="group relative rounded-2xl bg-zinc-900/50 border border-white/10 hover:border-orange-500/40 p-6 md:p-8 transition-all duration-500 hover:-translate-y-1 flex flex-col justify-between"
+                className="w-[310px] sm:w-[360px] md:w-[400px] shrink-0 snap-start group relative rounded-2xl bg-zinc-900/60 backdrop-blur-md border border-white/10 hover:border-orange-500/40 p-6 md:p-7 transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between"
               >
                 {/* Header: Number & Icon */}
                 <div>
-                  <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center justify-between mb-5">
                     <span className="text-xs font-mono tracking-widest text-orange-400 border border-orange-500/30 px-2.5 py-0.5 rounded-full bg-orange-500/5">
                       SERVICE {service.number}
                     </span>
@@ -287,19 +362,19 @@ export function KaviroxServices() {
                   </div>
 
                   {/* Title & Tagline */}
-                  <h3 className="text-xl font-medium tracking-tight text-white mb-3 group-hover:text-orange-400 transition-colors">
+                  <h3 className="text-lg sm:text-xl font-medium tracking-tight text-white mb-2 group-hover:text-orange-400 transition-colors line-clamp-2">
                     {service.title}
                   </h3>
-                  <p className="text-xs md:text-sm text-zinc-400 leading-relaxed mb-6 font-mono">
+                  <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed mb-5 font-mono line-clamp-3">
                     {service.tagline}
                   </p>
 
                   {/* Deliverables Checklist */}
-                  <div className="space-y-2.5 mb-6 pt-4 border-t border-white/5">
+                  <div className="space-y-2 mb-6 pt-4 border-t border-white/5">
                     {service.deliverables.slice(0, 4).map((item, idx) => (
                       <div key={idx} className="flex items-start gap-2.5 text-xs text-zinc-300">
                         <CheckCircle2 className="w-3.5 h-3.5 text-orange-400 shrink-0 mt-0.5" />
-                        <span className="leading-snug">{item}</span>
+                        <span className="leading-snug line-clamp-2">{item}</span>
                       </div>
                     ))}
                   </div>
@@ -321,6 +396,19 @@ export function KaviroxServices() {
               </div>
             );
           })}
+        </div>
+
+        {/* Scroll Progress Bar */}
+        <div className="mt-4 flex items-center gap-4">
+          <div className="h-1 flex-1 bg-white/5 rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-gradient-to-r from-orange-500 to-amber-400 rounded-full transition-all duration-150"
+              style={{ width: `${Math.max(8, scrollProgress)}%` }}
+            />
+          </div>
+          <span className="text-[11px] font-mono text-zinc-500 shrink-0">
+            {Math.round(scrollProgress)}% Scrolled
+          </span>
         </div>
 
       </div>
