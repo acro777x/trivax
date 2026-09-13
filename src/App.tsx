@@ -5,6 +5,7 @@ import KaviroxServices from '@/domains/services/components/kavirox-services';
 import KaviroxSolutions from '@/domains/solutions/components/kavirox-solutions';
 import KaviroxCapabilities from '@/domains/capabilities/components/kavirox-capabilities';
 import KaviroxChatbot from '@/domains/chatbot/components/kavirox-chatbot';
+import TubesCursor from '@/components/ui/tubes-curor';
 import { ArrowUpRight, Heart, Copy, Check } from 'lucide-react';
 import { LinkedIn, Instagram, X, Threads } from '@aliimam/logos';
 import { getInquiryWebmailUrl, copyInquiryTemplate } from '@/shared/lib/email-inquiry';
@@ -21,6 +22,14 @@ export function App() {
   };
   return (
     <div className="min-h-screen bg-[#09090b] text-[#fafafa] font-sans selection:bg-orange-500/30 selection:text-white relative">
+      {/* 3D Tubes Cursor Interactive Ambient Background Layer */}
+      <TubesCursor 
+        backgroundOnly={true} 
+        tubesColors={["#ea580c", "#f97316", "#8b5cf6"]} 
+        lightsColors={["#f97316", "#9333ea", "#3b82f6", "#06b6d4"]} 
+        lightsIntensity={140} 
+      />
+
       {/* Global Translucent Frosted Floating Navbar */}
       <FloatingNavbar />
 

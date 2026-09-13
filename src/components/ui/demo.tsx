@@ -1,5 +1,5 @@
-import { HeroSection03 } from "@/components/ui/hero-03";
+import TubesCursor from "@/components/ui/tubes-curor";
 
 export default function DemoOne() {
-  return <HeroSection03 />;
+  return <TubesCursor />;
 }
