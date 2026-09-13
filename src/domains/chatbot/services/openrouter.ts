@@ -241,17 +241,11 @@ async function simulateStudioResponse(
     lastUserMsg === "hello" ||
     lastUserMsg === "hey"
   ) {
-    reply = `Hello! Welcome to **Kavirox**. I'm your studio assistant. 
+    reply = `Hello! Welcome to **Kavirox**. We engineer sub-second e-commerce stores, custom RAG chatbots, and WhatsApp automation for consumer brands.
 
-We help direct-to-consumer (D2C) brands build sub-second e-commerce stores, deploy custom RAG chatbots, automate WhatsApp commerce, and scale repeat revenue.
-
-How can I help you today? Feel free to ask about:
-• **Our 11 core services** (Shopify, speed, WhatsApp, Klaviyo, SEO)
-• **Custom RAG Chatbots** trained on your products
-• **Our 3 engagement models & pricing**
-• **Starting a project** with our engineering squad`;
+How can I help you today?`;
   }
-  // 2. Specific RAG & AI Chatbots (Only when user explicitly asks about bots/AI/RAG)
+  // 2. Specific RAG & AI Chatbots
   else if (
     query.includes("rag") ||
     query.includes("chatbot") ||
@@ -260,14 +254,13 @@ How can I help you today? Feel free to ask about:
     query.includes("vector") ||
     query.includes("hallucination")
   ) {
-    reply = `At Kavirox, we engineer **Custom RAG (Retrieval-Augmented Generation) Chatbots** specifically tailored for consumer and D2C brands:
+    reply = `We engineer **Custom RAG Chatbots** tailored to your store:
 
-• **Zero Hallucinations**: Answers are strictly grounded in your verified product catalog, ingredients, FAQ, sizing, and shipping policies.
-• **1-Click Cart Generation**: Conversational product finders recommend the right variant and generate direct checkout links.
-• **Omnichannel Deployment**: Embedded directly on your Shopify/headless storefront or connected to the official WhatsApp Business Platform.
-• **Autonomous Support**: Handles 70%+ of customer enquiries regarding order status, returns, ingredients, and delivery tracking.
+• **Zero Hallucinations**: Grounded strictly in your products, ingredients, and FAQs.
+• **Instant Cart Links**: Recommends products and generates checkout links.
+• **Multi-Channel**: Embedded on your storefront or official WhatsApp.
 
-Would you like to explore building a RAG bot for your brand? You can click the email button below to open our pre-written inquiry brief!`;
+Click the email button below to explore a custom bot for your brand!`;
   }
   // 3. Pricing, Rates, Cost, Budget
   else if (
@@ -280,13 +273,13 @@ Would you like to explore building a RAG bot for your brand? You can click the e
     query.includes("fee") ||
     query.includes("quote")
   ) {
-    reply = `We provide 3 transparent, flexible **engagement models** depending on your brand's growth stage:
+    reply = `We provide 3 flexible **engagement models**:
 
-1. **Project-Based Sprint**: Fixed scope and clear deliverables (typically 2 to 6 weeks). Ideal for new store builds, speed overhauls, or custom RAG chatbot rollouts.
-2. **Dedicated Growth Team**: An ongoing monthly engineering squad embedded with your team for continuous store features, weekly sprints, and speed maintenance.
-3. **Technical Advisory & Support**: On-demand system audits, uptime assurance, and senior technical guidance.
+1. **Project Sprint** (2–6 wks): Fixed scope for new builds, speed overhauls, or RAG bots.
+2. **Dedicated Squad**: Ongoing monthly engineering embedded with your team.
+3. **Technical Advisory**: On-demand audits, performance tuning, and architecture reviews.
 
-Every project includes direct engineer communication on Slack/email, transparent code commits, and zero agency markups. To get an exact estimate for your scope, click the button below to send us a quick project brief!`;
+Click below to send us a quick project brief for an exact estimate!`;
   }
   // 4. Timeline, Delivery Speed & Duration
   else if (
@@ -298,13 +291,10 @@ Every project includes direct engineer communication on Slack/email, transparent
     query.includes("turnaround") ||
     query.includes("weeks")
   ) {
-    reply = `Our delivery timelines are built around agile, rapid-iteration cycles:
+    reply = `Our delivery timelines are fast and agile:
 
-• **Project Sprints**: Most store launches, redesigns, and custom RAG bot deployments are delivered within **2 to 6 weeks**.
-• **Immediate Milestones**: Phase 1 (Discovery & Architecture) is finalized in Week 1, followed by weekly preview builds.
-• **Transparent Progress**: You get direct visibility into staging environments and code commits throughout the build.
-
-Do you have a specific target launch date in mind?`;
+• **Project Sprints**: Store builds and RAG bots launch within **2 to 6 weeks**.
+• **Weekly Milestones**: Architecture in Week 1, followed by weekly preview builds and staging access.`;
   }
   // 5. Shopify, Web Development, Headless & Speed
   else if (
@@ -318,14 +308,12 @@ Do you have a specific target launch date in mind?`;
     query.includes("headless") ||
     query.includes("core web vitals")
   ) {
-    reply = `Our **Website Development & Performance** engineering focuses on sub-second loads and conversion-driven UI:
+    reply = `Our **Website Development & Performance** engineering delivers sub-second loads:
 
-• **Sub-Second Speeds**: We optimize critical rendering paths, minify assets, lazy-load scripts, and eliminate app bloat to hit Core Web Vitals targets (LCP < 1.2s).
-• **Shopify & Liquid**: Custom Liquid sections, dynamic bundling, interactive ingredient calculators, and mobile-first checkout flows.
-• **Headless Architectures**: High-performance Next.js storefronts paired with Shopify Storefront API for instant page transitions.
-• **Structured Schema**: Clean semantic HTML and JSON-LD structured data for rich Google search previews.
+• **Speed Tuning**: Core Web Vitals optimization (LCP < 1.2s), script cleanup, and zero bloat.
+• **Custom Shopify & Headless**: Custom Liquid sections or high-performance Next.js stores.
 
-Would you like a complimentary speed and performance audit for your current store?`;
+Would you like a complimentary store audit?`;
   }
   // 6. WhatsApp Commerce & Cart Recovery
   else if (
@@ -334,13 +322,11 @@ Would you like a complimentary speed and performance audit for your current stor
     query.includes("cart recovery") ||
     query.includes("meta cloud")
   ) {
-    reply = `With **WhatsApp Conversational Commerce**, we turn WhatsApp into a high-converting sales and retention channel:
+    reply = `Our **WhatsApp Commerce** turns WhatsApp into a reliable sales channel:
 
-• **Meta Cloud API Integration**: Direct integration with the official WhatsApp Business Platform.
-• **Automated Cart Recovery**: Multi-stage recovery sequences that remind shoppers about abandoned carts with 1-click buy links.
-• **Order Tracking & Notifications**: Real-time dispatch, transit, and delivery updates sent straight to customers' WhatsApp chats.
-• **Interactive Product Discovery**: Guided product finders directly inside WhatsApp for conversational buying.
-• **Human Concierge Handoff**: Smooth escalation to your team for VIP queries.`;
+• **Cart Recovery**: Automated sequences with 1-click checkout links.
+• **Order Tracking**: Real-time dispatch and delivery status updates.
+• **Guided Shopping**: Conversational product finders inside WhatsApp.`;
   }
   // 7. Email & Retention Automation (Klaviyo)
   else if (
@@ -350,12 +336,10 @@ Would you like a complimentary speed and performance audit for your current stor
     query.includes("lifecycle") ||
     query.includes("crm")
   ) {
-    reply = `Our **Email & Retention Automation** creates automated lifecycle communication that boosts Repeat Purchase Rate (RPR) and Lifetime Value (LTV):
+    reply = `Our **Email & Retention Automation** boosts repeat orders:
 
-• **Welcome Series**: High-converting storytelling and first-order incentives.
-• **Checkout & Browse Abandonment**: Behavioral email triggers tailored to the exact products viewed.
-• **Post-Purchase Care**: Usage tips, review collection (UGC), and complementary replenishment reminders.
-• **VIP & Win-Back Flows**: Automated segmentation identifying churn risks and loyal brand advocates.`;
+• **Automated Flows**: Welcome series, browse abandonment, and cart recovery.
+• **Post-Purchase**: Replenishment reminders and UGC review collection.`;
   }
   // 8. Payments, Checkout & COD Verification
   else if (
@@ -366,12 +350,10 @@ Would you like a complimentary speed and performance audit for your current stor
     query.includes("upi") ||
     query.includes("rto")
   ) {
-    reply = `Our **Payments & Checkout Flow** engineering ensures checkout is frictionless and secure:
+    reply = `Our **Payments & Checkout Flow** engineering cuts drop-offs and RTO:
 
-• **Frictionless UPI & Cards**: 1-click UPI deep-links (GPay, PhonePe, Paytm) and Razorpay/Cashfree optimization.
-• **COD Verification**: Automated OTP or WhatsApp verification on Cash on Delivery orders to significantly reduce RTO (Return to Origin) losses.
-• **Payment Failure Recovery**: Automated recovery triggers when a customer faces bank or network payment drops.
-• **Logistics API Sync**: Webhooks connecting Shiprocket, Delhivery, and fulfillment partners.`;
+• **1-Click UPI & Cards**: Optimized Razorpay, Cashfree, and UPI deep-links.
+• **COD Verification**: Automated OTP/WhatsApp verification to prevent bogus orders.`;
   }
   // 9. Analytics, Telemetry & Server-Side Tracking
   else if (
@@ -382,11 +364,10 @@ Would you like a complimentary speed and performance audit for your current stor
     query.includes("looker") ||
     query.includes("pixel")
   ) {
-    reply = `Our **Customer Data, CRM & Telemetry** setup fixes signal loss and delivers clear BI insights:
+    reply = `Our **Data & Analytics** setup fixes signal loss:
 
-• **Meta Conversions API (CAPI)**: Server-side tracking that bypasses browser ad-blockers and iOS privacy restrictions.
-• **GA4 E-Commerce Events**: Granular tracking on product views, add-to-cart, checkout stages, and conversion paths.
-• **Executive Looker Dashboards**: Live dashboards tracking AOV, CAC, repeat rate, conversion rate, and revenue per channel.`;
+• **Meta CAPI**: Server-side conversion tracking bypassing ad blockers.
+• **GA4 & BI Dashboards**: Granular e-commerce funnel tracking and Looker dashboards.`;
   }
   // 10. General Services Overview
   else if (
@@ -396,14 +377,12 @@ Would you like a complimentary speed and performance audit for your current stor
     query.includes("capabilities") ||
     query.includes("offer")
   ) {
-    reply = `Kavirox provides **11 core engineering & growth service lines** across 4 main pillars:
+    reply = `Kavirox provides **11 core engineering services** across:
 
-1. **Commerce & Storefront**: Store UX, sub-second Shopify/Next.js development, interactive guided finders.
-2. **Conversational & Automation**: Official WhatsApp commerce, abandoned cart recovery, Klaviyo email lifecycle.
-3. **Payments & Fulfillment**: UPI deep-linking, COD verification to cut RTO, logistics API sync.
-4. **Data & AI Systems**: Custom RAG chatbots, server-side Meta CAPI, GA4, and automated n8n workflows.
-
-Which area is your brand currently focusing on?`;
+• **Commerce & Storefront**: Sub-second Shopify / Next.js builds.
+• **Data & AI Systems**: Custom RAG chatbots and analytics.
+• **Automation**: WhatsApp commerce, cart recovery, and n8n workflows.
+• **Checkout & Security**: UPI deep-links, COD verification, and audit standards.`;
   }
   // 11. Location, Team & Studio Background
   else if (
@@ -416,11 +395,9 @@ Which area is your brand currently focusing on?`;
     query.includes("founders") ||
     query.includes("based")
   ) {
-    reply = `**Kavirox** is a technology and e-commerce studio incubated at **GBU Incubation, Greater Noida, India**.
+    reply = `**Kavirox** is a digital engineering studio incubated at **GBU Incubation, Greater Noida, India**.
 
-We are a hands-on squad of software engineers, e-commerce architects, and growth technologists. We work directly with consumer brands without account managers or agency bureaucracy—delivering clean code, direct Slack communication, and daily progress.
-
-Would you like to discuss how we can support your brand?`;
+We are a hands-on squad of software engineers working directly with brands with daily Slack updates and zero agency overhead.`;
   }
   // 12. Contact, Hire, Start a Project
   else if (
@@ -432,51 +409,34 @@ Would you like to discuss how we can support your brand?`;
     query.includes("reach out") ||
     query.includes("touch")
   ) {
-    reply = `We'd love to partner with you! Getting started is quick and straightforward:
+    reply = `Ready to build? Getting started is straightforward:
 
-• **Direct Email**: info@kavirox.space
+• **Email**: info@kavirox.space
 • **Location**: GBU Incubation, Greater Noida, India
-• **Interactive Project Brief**: Click the button below to launch our formatted email brief in Gmail Web with your options pre-filled!
-
-We typically respond within 24 hours with an initial scope review.`;
+• **Interactive Brief**: Click the button below to launch our pre-written project brief in Gmail!`;
   }
-  // 13. Natural Follow-Up / Acknowledgement ("yes", "sure", "tell me more", "sounds good", "continue", "okay")
+  // 13. Natural Follow-Up / Acknowledgement
   else if (
     /^(yes|yeah|yep|sure|tell me more|sounds good|continue|okay|ok|cool|go ahead|first one|second one|sprint)\b/i.test(lastUserMsg)
   ) {
-    if (lastAssistantMsg.includes("engagement models") || lastAssistantMsg.includes("sprint")) {
-      reply = `Our **Project-Based Sprint** is our most popular starting engagement:
-
-• **Duration**: 2 to 6 weeks with clearly defined milestones.
-• **Scope**: Custom storefront build, speed optimization, or RAG chatbot deployment.
-• **Deliverables**: Tested production code, daily commits, staging previews, and 30 days of post-launch warranty.
-
-Would you like to share a few details about your current store so we can prepare a sprint proposal?`;
+    if (lastAssistantMsg.includes("engagement") || lastAssistantMsg.includes("sprint")) {
+      reply = `Our **Project Sprint** runs **2 to 6 weeks** with fixed scope, weekly preview builds, and 30-day post-launch support. Click below to start!`;
     } else if (lastAssistantMsg.includes("rag") || lastAssistantMsg.includes("chatbot")) {
-      reply = `To deploy a **Custom RAG Chatbot** for your store, here is our 3-step rollout:
-
-1. **Catalog Ingestion**: We ingest your product catalog, ingredients, FAQ, and store policies into a dedicated vector database.
-2. **Grounding & Guardrails**: We calibrate prompt boundaries so the model strictly cites your products with zero hallucinations.
-3. **Integration**: We embed the chat widget into your storefront or connect it to your WhatsApp Cloud API.
-
-Would you like to schedule an initial architecture session? Click the email brief button below!`;
+      reply = `To deploy your **RAG Chatbot**, we ingest your catalog, calibrate guardrails, and embed the bot in 2–3 weeks. Click below to begin!`;
     } else {
-      reply = `Great! What specific aspect of your store or brand would you like to focus on first? 
-
-We can dive into **Shopify speed optimization**, **custom RAG chatbots**, **WhatsApp cart recovery**, or **our project sprint pricing**.`;
+      reply = `Great! What would you like to focus on: **Shopify speed**, **custom RAG chatbots**, or **project sprint pricing**?`;
     }
   }
   // 14. Default Intelligent Fallback
   else {
-    reply = `I'd be glad to help with that! At **Kavirox**, we specialize in engineering high-performance online stores and AI automation for consumer brands.
+    reply = `At **Kavirox**, we engineer high-performance stores and AI automation for consumer brands.
 
-Here are the most common things we help founders and teams with:
-• **Building & Optimizing Storefronts**: Sub-second speeds on Shopify or Headless Next.js.
-• **Custom RAG AI Chatbots**: 24/7 product advisors trained strictly on your brand's catalog.
-• **WhatsApp Commerce**: Automated cart recovery and customer order updates.
-• **Sprint Pricing & Timelines**: Clear 2 to 6 week fixed-scope deliverables.
+We specialize in:
+• **Fast Storefronts**: Shopify & Headless Next.js
+• **Custom RAG Chatbots**: Trained on your verified catalog
+• **WhatsApp Commerce**: Cart recovery & order updates
 
-Feel free to ask a specific question, or click the button below to email our engineering team directly!`;
+Feel free to ask a question or click below to email our engineering squad!`;
   }
 
   // Simulate streaming typing effect

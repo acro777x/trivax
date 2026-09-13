@@ -19,16 +19,15 @@ const INITIAL_MESSAGES: ChatMessage[] = [
   {
     id: "welcome-1",
     role: "assistant",
-    content: "Hi! I'm the **Kavirox AI Assistant**. Feel free to ask me anything about our services, building custom RAG chatbots, or how we partner with brands. What are you looking to build?",
+    content: "Hi! I'm the **Kavirox Assistant**. Ask me anything about our services, store builds, custom RAG chatbots, or pricing.",
     timestamp: Date.now()
   }
 ];
 
 const STARTER_PROMPTS = [
-  "What services does Kavirox offer?",
-  "How do you build custom RAG chatbots?",
-  "What are your engagement models & pricing?",
-  "How do I start a project with Kavirox?"
+  "What services do you offer?",
+  "How do your RAG chatbots work?",
+  "Pricing & engagement models"
 ];
 
 export function KaviroxChatbot() {
@@ -44,7 +43,6 @@ export function KaviroxChatbot() {
   });
   const [input, setInput] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
-  const [showTeaser, setShowTeaser] = useState(true);
   const [replyingTo, setReplyingTo] = useState<ChatMessage | null>(null);
 
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -70,7 +68,6 @@ export function KaviroxChatbot() {
   // Focus input when chat opens
   useEffect(() => {
     if (isOpen) {
-      setShowTeaser(false);
       setTimeout(() => inputRef.current?.focus(), 150);
     }
   }, [isOpen]);
@@ -212,25 +209,10 @@ export function KaviroxChatbot() {
     <>
       {/* 1. Floating Launcher Badge (Bottom-Right) */}
       <div className="fixed bottom-5 right-5 z-40 flex items-center gap-3">
-        {/* Teaser Tooltip Greeting on Initial Load */}
-        {showTeaser && !isOpen && (
-          <div className="hidden sm:flex items-center gap-2.5 px-3.5 py-2 rounded-full bg-[#121218]/90 backdrop-blur-xl border border-white/15 text-xs text-zinc-300 shadow-2xl animate-in fade-in slide-in-from-right-4 duration-300">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping shrink-0" />
-            <span className="font-mono">Have questions about our services or RAG bots?</span>
-            <button
-              onClick={() => setShowTeaser(false)}
-              className="text-zinc-500 hover:text-white ml-1 text-xs cursor-pointer"
-              title="Dismiss"
-            >
-              ×
-            </button>
-          </div>
-        )}
-
         {/* Launcher Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className={`relative group flex items-center gap-2.5 px-3.5 sm:px-4 py-2.5 rounded-full transition-all duration-300 shadow-2xl cursor-pointer ${
+          className={`relative group flex items-center gap-2 px-3 sm:px-3.5 py-2 rounded-full transition-all duration-300 shadow-2xl cursor-pointer ${
             isOpen
               ? "bg-zinc-800 text-white border border-white/20 scale-95"
               : "bg-[#101014]/90 hover:bg-[#16161d] text-white border border-white/15 hover:border-orange-500/40 hover:shadow-orange-500/20 hover:scale-105"
@@ -247,29 +229,29 @@ export function KaviroxChatbot() {
         >
           {/* Status Dot */}
           <div className="relative flex items-center justify-center">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-            <span className="absolute w-4 h-4 rounded-full bg-emerald-400/30 animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-emerald-500" />
+            <span className="absolute w-3.5 h-3.5 rounded-full bg-emerald-400/30 animate-pulse" />
           </div>
 
           {/* Minimal K Icon Mark */}
-          <div className="w-5 h-5 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-[#09090b] font-sans font-black text-[10px] leading-none shadow-[0_0_8px_rgba(16,185,129,0.35)]">
+          <div className="w-4.5 h-4.5 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-[#09090b] font-sans font-black text-[9px] leading-none shadow-[0_0_8px_rgba(16,185,129,0.35)]">
             K
           </div>
 
           <span className="hidden sm:inline text-xs font-semibold tracking-wide">
-            {isOpen ? "Close Chat" : "Ask Kavirox AI"}
+            {isOpen ? "Close" : "Ask AI"}
           </span>
 
-          <Sparkles className="w-3.5 h-3.5 text-orange-400 transition-transform group-hover:rotate-12" />
+          <Sparkles className="w-3 h-3 text-orange-400 transition-transform group-hover:rotate-12" />
         </button>
       </div>
 
-      {/* 2. Simple, High-End Concierge Chat Window */}
+      {/* 2. Sleek, Minimal Concierge Chat Window */}
       {isOpen && (
         <div
-          className="fixed bottom-20 right-3 sm:right-6 z-50 w-[calc(100vw-1.5rem)] sm:w-[420px] max-h-[620px] h-[80vh] flex flex-col rounded-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-200"
+          className="fixed bottom-18 right-3 sm:right-5 z-50 w-[calc(100vw-1.5rem)] sm:w-[360px] max-h-[500px] h-[66vh] flex flex-col rounded-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-3 duration-200"
           style={{
-            background: "rgba(12, 12, 16, 0.90)",
+            background: "rgba(12, 12, 16, 0.92)",
             backdropFilter: "blur(28px) saturate(190%)",
             WebkitBackdropFilter: "blur(28px) saturate(190%)",
             border: "1px solid rgba(255, 255, 255, 0.14)",
@@ -279,10 +261,10 @@ export function KaviroxChatbot() {
           {/* Specular Top Rim Sheen */}
           <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
 
-          {/* Clean Header Bar */}
-          <div className="px-4 py-3 border-b border-white/10 flex items-center justify-between bg-black/30">
-            <div className="flex items-center gap-2.5 min-w-0">
-              <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-[#09090b] font-black text-xs shrink-0 shadow-[0_0_8px_rgba(16,185,129,0.4)]">
+          {/* Minimal Header Bar */}
+          <div className="px-3.5 py-2.5 border-b border-white/10 flex items-center justify-between bg-black/40">
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-[#09090b] font-black text-[10px] shrink-0 shadow-[0_0_8px_rgba(16,185,129,0.4)]">
                 K
               </div>
               <div className="min-w-0">
@@ -290,9 +272,6 @@ export function KaviroxChatbot() {
                   <h2 className="text-xs font-semibold text-white truncate">Kavirox AI</h2>
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0 animate-pulse" />
                 </div>
-                <p className="text-[11px] font-mono text-zinc-400 truncate">
-                  Online • Studio Assistant
-                </p>
               </div>
             </div>
 
@@ -301,24 +280,24 @@ export function KaviroxChatbot() {
               <button
                 type="button"
                 onClick={handleClear}
-                className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer"
+                className="p-1 rounded-md text-zinc-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer"
                 title="Reset conversation"
               >
-                <RotateCcw className="w-3.5 h-3.5" />
+                <RotateCcw className="w-3 h-3" />
               </button>
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
-                className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer"
+                className="p-1 rounded-md text-zinc-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer"
                 title="Close chat"
               >
-                <X className="w-4 h-4" />
+                <X className="w-3.5 h-3.5" />
               </button>
             </div>
           </div>
 
           {/* Messages Thread */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3.5 scrollbar-thin scrollbar-thumb-white/10 text-xs">
+          <div className="flex-1 overflow-y-auto p-3 space-y-2.5 scrollbar-thin scrollbar-thumb-white/10 text-xs">
             {messages.map((msg) => {
               const isAssistant = msg.role === "assistant";
               const isProjectInquiryRelated = 
@@ -506,10 +485,6 @@ export function KaviroxChatbot() {
                 </button>
               )}
             </form>
-
-            <div className="pt-2 px-1 text-[10px] font-mono text-zinc-500 text-center select-none">
-              Kavirox Digital Systems • Studio Assistant
-            </div>
           </div>
         </div>
       )}

@@ -270,12 +270,6 @@ export function KaviroxServices() {
     return () => ctx.revert();
   }, [filteredServices]);
 
-  // Smooth step when using the arrow buttons
-  const handleStep = (direction: "left" | "right") => {
-    const delta = window.innerHeight * 0.75 * (direction === "left" ? -1 : 1);
-    window.scrollBy({ top: delta, behavior: "smooth" });
-  };
-
   const handleFilterChange = (tabId: string) => {
     setSelectedFilter(tabId);
     setTimeout(() => {
@@ -301,31 +295,6 @@ export function KaviroxServices() {
               <h2 className="text-2xl sm:text-4xl md:text-5xl font-light tracking-tight text-white leading-tight">
                 Everything You Need to <span className="font-bold italic text-orange-500">Build & Scale</span> Your Online Brand
               </h2>
-            </div>
-            
-            {/* Nav Arrows & Indicator */}
-            <div className="flex items-center gap-3">
-              <span className="text-xs font-mono text-zinc-500">
-                Auto-scrolls with page • {filteredServices.length} Services
-              </span>
-              <div className="hidden sm:flex items-center gap-1.5">
-                <button
-                  type="button"
-                  onClick={() => handleStep("left")}
-                  className="w-8 h-8 rounded-full bg-white/5 border border-white/10 hover:border-orange-500/50 hover:bg-white/10 text-zinc-300 hover:text-white flex items-center justify-center transition-all cursor-pointer text-xs"
-                  title="Scroll back"
-                >
-                  ←
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleStep("right")}
-                  className="w-8 h-8 rounded-full bg-white/5 border border-white/10 hover:border-orange-500/50 hover:bg-white/10 text-zinc-300 hover:text-white flex items-center justify-center transition-all cursor-pointer text-xs"
-                  title="Scroll forward"
-                >
-                  →
-                </button>
-              </div>
             </div>
           </div>
 
@@ -414,18 +383,9 @@ export function KaviroxServices() {
           </div>
         </div>
 
-        {/* Bottom: Live Scroll Progress Bar */}
-        <div className="max-w-7xl mx-auto w-full pt-2">
-          <div className="flex items-center justify-between text-[11px] font-mono text-zinc-500 mb-1.5">
-            <span className="flex items-center gap-1.5">
-              <span>Scroll down page to browse all services</span>
-              <span className="text-orange-400 animate-pulse">↓</span>
-            </span>
-            <span className="text-orange-400 font-medium">
-              {Math.round(scrollProgress)}% Scrolled
-            </span>
-          </div>
-          <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
+        {/* Bottom: Minimal Scroll Progress Bar */}
+        <div className="max-w-7xl mx-auto w-full pt-1">
+          <div className="h-0.5 w-full bg-white/5 rounded-full overflow-hidden">
             <div 
               className="h-full bg-gradient-to-r from-orange-500 to-amber-400 rounded-full transition-all duration-75"
               style={{ width: `${Math.max(6, scrollProgress)}%` }}
