@@ -4,6 +4,7 @@ import KaviroxEditorialHero from '@/domains/marketing/components/kavirox-editori
 import KaviroxServices from '@/domains/services/components/kavirox-services';
 import KaviroxSolutions from '@/domains/solutions/components/kavirox-solutions';
 import KaviroxCapabilities from '@/domains/capabilities/components/kavirox-capabilities';
+import KaviroxChatbot from '@/domains/chatbot/components/kavirox-chatbot';
 import { ArrowUpRight, Heart, Copy, Check } from 'lucide-react';
 import { LinkedIn, Instagram, X, Threads } from '@aliimam/logos';
 import { getInquiryWebmailUrl, copyInquiryTemplate } from '@/shared/lib/email-inquiry';
@@ -201,6 +202,9 @@ export function App() {
           </div>
         </div>
       </footer>
+
+      {/* Interactive AI Studio Concierge (OpenRouter Free Model Integration) */}
+      <KaviroxChatbot />
     </div>
   );
 }
