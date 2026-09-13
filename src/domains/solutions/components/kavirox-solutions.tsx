@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { ChromaticText } from "@/domains/marketing/components/chromatic-text";
 import { 
   Cpu, 
   ShoppingBag, 
@@ -163,7 +164,10 @@ export function KaviroxSolutions() {
               </span>
             </div>
             <h2 className="text-4xl md:text-6xl font-light tracking-tight">
-              Systems We <span className="font-bold italic text-white">Build For You</span>
+              Systems We{" "}
+              <span className="font-bold italic text-white inline-block cursor-pointer">
+                <ChromaticText text="Build For You" seed={6623} delay={0.1} duration={1.2} />
+              </span>
             </h2>
           </div>
           <p className="text-sm md:text-base text-zinc-400 font-mono max-w-md">

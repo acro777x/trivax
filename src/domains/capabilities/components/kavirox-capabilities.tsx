@@ -19,6 +19,7 @@ import {
   ArrowUpRight
 } from "lucide-react";
 import { getInquiryWebmailUrl } from "@/shared/lib/email-inquiry";
+import { ChromaticText } from "@/domains/marketing/components/chromatic-text";
 
 interface TechCategory {
   title: string;
@@ -156,7 +157,10 @@ export function KaviroxCapabilities() {
               </span>
             </div>
             <h2 className="text-4xl md:text-6xl font-light tracking-tight">
-              How We <span className="font-bold italic text-white">Work & Build</span>
+              How We{" "}
+              <span className="font-bold italic text-white inline-block cursor-pointer">
+                <ChromaticText text="Work & Build" seed={7734} delay={0.1} duration={1.2} />
+              </span>
             </h2>
           </div>
           <p className="text-sm md:text-base text-zinc-400 font-mono max-w-md">

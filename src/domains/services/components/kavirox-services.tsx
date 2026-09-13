@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ChromaticText } from "@/domains/marketing/components/chromatic-text";
 import { 
   ShoppingBag, 
   Code2, 
@@ -293,7 +294,11 @@ export function KaviroxServices() {
                 What We Do
               </div>
               <h2 className="text-2xl sm:text-4xl md:text-5xl font-light tracking-tight text-white leading-tight">
-                Everything You Need to <span className="font-bold italic text-orange-500">Build & Scale</span> Your Online Brand
+                Everything You Need to{" "}
+                <span className="font-bold italic text-orange-500 inline-block cursor-pointer">
+                  <ChromaticText text="Build & Scale" seed={5512} delay={0.1} duration={1.2} />
+                </span>{" "}
+                Your Online Brand
               </h2>
             </div>
           </div>

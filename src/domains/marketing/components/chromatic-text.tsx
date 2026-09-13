@@ -72,7 +72,7 @@ export function ChromaticText({
       span.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${scale})`;
       span.style.opacity = opacity;
 
-      if (sep > 0.4) {
+      if (sep > 0.4 && text[i] !== " ") {
         span.style.textShadow = `${(-sep).toFixed(1)}px 0 rgba(255,64,72,0.85), ${sep.toFixed(1)}px 0 rgba(64,255,190,0.8), 0 ${(sep * 0.55).toFixed(1)}px rgba(96,124,255,0.8)`;
         span.style.filter = sep > 0.7 ? `blur(${(sep * 0.28).toFixed(2)}px)` : "none";
       } else {
@@ -80,7 +80,7 @@ export function ChromaticText({
         span.style.filter = "none";
       }
     });
-  }, []);
+  }, [text]);
 
   const startAnimation = useCallback(() => {
     if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
@@ -115,8 +115,33 @@ export function ChromaticText({
   }, [delay, duration, renderFrame]);
 
   useEffect(() => {
-    startAnimation();
+    const el = containerRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      startAnimation();
+      return () => {
+        if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+      };
+    }
+
+    let hasTriggered = false;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !hasTriggered) {
+            hasTriggered = true;
+            startAnimation();
+          } else if (!entry.isIntersecting) {
+            hasTriggered = false;
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(el);
+
     return () => {
+      observer.disconnect();
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     };
   }, [startAnimation]);
