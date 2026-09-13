@@ -6,6 +6,12 @@ export interface ActionItem {
   payload?: string;
 }
 
+export interface MessageReplyContext {
+  id: string;
+  role: MessageRole;
+  text: string;
+}
+
 export interface ChatMessage {
   id: string;
   role: MessageRole;
@@ -14,6 +20,7 @@ export interface ChatMessage {
   isStreaming?: boolean;
   suggestedActions?: ActionItem[];
   modelUsed?: string;
+  replyTo?: MessageReplyContext;
 }
 
 export interface OpenRouterModelOption {

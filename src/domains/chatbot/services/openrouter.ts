@@ -103,10 +103,18 @@ export async function streamOpenRouterChat({
 
   const formattedMessages = [
     { role: "system", content: systemPrompt },
-    ...messages.map(m => ({
-      role: m.role,
-      content: m.content
-    }))
+    ...messages
+      .filter(m => m.content.trim() && !m.isStreaming)
+      .map(m => {
+        let content = m.content;
+        if (m.replyTo) {
+          content = `[Replying to: "${m.replyTo.text.slice(0, 160)}..."]\n${m.content}`;
+        }
+        return {
+          role: m.role,
+          content
+        };
+      })
   ];
 
   try {
@@ -211,11 +219,21 @@ async function simulateStudioResponse(
   onChunk: (chunk: string, accumulated: string) => void,
   onComplete?: (fullText: string) => void
 ): Promise<void> {
-  const lastUserMsg = [...messages].reverse().find(m => m.role === "user")?.content.toLowerCase() || "";
+  const lastUserObj = [...messages].reverse().find(m => m.role === "user");
+  const lastUserMsg = lastUserObj?.content.toLowerCase() || "";
+  const repliedText = lastUserObj?.replyTo?.text.toLowerCase() || "";
+
+  // Incorporate recent messages so the assistant maintains conversational context across turns
+  const conversationContext = messages
+    .slice(-6)
+    .map(m => m.content.toLowerCase())
+    .join(" ");
+
+  const combinedContext = `${repliedText} ${conversationContext} ${lastUserMsg}`;
 
   let reply = "";
 
-  if (lastUserMsg.includes("rag") || lastUserMsg.includes("chatbot") || lastUserMsg.includes("ai")) {
+  if (combinedContext.includes("rag") || combinedContext.includes("chatbot") || combinedContext.includes("ai")) {
     reply = `At Kavirox, we build **Custom RAG (Retrieval-Augmented Generation) Chatbots** specifically engineered for consumer & D2C brands:
 
 • **Zero Hallucinations**: Answers are strictly grounded in your actual product catalog, ingredients, FAQ, and shipping policies.
@@ -223,7 +241,7 @@ async function simulateStudioResponse(
 • **WhatsApp & Storefront**: Can be deployed directly on your website or integrated into official WhatsApp Cloud API flows.
 
 Would you like to discuss building a RAG chatbot for your brand? You can click the email button below to open our pre-written project brief!`;
-  } else if (lastUserMsg.includes("service") || lastUserMsg.includes("offer") || lastUserMsg.includes("what do you do")) {
+  } else if (combinedContext.includes("service") || combinedContext.includes("offer") || combinedContext.includes("what do you do")) {
     reply = `Kavirox provides **11 core engineering & growth service lines** for e-commerce brands:
 
 1. **E-Commerce UX & Store Optimisation** (Shopify, bundle cross-sells, mobile speed)
@@ -239,7 +257,7 @@ Would you like to discuss building a RAG chatbot for your brand? You can click t
 11. **Growth Automation** (n8n & webhook pipelines connecting store to CRM)
 
 Which area are you looking to scale?`;
-  } else if (lastUserMsg.includes("model") || lastUserMsg.includes("hire") || lastUserMsg.includes("engagement") || lastUserMsg.includes("pricing") || lastUserMsg.includes("cost")) {
+  } else if (combinedContext.includes("model") || combinedContext.includes("hire") || combinedContext.includes("engagement") || combinedContext.includes("pricing") || combinedContext.includes("cost")) {
     reply = `We offer 3 straightforward **engagement models** tailored to your brand's growth phase:
 
 1. **Project-Based Sprint**: Fixed scope and rapid delivery (2-6 weeks) for new store launches, redesigns, or RAG chatbot builds.
@@ -247,7 +265,7 @@ Which area are you looking to scale?`;
 3. **Technical Advisory & Support**: On-demand system audits, uptime assurance, and senior technical guidance.
 
 Every project includes direct communication, transparent code commits, and zero corporate overhead.`;
-  } else if (lastUserMsg.includes("contact") || lastUserMsg.includes("start") || lastUserMsg.includes("email") || lastUserMsg.includes("project")) {
+  } else if (combinedContext.includes("contact") || combinedContext.includes("start") || combinedContext.includes("email") || combinedContext.includes("project")) {
     reply = `Getting started is simple! We've prepared a **pre-written project inquiry template** that opens directly in your email client:
 
 • **Direct Email**: info@kavirox.space
