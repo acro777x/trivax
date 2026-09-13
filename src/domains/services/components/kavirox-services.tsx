@@ -1,4 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { 
   ShoppingBag, 
   Code2, 
@@ -13,6 +15,10 @@ import {
   Workflow,
   CheckCircle2
 } from "lucide-react";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 interface ServiceLine {
   id: string;
@@ -218,94 +224,113 @@ const serviceLines: ServiceLine[] = [
 export function KaviroxServices() {
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
   const [scrollProgress, setScrollProgress] = useState<number>(0);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
 
   const filteredServices = selectedFilter === "all" 
     ? serviceLines 
     : serviceLines.filter(s => s.category === selectedFilter);
 
-  // Update scroll progress bar percentage
-  const handleScroll = () => {
-    if (!scrollContainerRef.current) return;
-    const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-    const maxScroll = scrollWidth - clientWidth;
-    if (maxScroll <= 0) {
-      setScrollProgress(100);
-    } else {
-      const progress = Math.min(100, Math.max(0, (scrollLeft / maxScroll) * 100));
-      setScrollProgress(progress);
-    }
-  };
+  // Automatic Scroll-Driven Horizontal Translation with GSAP ScrollTrigger
+  useEffect(() => {
+    const section = sectionRef.current;
+    const trigger = triggerRef.current;
+    const track = trackRef.current;
+    if (!section || !trigger || !track) return;
 
-  const scroll = (direction: "left" | "right") => {
-    if (scrollContainerRef.current) {
-      const scrollAmount = 400;
-      scrollContainerRef.current.scrollBy({
-        left: direction === "left" ? -scrollAmount : scrollAmount,
-        behavior: "smooth"
+    const ctx = gsap.context(() => {
+      // Calculate total horizontal overflow distance to scroll through
+      const getScrollDistance = () => {
+        const paddingRight = window.innerWidth < 640 ? 40 : 120;
+        return Math.max(0, track.scrollWidth - window.innerWidth + paddingRight);
+      };
+
+      const distance = getScrollDistance();
+      if (distance <= 0) return;
+
+      gsap.to(track, {
+        x: () => -getScrollDistance(),
+        ease: "none",
+        scrollTrigger: {
+          trigger: trigger,
+          start: "top top",
+          end: () => `+=${getScrollDistance() * 1.2 + 350}`,
+          scrub: 0.8,
+          pin: true,
+          invalidateOnRefresh: true,
+          anticipatePin: 1,
+          onUpdate: (self) => {
+            setScrollProgress(self.progress * 100);
+          }
+        }
       });
-    }
+    }, section);
+
+    return () => ctx.revert();
+  }, [filteredServices]);
+
+  // Smooth step when using the arrow buttons
+  const handleStep = (direction: "left" | "right") => {
+    const delta = window.innerHeight * 0.75 * (direction === "left" ? -1 : 1);
+    window.scrollBy({ top: delta, behavior: "smooth" });
   };
 
-  // Reset scroll position on filter switch
   const handleFilterChange = (tabId: string) => {
     setSelectedFilter(tabId);
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTo({ left: 0, behavior: "smooth" });
-    }
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 60);
   };
 
   return (
-    <section id="services" className="relative py-24 md:py-32 px-6 md:px-12 bg-[#09090b] text-[#fafafa] border-t border-white/10">
-      <div className="max-w-7xl mx-auto">
-        
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-xs font-mono tracking-widest uppercase mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-orange-400" />
-              What We Do
+    <section ref={sectionRef} id="services" className="relative bg-[#09090b] text-[#fafafa] border-t border-white/10">
+      {/* Pinned Screen Viewport: stays pinned while user scrolls vertically */}
+      <div 
+        ref={triggerRef}
+        className="h-screen max-h-screen flex flex-col justify-between py-6 sm:py-8 md:py-10 px-6 md:px-12 overflow-hidden relative"
+      >
+        <div className="max-w-7xl mx-auto w-full">
+          {/* Header Row */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 md:mb-6 gap-3">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-xs font-mono tracking-widest uppercase mb-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-orange-400" />
+                What We Do
+              </div>
+              <h2 className="text-2xl sm:text-4xl md:text-5xl font-light tracking-tight text-white leading-tight">
+                Everything You Need to <span className="font-bold italic text-orange-500">Build & Scale</span> Your Online Brand
+              </h2>
             </div>
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-light tracking-tight text-white leading-tight">
-              Everything You Need to <span className="font-bold italic text-orange-500">Build & Scale</span> <br className="hidden sm:block" />
-              Your Online Brand
-            </h2>
-          </div>
-          <div className="flex flex-col md:items-end gap-3">
-            <p className="text-sm md:text-base text-zinc-400 max-w-lg leading-relaxed font-mono md:text-right">
-              We help D2C brands build fast, reliable websites, connect their sales tools, and create smooth shopping journeys that keep customers coming back.
-            </p>
-
-            {/* Carousel Navigation Buttons */}
-            <div className="hidden sm:flex items-center gap-2 pt-2">
-              <span className="text-xs font-mono text-zinc-500 mr-2">
-                Scroll Services ({filteredServices.length})
+            
+            {/* Nav Arrows & Indicator */}
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-mono text-zinc-500">
+                Auto-scrolls with page • {filteredServices.length} Services
               </span>
-              <button
-                type="button"
-                onClick={() => scroll("left")}
-                className="w-10 h-10 rounded-full bg-white/5 border border-white/10 hover:border-orange-500/50 hover:bg-white/10 text-zinc-300 hover:text-white flex items-center justify-center transition-all cursor-pointer"
-                title="Scroll Left"
-                aria-label="Previous Service"
-              >
-                ←
-              </button>
-              <button
-                type="button"
-                onClick={() => scroll("right")}
-                className="w-10 h-10 rounded-full bg-white/5 border border-white/10 hover:border-orange-500/50 hover:bg-white/10 text-zinc-300 hover:text-white flex items-center justify-center transition-all cursor-pointer"
-                title="Scroll Right"
-                aria-label="Next Service"
-              >
-                →
-              </button>
+              <div className="hidden sm:flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => handleStep("left")}
+                  className="w-8 h-8 rounded-full bg-white/5 border border-white/10 hover:border-orange-500/50 hover:bg-white/10 text-zinc-300 hover:text-white flex items-center justify-center transition-all cursor-pointer text-xs"
+                  title="Scroll back"
+                >
+                  ←
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleStep("right")}
+                  className="w-8 h-8 rounded-full bg-white/5 border border-white/10 hover:border-orange-500/50 hover:bg-white/10 text-zinc-300 hover:text-white flex items-center justify-center transition-all cursor-pointer text-xs"
+                  title="Scroll forward"
+                >
+                  →
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Filter Pills & Mobile Controls */}
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-8">
-          <div className="flex flex-wrap gap-2">
+          {/* Filter Pills */}
+          <div className="flex flex-wrap gap-2 mb-2">
             {[
               { id: "all", label: "All Services (11)" },
               { id: "commerce", label: "E-Commerce & CX" },
@@ -316,7 +341,7 @@ export function KaviroxServices() {
               <button
                 key={tab.id}
                 onClick={() => handleFilterChange(tab.id)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-mono transition-all duration-200 cursor-pointer ${
+                className={`px-3 py-1 rounded-full text-xs font-mono transition-all duration-200 cursor-pointer ${
                   selectedFilter === tab.id
                     ? "bg-orange-600 text-white font-semibold shadow-lg shadow-orange-600/20"
                     : "bg-zinc-900/80 text-zinc-400 border border-white/10 hover:border-white/20 hover:text-white"
@@ -326,91 +351,87 @@ export function KaviroxServices() {
               </button>
             ))}
           </div>
-
-          <div className="text-[11px] font-mono text-zinc-500 flex items-center gap-1.5">
-            <span>Drag or swipe horizontally</span>
-            <span className="text-orange-400 animate-pulse">→</span>
-          </div>
         </div>
 
-        {/* Horizontally Scrollable Services Carousel */}
-        <div 
-          ref={scrollContainerRef}
-          onScroll={handleScroll}
-          className="flex gap-6 overflow-x-auto pb-8 pt-2 scroll-smooth snap-x snap-mandatory scrollbar-thin scrollbar-thumb-orange-500/30 scrollbar-track-white/5 focus:outline-none select-none"
-          style={{
-            scrollbarWidth: "thin",
-            scrollbarColor: "rgba(234, 88, 12, 0.3) rgba(255, 255, 255, 0.05)"
-          }}
-        >
-          {filteredServices.map((service) => {
-            const Icon = service.icon;
-            return (
-              <div
-                key={service.id}
-                className="w-[310px] sm:w-[360px] md:w-[400px] shrink-0 snap-start group relative rounded-2xl bg-zinc-900/60 backdrop-blur-md border border-white/10 hover:border-orange-500/40 p-6 md:p-7 transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between"
-              >
-                {/* Header: Number & Icon */}
-                <div>
-                  <div className="flex items-center justify-between mb-5">
-                    <span className="text-xs font-mono tracking-widest text-orange-400 border border-orange-500/30 px-2.5 py-0.5 rounded-full bg-orange-500/5">
-                      SERVICE {service.number}
-                    </span>
-                    <div className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-zinc-300 group-hover:text-orange-400 group-hover:border-orange-500/30 transition-colors">
-                      <Icon className="w-5 h-5" />
+        {/* Middle: Horizontal Cards Track (Scrolls automatically with page vertical scroll) */}
+        <div className="my-auto w-full overflow-visible py-3">
+          <div 
+            ref={trackRef}
+            className="flex gap-6 items-stretch will-change-transform max-w-none pl-2 sm:pl-6 md:pl-12"
+          >
+            {filteredServices.map((service) => {
+              const Icon = service.icon;
+              return (
+                <div
+                  key={service.id}
+                  className="w-[300px] sm:w-[350px] md:w-[380px] lg:w-[410px] h-[370px] sm:h-[390px] md:h-[410px] shrink-0 rounded-2xl bg-zinc-900/70 backdrop-blur-xl border border-white/10 hover:border-orange-500/50 p-5 md:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-orange-500/10 flex flex-col justify-between group"
+                >
+                  {/* Card Header & Content */}
+                  <div>
+                    <div className="flex items-center justify-between mb-3.5">
+                      <span className="text-[11px] font-mono tracking-widest text-orange-400 border border-orange-500/30 px-2 py-0.5 rounded-full bg-orange-500/5">
+                        SERVICE {service.number}
+                      </span>
+                      <div className="p-2 rounded-xl bg-white/5 border border-white/10 text-zinc-300 group-hover:text-orange-400 group-hover:border-orange-500/30 transition-colors">
+                        <Icon className="w-4 h-4" />
+                      </div>
+                    </div>
+
+                    <h3 className="text-base sm:text-lg font-semibold tracking-tight text-white mb-1.5 group-hover:text-orange-400 transition-colors line-clamp-2">
+                      {service.title}
+                    </h3>
+                    <p className="text-xs text-zinc-400 leading-relaxed mb-3.5 font-mono line-clamp-2">
+                      {service.tagline}
+                    </p>
+
+                    {/* Deliverables Checklist */}
+                    <div className="space-y-1.5 pt-3 border-t border-white/5">
+                      {service.deliverables.slice(0, 3).map((item, idx) => (
+                        <div key={idx} className="flex items-start gap-2 text-[11px] text-zinc-300">
+                          <CheckCircle2 className="w-3 h-3 text-orange-400 shrink-0 mt-0.5" />
+                          <span className="leading-snug line-clamp-1">{item}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
 
-                  {/* Title & Tagline */}
-                  <h3 className="text-lg sm:text-xl font-medium tracking-tight text-white mb-2 group-hover:text-orange-400 transition-colors line-clamp-2">
-                    {service.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed mb-5 font-mono line-clamp-3">
-                    {service.tagline}
-                  </p>
-
-                  {/* Deliverables Checklist */}
-                  <div className="space-y-2 mb-6 pt-4 border-t border-white/5">
-                    {service.deliverables.slice(0, 4).map((item, idx) => (
-                      <div key={idx} className="flex items-start gap-2.5 text-xs text-zinc-300">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-orange-400 shrink-0 mt-0.5" />
-                        <span className="leading-snug line-clamp-2">{item}</span>
-                      </div>
-                    ))}
+                  {/* Tech Tools Footer */}
+                  <div className="pt-3 border-t border-white/10">
+                    <div className="flex flex-wrap gap-1">
+                      {service.tools.slice(0, 4).map((tool) => (
+                        <span
+                          key={tool}
+                          className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-zinc-400"
+                        >
+                          {tool}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
-
-                {/* Tech Tools Footer */}
-                <div className="pt-4 border-t border-white/10">
-                  <div className="flex flex-wrap gap-1.5">
-                    {service.tools.map((tool) => (
-                      <span
-                        key={tool}
-                        className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/5 border border-white/10 text-zinc-400"
-                      >
-                        {tool}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
 
-        {/* Scroll Progress Bar */}
-        <div className="mt-4 flex items-center gap-4">
-          <div className="h-1 flex-1 bg-white/5 rounded-full overflow-hidden">
+        {/* Bottom: Live Scroll Progress Bar */}
+        <div className="max-w-7xl mx-auto w-full pt-2">
+          <div className="flex items-center justify-between text-[11px] font-mono text-zinc-500 mb-1.5">
+            <span className="flex items-center gap-1.5">
+              <span>Scroll down page to browse all services</span>
+              <span className="text-orange-400 animate-pulse">↓</span>
+            </span>
+            <span className="text-orange-400 font-medium">
+              {Math.round(scrollProgress)}% Scrolled
+            </span>
+          </div>
+          <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
             <div 
-              className="h-full bg-gradient-to-r from-orange-500 to-amber-400 rounded-full transition-all duration-150"
-              style={{ width: `${Math.max(8, scrollProgress)}%` }}
+              className="h-full bg-gradient-to-r from-orange-500 to-amber-400 rounded-full transition-all duration-75"
+              style={{ width: `${Math.max(6, scrollProgress)}%` }}
             />
           </div>
-          <span className="text-[11px] font-mono text-zinc-500 shrink-0">
-            {Math.round(scrollProgress)}% Scrolled
-          </span>
         </div>
-
       </div>
     </section>
   );
