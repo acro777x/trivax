@@ -24,6 +24,21 @@ export function App() {
       {/* Global Translucent Frosted Floating Navbar */}
       <FloatingNavbar />
 
+      {/* Global Right-Edge Vertical Ribbon Badge (Visible across all sections & pages) */}
+      <a 
+        href={getInquiryWebmailUrl({ source: "Global Side Ribbon" })}
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Start a Project with Kavirox (Opens Pre-Written Email in Gmail Web)"
+        className="fixed right-0 top-1/2 -translate-y-1/2 z-30 flex items-center group cursor-pointer select-none"
+      >
+        <div className="bg-orange-600 hover:bg-orange-500 text-white py-5 sm:py-6 px-2 sm:px-2.5 text-[11px] sm:text-xs font-bold tracking-widest uppercase shadow-2xl rounded-l-md sm:rounded-l-lg border-l border-t border-b border-orange-400/40 transition-all duration-200 group-hover:translate-x-[-3px] group-hover:shadow-[0_0_25px_rgba(234,88,12,0.45)]">
+          <span className="rotate-180 [writing-mode:vertical-rl] block">
+            Kavirox.space • Tech & Growth
+          </span>
+        </div>
+      </a>
+
       {/* 1. Main Hero with Kavirox Logo in Top Left & ThreeUI Chromatic Wordmark Physics */}
       <KaviroxEditorialHero />
 

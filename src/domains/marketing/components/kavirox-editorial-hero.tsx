@@ -11,7 +11,6 @@ export function KaviroxEditorialHero() {
   const heroContainerRef = useRef<HTMLDivElement>(null);
   const badgeRef = useRef<HTMLDivElement>(null);
   const heartRef = useRef<HTMLDivElement>(null);
-  const ribbonRef = useRef<HTMLAnchorElement>(null);
 
   // GSAP Entrance and continuous chromatic animations
   useEffect(() => {
@@ -58,18 +57,7 @@ export function KaviroxEditorialHero() {
         });
       }
 
-      // 5. Floating Ribbon Animation
-      if (ribbonRef.current) {
-        gsap.to(ribbonRef.current, {
-          y: "+=10",
-          duration: 2.2,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut"
-        });
-      }
-
-      // 6. Interactive Mouse Parallax
+      // 5. Interactive Mouse Parallax
       const handleMouseMove = (e: MouseEvent) => {
         const { innerWidth, innerHeight } = window;
         const xNorm = (e.clientX / innerWidth - 0.5) * 2;
@@ -293,22 +281,6 @@ export function KaviroxEditorialHero() {
             <Threads />
           </a>
         </div>
-
-        {/* Fixed Right Edge Vertical Ribbon Badge (Interactive Contact Option) */}
-        <a 
-          ref={ribbonRef}
-          href={getInquiryWebmailUrl({ source: "Hero Side Ribbon" })}
-          target="_blank"
-          rel="noopener noreferrer"
-          title="Start a Project with Kavirox (Opens Pre-Written Email in Gmail Web)"
-          className="fixed right-0 top-1/2 -translate-y-1/2 z-20 hidden sm:flex items-center group cursor-pointer"
-        >
-          <div className="bg-orange-600 group-hover:bg-orange-500 text-white py-6 px-2.5 text-xs font-bold tracking-widest uppercase shadow-xl rounded-l-md border-l border-t border-b border-orange-400/40 transition-all duration-200 group-hover:translate-x-[-3px]">
-            <span className="rotate-180 [writing-mode:vertical-rl]">
-              Kavirox.space • Tech & Growth
-            </span>
-          </div>
-        </a>
       </footer>
     </div>
   );
