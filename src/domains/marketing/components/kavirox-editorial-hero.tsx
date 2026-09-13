@@ -88,7 +88,7 @@ export function KaviroxEditorialHero() {
   return (
     <div 
       ref={heroContainerRef}
-      className="min-h-screen relative bg-[#09090b] text-[#fafafa] overflow-hidden selection:bg-orange-500/30 selection:text-white font-sans flex flex-col justify-between"
+      className="min-h-screen relative z-10 bg-transparent text-[#fafafa] overflow-hidden selection:bg-orange-500/30 selection:text-white font-sans flex flex-col justify-between"
     >
       {/* Subtle Dot Matrix Grid with GSAP Parallax */}
       <div 

@@ -141,7 +141,7 @@ export function KaviroxSolutions() {
   return (
     <section 
       id="solutions" 
-      className="relative z-10 bg-[#09090b] text-[#fafafa] py-24 md:py-36 border-t border-white/10 overflow-hidden"
+      className="relative z-10 bg-transparent text-[#fafafa] py-24 md:py-36 border-t border-white/10 overflow-hidden"
     >
       {/* Background Grid Pattern */}
       <div 
@@ -185,8 +185,8 @@ export function KaviroxSolutions() {
                 onClick={() => setActiveId(item.id)}
                 className={`text-left p-4 md:p-5 rounded-lg border transition-all duration-300 relative ${
                   isActive
-                    ? "bg-zinc-900/90 border-orange-500 shadow-lg shadow-orange-500/10"
-                    : "bg-zinc-950/40 border-white/5 hover:border-white/20 hover:bg-zinc-900/40"
+                    ? "bg-zinc-900/50 border-orange-500 shadow-lg shadow-orange-500/10 backdrop-blur-md"
+                    : "bg-zinc-950/20 border-white/5 hover:border-white/20 hover:bg-zinc-900/30 backdrop-blur-sm"
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
@@ -209,7 +209,7 @@ export function KaviroxSolutions() {
         {/* Active Solution Showcase */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left Column: Solution Detail & Deliverables */}
-          <div className="lg:col-span-7 bg-zinc-900/60 border border-white/10 rounded-2xl p-6 md:p-10 backdrop-blur-sm">
+          <div className="lg:col-span-7 bg-zinc-900/25 border border-white/10 rounded-2xl p-6 md:p-10 backdrop-blur-md">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-xs font-mono mb-4">
               <Cpu className="w-3.5 h-3.5" />
               {activeSolution.tag}
@@ -264,7 +264,7 @@ export function KaviroxSolutions() {
           {/* Right Column: Blueprint & Measurable Impact */}
           <div className="lg:col-span-5 space-y-6">
             {/* System Blueprint Card */}
-            <div className="bg-zinc-950 border border-white/10 rounded-2xl p-6 md:p-8 relative overflow-hidden font-mono">
+            <div className="bg-zinc-950/35 border border-white/10 rounded-2xl p-6 md:p-8 relative overflow-hidden font-mono backdrop-blur-md">
               <div className="flex items-center justify-between pb-4 mb-4 border-b border-white/10 text-xs text-zinc-400">
                 <span className="flex items-center gap-2">
                   <Terminal className="w-4 h-4 text-orange-500" />
@@ -276,7 +276,7 @@ export function KaviroxSolutions() {
               <div className="space-y-4 text-xs">
                 <div>
                   <div className="text-zinc-500 text-[10px] uppercase tracking-wider mb-1">01. TRIGGER</div>
-                  <div className="p-2.5 rounded bg-zinc-900/80 border border-white/5 text-zinc-200">
+                  <div className="p-2.5 rounded bg-zinc-900/60 border border-white/5 text-zinc-200">
                     {activeSolution.blueprint.input}
                   </div>
                 </div>
@@ -306,7 +306,7 @@ export function KaviroxSolutions() {
             </div>
 
             {/* Metrics Grid */}
-            <div className="bg-zinc-900/40 border border-white/10 rounded-2xl p-6 md:p-8">
+            <div className="bg-zinc-900/25 border border-white/10 rounded-2xl p-6 md:p-8 backdrop-blur-md">
               <div className="text-xs uppercase font-mono tracking-widest text-zinc-400 mb-6 flex items-center justify-between">
                 <span>Results We Aim For</span>
                 <TrendingUp className="w-4 h-4 text-emerald-400" />

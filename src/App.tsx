@@ -91,8 +91,8 @@ export function App() {
       {/* 4. Capabilities Section: Complete Tooling Stack, Delivery Lifecycle & Engagement Models */}
       <KaviroxCapabilities />
 
-      {/* Global Studio Footer & Contact Anchor (Clean, Brutalist) */}
-      <footer id="contact" className="relative z-10 bg-zinc-950 border-t border-white/10 pt-16 pb-12 text-zinc-400 font-sans">
+      {/* Global Studio Footer & Contact Anchor (Clean, Brutalist, Translucent) */}
+      <footer id="contact" className="relative z-10 bg-zinc-950/40 backdrop-blur-md border-t border-white/10 pt-16 pb-12 text-zinc-400 font-sans">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-12 border-b border-white/10 items-start">
             <div className="md:col-span-6 space-y-4">

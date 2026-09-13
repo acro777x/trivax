@@ -279,7 +279,7 @@ export function KaviroxServices() {
   };
 
   return (
-    <section ref={sectionRef} id="services" className="relative bg-[#09090b] text-[#fafafa] border-t border-white/10">
+    <section ref={sectionRef} id="services" className="relative z-10 bg-transparent text-[#fafafa] border-t border-white/10">
       {/* Pinned Screen Viewport: stays pinned while user scrolls vertically */}
       <div 
         ref={triggerRef}
@@ -318,7 +318,7 @@ export function KaviroxServices() {
                 className={`px-3 py-1 rounded-full text-xs font-mono transition-all duration-200 cursor-pointer ${
                   selectedFilter === tab.id
                     ? "bg-orange-600 text-white font-semibold shadow-lg shadow-orange-600/20"
-                    : "bg-zinc-900/80 text-zinc-400 border border-white/10 hover:border-white/20 hover:text-white"
+                    : "bg-zinc-900/35 backdrop-blur-md text-zinc-400 border border-white/10 hover:border-white/20 hover:text-white"
                 }`}
               >
                 {tab.label}
@@ -338,7 +338,7 @@ export function KaviroxServices() {
               return (
                 <div
                   key={service.id}
-                  className="w-[300px] sm:w-[350px] md:w-[380px] lg:w-[410px] h-[370px] sm:h-[390px] md:h-[410px] shrink-0 rounded-2xl bg-zinc-900/70 backdrop-blur-xl border border-white/10 hover:border-orange-500/50 p-5 md:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-orange-500/10 flex flex-col justify-between group"
+                  className="w-[300px] sm:w-[350px] md:w-[380px] lg:w-[410px] h-[370px] sm:h-[390px] md:h-[410px] shrink-0 rounded-2xl bg-zinc-900/25 backdrop-blur-md border border-white/10 hover:border-orange-500/50 hover:bg-zinc-900/40 p-5 md:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-orange-500/15 flex flex-col justify-between group"
                 >
                   {/* Card Header & Content */}
                   <div>

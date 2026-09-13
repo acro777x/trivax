@@ -157,7 +157,7 @@ export default function TubesCursor({
   if (backgroundOnly) {
     return (
       <div 
-        className="pointer-events-none fixed inset-0 z-30 w-screen h-screen overflow-hidden mix-blend-screen"
+        className="pointer-events-none fixed inset-0 z-0 w-screen h-screen overflow-hidden"
         aria-hidden="true"
       >
         <canvas 

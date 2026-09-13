@@ -138,7 +138,7 @@ export function KaviroxCapabilities() {
   return (
     <section 
       id="capabilities" 
-      className="relative z-10 bg-[#09090b] text-[#fafafa] py-24 md:py-36 border-t border-white/10 overflow-hidden font-sans"
+      className="relative z-10 bg-transparent text-[#fafafa] py-24 md:py-36 border-t border-white/10 overflow-hidden font-sans"
     >
       {/* Background Dot Matrix */}
       <div 
@@ -179,7 +179,7 @@ export function KaviroxCapabilities() {
             {techCategories.map((cat, idx) => (
               <div 
                 key={idx} 
-                className="p-6 rounded-xl bg-zinc-900/50 border border-white/5 hover:border-white/20 transition-colors"
+                className="p-6 rounded-xl bg-zinc-900/25 border border-white/10 backdrop-blur-md hover:border-white/20 hover:bg-zinc-900/35 transition-all"
               >
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-sm font-semibold text-zinc-200">{cat.title}</span>
@@ -214,8 +214,8 @@ export function KaviroxCapabilities() {
               const Icon = step.icon;
               return (
                 <div 
-                  key={idx}
-                  className="p-6 rounded-xl bg-zinc-950 border border-white/5 relative group hover:border-orange-500/40 transition-all duration-300"
+                  key={idx} 
+                  className="p-6 rounded-xl bg-zinc-950/30 border border-white/10 backdrop-blur-md relative group hover:border-orange-500/40 hover:bg-zinc-900/30 transition-all duration-300"
                 >
                   <div className="flex items-center justify-between mb-4">
                     <span className="text-2xl font-mono font-light text-orange-500">
@@ -248,10 +248,10 @@ export function KaviroxCapabilities() {
             {engagementModels.map((model, idx) => (
               <div 
                 key={idx}
-                className={`p-8 rounded-2xl border flex flex-col justify-between transition-all duration-300 ${
+                className={`p-8 rounded-2xl border flex flex-col justify-between transition-all duration-300 backdrop-blur-md ${
                   model.highlighted
-                    ? "bg-zinc-900/90 border-orange-500 shadow-2xl shadow-orange-500/10 relative"
-                    : "bg-zinc-950/60 border-white/10 hover:border-white/20"
+                    ? "bg-zinc-900/45 border-orange-500 shadow-2xl shadow-orange-500/10 relative"
+                    : "bg-zinc-950/25 border-white/10 hover:border-white/20 hover:bg-zinc-900/35"
                 }`}
               >
                 <div>
