@@ -90,7 +90,7 @@ export function MobileHero() {
 
       {/* Campus metadata footer */}
       <div className="pt-8 mt-6 border-t border-white/5 flex items-center justify-between text-[11px] font-mono text-zinc-500">
-        <span>GREATER NOIDA • GBU CAMPUS</span>
+        <span>GREATER NOIDA, INDIA</span>
         <span className="text-orange-400 font-semibold">kavirox.space</span>
       </div>
     </section>

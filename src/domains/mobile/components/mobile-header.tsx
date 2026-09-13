@@ -23,10 +23,6 @@ export function MobileHeader() {
           <span>KAVIROX</span>
         </div>
 
-        <div className="flex items-center gap-1.5 pl-2 border-l border-white/10 text-[10px] font-mono text-emerald-400">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="text-zinc-400">GBU Incubation</span>
-        </div>
       </a>
 
       {/* Direct Inquiry CTA */}

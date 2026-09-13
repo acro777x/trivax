@@ -122,12 +122,11 @@ export function KaviroxEditorialHero() {
               </div>
             </div>
 
-            <div className="hidden sm:flex flex-col border-l border-white/10 pl-3">
+            <div className="hidden sm:flex items-center border-l border-white/10 pl-3">
               <span className="text-[10px] uppercase tracking-widest text-emerald-400 flex items-center gap-1.5 font-mono">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 Technology & Growth Partner
               </span>
-              <span className="text-[11px] text-white/40 font-mono">GBU Incubation</span>
             </div>
           </a>
         </div>
@@ -222,7 +221,7 @@ export function KaviroxEditorialHero() {
           <Separator className="w-full my-6 mx-auto max-w-5xl bg-white/10" />
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 max-w-5xl mx-auto w-full px-2">
             <div className="text-[11px] md:text-xs tracking-widest uppercase font-mono text-zinc-500 whitespace-nowrap select-none">
-              GREATER NOIDA, INDIA • GBU CAMPUS 201312
+              GREATER NOIDA, INDIA • 201312
             </div>
             <div className="flex items-baseline gap-2.5 sm:gap-3.5 whitespace-nowrap shrink-0">
               <span className="text-xs sm:text-sm md:text-base font-extralight tracking-wider text-zinc-400 uppercase whitespace-nowrap select-none">

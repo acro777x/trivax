@@ -554,7 +554,7 @@ Would you like a complimentary store audit?`;
 • **Technical Audits**: Fix crawl errors, canonical tags, and mobile usability.
 • **Rich Schema**: JSON-LD structured data for rich Google product cards.`;
   } else if (explicitTopicInCurrentQuery === "team") {
-    reply = `**Kavirox** is a digital engineering studio incubated at **GBU Incubation, Greater Noida, India**.
+    reply = `**Kavirox** is a digital engineering studio founded at **GBU Incubation Center (AIC-GBU), Greater Noida, India**.
 
 We are a hands-on squad of software engineers working directly with brands with daily Slack updates and zero agency overhead.`;
   }
@@ -572,7 +572,7 @@ We are a hands-on squad of software engineers working directly with brands with 
     reply = `Ready to build? Getting started is straightforward:
 
 • **Email**: info@kavirox.space
-• **Location**: GBU Incubation, Greater Noida, India
+• **Location**: GBU Incubation Center (AIC-GBU), Greater Noida, India
 • **Interactive Brief**: Click the button below to launch our pre-written project brief in Gmail!`;
   }
   // 14. Intelligent Context-Aware Fallback

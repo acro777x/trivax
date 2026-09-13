@@ -64,7 +64,7 @@ export function KaviroxMobileView() {
 
           <div className="flex items-center gap-2 text-xs font-mono text-emerald-400 pt-1">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span>GBU Incubation • Greater Noida 201312</span>
+            <span>Founded at GBU Incubation Center (AIC-GBU) • Greater Noida 201312</span>
           </div>
 
           {/* Primary Action Button */}

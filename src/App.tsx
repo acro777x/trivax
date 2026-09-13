@@ -95,7 +95,7 @@ export function App() {
               </p>
               <div className="flex items-center gap-2 text-xs font-mono text-emerald-400">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                GBU Incubation • Greater Noida, Uttar Pradesh 201312
+                Founded at GBU Incubation Center (AIC-GBU) • Greater Noida, Uttar Pradesh 201312
               </div>
             </div>
 

@@ -7,7 +7,7 @@ export const STUDIO_IDENTITY = {
   name: "Kavirox",
   domain: "kavirox.space",
   tagline: "Technology and e-commerce studio helping consumer and D2C brands build faster online stores, automate customer messaging, and turn visitors into regular buyers.",
-  headquarters: "GBU Incubation, Gautam Buddha University Campus, Greater Noida, Uttar Pradesh 201312, India",
+  headquarters: "GBU Incubation Center (AIC-GBU), Greater Noida, Uttar Pradesh 201312, India",
   primaryEmail: "info@kavirox.space",
   socials: {
     linkedin: "https://www.linkedin.com/company/kavirox/posts/?feedView=all",
@@ -223,7 +223,7 @@ KAVIROX PROFILE:
 - Name: Kavirox Studio
 - Website: kavirox.space
 - Mission: Digital Systems & Growth Engineering for consumer & D2C brands.
-- Location: GBU Incubation, Gautam Buddha University Campus, Greater Noida, UP 201312, India.
+- Location: GBU Incubation Center (AIC-GBU), Greater Noida, UP 201312, India.
 - Inquiries Email: info@kavirox.space
 
 TONE & PERSONALITY:

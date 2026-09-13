@@ -33,7 +33,7 @@ export const KaviroxHero: React.FC = () => {
           ctaButtonText="Start a Project"
           ctaButtonHref="#services"
           badgeLabel="Startup Studio"
-          badgeText="Founded at Gautam Buddha University • gbu.ac.in"
+          badgeText="Founded at GBU Incubation Center (AIC-GBU)"
           title="Kavirox"
           titleLine2="The launchpad for next-gen ideas"
           description="We help ambitious brands build fast, reliable online stores, automate customer messaging, and create digital experiences people love."
@@ -41,11 +41,11 @@ export const KaviroxHero: React.FC = () => {
           primaryButtonHref="#services"
           secondaryButtonText="Work With Us"
           secondaryButtonHref="#contracting"
-          partnersTitle="Founded & Incubated at Academic Institution"
+          partnersTitle="Incubation"
           partners={[
             {
-              name: "Gautam Buddha University",
-              sublabel: "Founding Campus • gbu.ac.in",
+              name: "GBU Incubation Center (AIC-GBU)",
+              sublabel: "AIC-GBU Incubation Center",
               logoUrl: "/assets/gbu-logo.jpg",
               href: "https://www.gbu.ac.in/"
             }

@@ -10,15 +10,7 @@ export const Footer: React.FC = () => {
         </div>
 
         <p className="text-xs text-white/50 font-sans text-center md:text-left">
-          Digital Engineering & Technology Solutions • Founded at{' '}
-          <a
-            href="https://www.gbu.ac.in/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-white hover:underline"
-          >
-            Gautam Buddha University
-          </a>
+          Digital Engineering & Technology Solutions • Founded at GBU Incubation Center (AIC-GBU)
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-white/70 font-sans">
