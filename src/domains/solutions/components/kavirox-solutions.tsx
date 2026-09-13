@@ -155,22 +155,22 @@ export function KaviroxSolutions() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-12 border-b border-white/10">
-          <div>
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-12 border-b border-white/10">
+          <div className="shrink-0">
             <div className="flex items-center gap-2 mb-3">
               <span className="h-2 w-2 rounded-full bg-orange-500 animate-pulse" />
               <span className="text-xs uppercase font-mono tracking-widest text-orange-400">
                 Practical Solutions
               </span>
             </div>
-            <h2 className="text-4xl md:text-6xl font-light tracking-tight">
-              Systems We{" "}
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight whitespace-nowrap inline-flex items-baseline flex-nowrap gap-x-2 sm:gap-x-3">
+              <span>Systems We</span>
               <span className="font-bold italic text-white inline-block cursor-pointer">
                 <ChromaticText text="Build For You" seed={6623} delay={0.1} duration={1.2} />
               </span>
             </h2>
           </div>
-          <p className="text-sm md:text-base text-zinc-400 font-mono max-w-md">
+          <p className="text-sm md:text-base text-zinc-400 font-mono max-w-md lg:text-right">
             Simple, reliable systems built to help your store load faster, recover lost sales, and make shopping effortless for your customers.
           </p>
         </div>
