@@ -1,4 +1,5 @@
 import React, { useState, useRef, useLayoutEffect, cloneElement } from 'react';
+import { cn } from "@/lib/utils";
 
 // --- Internal Types and Defaults ---
 
@@ -104,7 +105,7 @@ export const LimelightNav = ({
   };
 
   return (
-    <nav className={`relative inline-flex items-center h-16 rounded-lg bg-card text-foreground border px-2 ${className || ''}`}>
+    <nav className={cn("relative inline-flex items-center h-16 rounded-lg bg-card text-foreground border px-2", className)}>
       {items.map(({ id, icon, label, onClick, showLabel }, index) => {
         const shouldShowLabel = showLabels || showLabel || false;
         return (

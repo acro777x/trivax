@@ -4,7 +4,7 @@ import { getInquiryWebmailUrl } from "@/shared/lib/email-inquiry";
 
 export function MobileHeader() {
   return (
-    <header className="sticky top-0 z-40 w-full bg-zinc-950/75 backdrop-blur-xl border-b border-white/10 px-4 py-3 flex items-center justify-between transition-all">
+    <header className="sticky top-0 z-40 w-full bg-zinc-950/40 backdrop-blur-md border-b border-white/10 px-4 py-3 flex items-center justify-between transition-all">
       {/* Logo & Incubator Label */}
       <a href="#" className="flex items-center gap-2.5 focus:outline-none">
         <img

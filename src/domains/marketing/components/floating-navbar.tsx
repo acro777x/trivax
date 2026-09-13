@@ -145,11 +145,11 @@ export function FloatingNavbar() {
           activeIndex={activeIndex}
           onTabChange={(index) => setActiveIndex(index)}
           showLabels={true}
-          className={`h-11 sm:h-12 rounded-full transition-all duration-300 px-1 sm:px-2 ${
+          className={`h-11 sm:h-12 rounded-full transition-all duration-300 px-1 sm:px-2 border border-white/10 backdrop-blur-md ${
             isScrolled
-              ? "bg-[#0e0e12]/90 border-white/15 shadow-[0_20px_48px_-12px_rgba(0,0,0,0.85),inset_0_1px_0_0_rgba(255,255,255,0.2)]"
-              : "bg-[#121218]/80 border-white/12 shadow-[0_12px_36px_-8px_rgba(0,0,0,0.6),inset_0_1px_0_0_rgba(255,255,255,0.15)]"
-          } backdrop-blur-2xl`}
+              ? "bg-zinc-900/35 border-white/15 shadow-xl shadow-black/40"
+              : "bg-zinc-900/20 hover:bg-zinc-900/30 shadow-lg shadow-black/20"
+          }`}
           limelightClassName="bg-orange-500 shadow-[0_25px_15px_rgba(249,115,22,0.95)]"
           iconContainerClassName="px-2.5 sm:px-3.5 py-1 text-xs sm:text-[13px]"
         />
