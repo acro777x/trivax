@@ -8,15 +8,13 @@ import KaviroxSolutions from '@/domains/solutions/components/kavirox-solutions';
 import KaviroxCapabilities from '@/domains/capabilities/components/kavirox-capabilities';
 import KaviroxChatbot from '@/domains/chatbot/components/kavirox-chatbot';
 import TubesCursor from '@/components/ui/tubes-curor';
-import DemoOne from '@/components/ui/demo';
-import { ArrowUpRight, Heart, Copy, Check, Sparkles } from 'lucide-react';
+import { ArrowUpRight, Heart, Copy, Check } from 'lucide-react';
 import { LinkedIn, Instagram, X, Threads } from '@aliimam/logos';
 import { getInquiryWebmailUrl, copyInquiryTemplate } from '@/shared/lib/email-inquiry';
 
 export function App() {
   const isMobile = useIsMobile();
   const [copiedTemplate, setCopiedTemplate] = useState(false);
-  const [showDemo, setShowDemo] = useState(false);
 
   // If viewing on mobile screen (< 768px), render dedicated touch-optimized mobile experience
   if (isMobile) {
@@ -40,35 +38,6 @@ export function App() {
         lightsColors={["#ff5a1f", "#9333ea", "#3b82f6", "#06b6d4"]} 
         lightsIntensity={180} 
       />
-
-      {/* Fullscreen Demo Modal */}
-      {showDemo && (
-        <div className="fixed inset-0 z-50 bg-black">
-          <DemoOne />
-          <button
-            type="button"
-            onClick={() => setShowDemo(false)}
-            className="fixed top-6 right-6 z-50 flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900/90 hover:bg-zinc-800 text-white border border-white/20 text-xs font-mono font-medium shadow-2xl backdrop-blur cursor-pointer transition-all hover:scale-105"
-          >
-            <span>✕ Close Demo</span>
-          </button>
-        </div>
-      )}
-
-      {/* Quick Launch Floating Badge for Standalone Tubes Cursor Demo */}
-      <button
-        type="button"
-        onClick={() => setShowDemo(true)}
-        className="fixed left-4 bottom-5 z-40 flex items-center gap-2 px-3.5 py-2 rounded-full bg-zinc-900/90 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-orange-500/30 hover:border-orange-500/60 text-xs font-mono shadow-2xl backdrop-blur transition-all hover:scale-105 cursor-pointer group"
-        title="Open Fullscreen Interactive Tubes Cursor Demo"
-      >
-        <span className="w-2 h-2 rounded-full bg-orange-500 group-hover:scale-125 transition-transform" />
-        <span className="flex items-center gap-1.5 font-sans font-medium text-[11px] uppercase tracking-wider">
-          <Sparkles className="w-3 h-3 text-orange-400" />
-          Tubes Cursor Demo
-        </span>
-      </button>
-
 
       {/* Global Translucent Frosted Floating Navbar */}
       <FloatingNavbar />
