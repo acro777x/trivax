@@ -1,0 +1,9 @@
+# Robots.txt for Kavirox Studio (https://kavirox.space)
+User-agent: *
+Allow: /
+
+# Host
+Host: https://kavirox.space
+
+# Sitemap
+Sitemap: https://kavirox.space/sitemap.xml

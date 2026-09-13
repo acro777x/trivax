@@ -29,7 +29,7 @@ export function MobileHero() {
 
         {/* Row 2: PRODUCTS with interactive Badge */}
         <div className="flex items-center">
-          <h1 className="text-5xl sm:text-6xl font-light tracking-tight leading-none flex items-center">
+          <div className="text-5xl sm:text-6xl font-light tracking-tight leading-none flex items-center">
             <ChromaticText text="PR" seed={9051} delay={0.2} duration={1.2} />
             <div className="inline-flex items-center justify-center mx-1 text-orange-500">
               <BadgeQuestionMark
@@ -38,12 +38,12 @@ export function MobileHero() {
               />
             </div>
             <ChromaticText text="DUCTS" seed={4242} delay={0.3} duration={1.2} />
-          </h1>
+          </div>
         </div>
 
         {/* Row 3: DESIGN + Heart + CODE */}
         <div className="flex items-center">
-          <h1 className="text-5xl sm:text-6xl font-light tracking-tight leading-none flex items-center">
+          <div className="text-5xl sm:text-6xl font-light tracking-tight leading-none flex items-center">
             <ChromaticText text="DESIGN" seed={6103} delay={0.4} duration={1.2} />
             <div className="mx-2">
               <svg
@@ -57,7 +57,7 @@ export function MobileHero() {
               </svg>
             </div>
             <ChromaticText text="CODE" seed={8391} delay={0.5} duration={1.2} />
-          </h1>
+          </div>
         </div>
       </div>
 

@@ -157,7 +157,7 @@ export function KaviroxEditorialHero() {
           {/* Headline Row 1: Description + DIGITAL with Chromatic Text Animation */}
           <div className="gsap-headline-row md:flex gap-8 items-center w-full justify-center">
             <p className="text-xs text-zinc-400 md:text-sm text-start md:text-right leading-5 max-w-[240px] md:max-w-[210px] font-mono">
-              Kavirox is a technology, e-commerce, and automation studio founded at Gautam Buddha University.
+              Kavirox is a technology, e-commerce, and automation studio built for high-growth consumer brands.
             </p>
             <h1 className="text-6xl sm:text-7xl md:text-8xl xl:text-[9.5rem] font-light leading-none tracking-tight flex cursor-default select-none">
               <ChromaticText text="DIGITAL" seed={7719} delay={0.15} duration={1.3} />
@@ -166,7 +166,7 @@ export function KaviroxEditorialHero() {
 
           {/* Headline Row 2: PR + Badge + DUCTS + Description */}
           <div className="gsap-headline-row md:flex gap-8 items-center w-full justify-center">
-            <h1 className="text-6xl sm:text-7xl md:text-8xl xl:text-[9.5rem] flex items-center font-light leading-none tracking-tight cursor-default select-none">
+            <div className="text-6xl sm:text-7xl md:text-8xl xl:text-[9.5rem] flex items-center font-light leading-none tracking-tight cursor-default select-none">
               <ChromaticText text="PR" seed={9051} delay={0.25} duration={1.3} />
               <div 
                 ref={badgeRef}
@@ -178,7 +178,7 @@ export function KaviroxEditorialHero() {
                 />
               </div>
               <ChromaticText text="DUCTS" seed={4242} delay={0.32} duration={1.3} />
-            </h1>
+            </div>
             <p className="text-xs text-zinc-400 md:text-sm pt-4 md:pt-0 leading-5 max-w-[260px] md:max-w-[210px] font-mono">
               We build fast online stores, automate customer messaging, and help modern brands grow with confidence.
             </p>
@@ -186,7 +186,7 @@ export function KaviroxEditorialHero() {
 
           {/* Headline Row 3: DESIGN + Heart + CODE with Chromatic Text Animation */}
           <div className="gsap-headline-row md:flex gap-6 items-center w-full justify-center">
-            <h1 className="text-6xl sm:text-7xl md:text-8xl xl:text-[9.5rem] flex items-center font-light leading-none tracking-tight cursor-default select-none">
+            <div className="text-6xl sm:text-7xl md:text-8xl xl:text-[9.5rem] flex items-center font-light leading-none tracking-tight cursor-default select-none">
               <ChromaticText text="DESIGN" seed={6103} delay={0.45} duration={1.3} />
               <div ref={heartRef} className="hidden lg:block mx-3">
                 <svg
@@ -212,7 +212,7 @@ export function KaviroxEditorialHero() {
                 </svg>
               </div>
               <ChromaticText text="CODE" seed={8391} delay={0.55} duration={1.3} />
-            </h1>
+            </div>
           </div>
         </div>
 
