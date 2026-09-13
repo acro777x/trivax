@@ -21,7 +21,7 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-interface ServiceLine {
+export interface ServiceLine {
   id: string;
   number: string;
   category: "commerce" | "automation" | "data-ai" | "engineering";
@@ -32,7 +32,7 @@ interface ServiceLine {
   tools: string[];
 }
 
-const serviceLines: ServiceLine[] = [
+export const serviceLines: ServiceLine[] = [
   {
     id: "ecommerce-ux",
     number: "01",

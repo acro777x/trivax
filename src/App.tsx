@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useIsMobile } from '@/shared/hooks/use-is-mobile';
+import KaviroxMobileView from '@/domains/mobile/kavirox-mobile-view';
 import FloatingNavbar from '@/domains/marketing/components/floating-navbar';
 import KaviroxEditorialHero from '@/domains/marketing/components/kavirox-editorial-hero';
 import KaviroxServices from '@/domains/services/components/kavirox-services';
@@ -12,8 +14,15 @@ import { LinkedIn, Instagram, X, Threads } from '@aliimam/logos';
 import { getInquiryWebmailUrl, copyInquiryTemplate } from '@/shared/lib/email-inquiry';
 
 export function App() {
+  const isMobile = useIsMobile();
   const [copiedTemplate, setCopiedTemplate] = useState(false);
   const [showDemo, setShowDemo] = useState(false);
+
+  // If viewing on mobile screen (< 768px), render dedicated touch-optimized mobile experience
+  if (isMobile) {
+    return <KaviroxMobileView />;
+  }
+
 
   const handleCopyTemplate = async () => {
     const success = await copyInquiryTemplate({ source: "Studio Footer" });

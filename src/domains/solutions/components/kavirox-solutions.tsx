@@ -15,7 +15,7 @@ import {
   Terminal
 } from "lucide-react";
 
-interface SolutionItem {
+export interface SolutionItem {
   id: string;
   tag: string;
   title: string;
@@ -31,7 +31,7 @@ interface SolutionItem {
   };
 }
 
-const solutions: SolutionItem[] = [
+export const solutions: SolutionItem[] = [
   {
     id: "d2c-storefront",
     tag: "Fast Online Stores",

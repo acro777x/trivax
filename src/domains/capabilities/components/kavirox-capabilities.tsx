@@ -27,7 +27,7 @@ interface TechCategory {
   skills: string[];
 }
 
-const techCategories: TechCategory[] = [
+export const techCategories: TechCategory[] = [
   {
     title: "Storefronts & Frontend",
     badge: "UI / UX",
@@ -55,7 +55,7 @@ const techCategories: TechCategory[] = [
   }
 ];
 
-const deliverySteps = [
+export const deliverySteps = [
   {
     step: "01",
     title: "Understanding Your Needs",
@@ -94,7 +94,7 @@ const deliverySteps = [
   }
 ];
 
-const engagementModels = [
+export const engagementModels = [
   {
     title: "Project-Based",
     type: "Clear Goals & Fixed Timeline",
