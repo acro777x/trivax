@@ -6,7 +6,6 @@ import {
   Layers, 
   Mail 
 } from "lucide-react";
-import { getInquiryWebmailUrl } from "@/shared/lib/email-inquiry";
 
 interface NavAction {
   id: string;
@@ -22,11 +21,10 @@ const mobileNavActions: NavAction[] = [
   { id: "solutions", label: "Systems", href: "#solutions", icon: Cpu },
   { id: "capabilities", label: "Stack", href: "#capabilities", icon: Layers },
   { 
-    id: "inquire", 
-    label: "Inquire", 
-    href: getInquiryWebmailUrl({ source: "Mobile Bottom Nav" }), 
+    id: "contact", 
+    label: "Contact", 
+    href: "#contact", 
     icon: Mail,
-    isExternal: true 
   },
 ];
 
@@ -46,7 +44,7 @@ export function MobileBottomNav() {
           const servicesEl = document.getElementById("services");
 
           if (contactEl && contactEl.getBoundingClientRect().top < 400) {
-            setActiveTab("inquire");
+            setActiveTab("contact");
           } else if (capabilitiesEl && capabilitiesEl.getBoundingClientRect().top < 300) {
             setActiveTab("capabilities");
           } else if (solutionsEl && solutionsEl.getBoundingClientRect().top < 300) {
@@ -67,7 +65,7 @@ export function MobileBottomNav() {
   }, []);
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, item: NavAction) => {
-    if (item.isExternal) return; // Opens Gmail compose in new tab / webmail
+    if (item.isExternal) return;
 
     if (item.href === "#") {
       e.preventDefault();
@@ -96,7 +94,6 @@ export function MobileBottomNav() {
       {mobileNavActions.map((item) => {
         const Icon = item.icon;
         const isActive = activeTab === item.id;
-        const isHighlight = item.id === "inquire";
 
         return (
           <a
@@ -106,15 +103,13 @@ export function MobileBottomNav() {
             target={item.isExternal ? "_blank" : undefined}
             rel={item.isExternal ? "noopener noreferrer" : undefined}
             className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all duration-200 select-none relative ${
-              isHighlight
-                ? "text-orange-400 active:scale-90"
-                : isActive
+              isActive
                 ? "text-white active:scale-90"
                 : "text-zinc-500 hover:text-zinc-300 active:scale-95"
             }`}
           >
             {/* Active Glow Pill */}
-            {isActive && !isHighlight && (
+            {isActive && (
               <span className="absolute -top-1.5 w-6 h-1 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.8)]" />
             )}
 
