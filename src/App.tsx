@@ -6,12 +6,14 @@ import KaviroxSolutions from '@/domains/solutions/components/kavirox-solutions';
 import KaviroxCapabilities from '@/domains/capabilities/components/kavirox-capabilities';
 import KaviroxChatbot from '@/domains/chatbot/components/kavirox-chatbot';
 import TubesCursor from '@/components/ui/tubes-curor';
-import { ArrowUpRight, Heart, Copy, Check } from 'lucide-react';
+import DemoOne from '@/components/ui/demo';
+import { ArrowUpRight, Heart, Copy, Check, Sparkles } from 'lucide-react';
 import { LinkedIn, Instagram, X, Threads } from '@aliimam/logos';
 import { getInquiryWebmailUrl, copyInquiryTemplate } from '@/shared/lib/email-inquiry';
 
 export function App() {
   const [copiedTemplate, setCopiedTemplate] = useState(false);
+  const [showDemo, setShowDemo] = useState(false);
 
   const handleCopyTemplate = async () => {
     const success = await copyInquiryTemplate({ source: "Studio Footer" });
@@ -22,13 +24,42 @@ export function App() {
   };
   return (
     <div className="min-h-screen bg-[#09090b] text-[#fafafa] font-sans selection:bg-orange-500/30 selection:text-white relative">
-      {/* 3D Tubes Cursor Interactive Ambient Background Layer */}
+      {/* 3D Tubes Cursor Interactive Ambient Layer (Reactive to mouse, non-blocking) */}
       <TubesCursor 
         backgroundOnly={true} 
-        tubesColors={["#ea580c", "#f97316", "#8b5cf6"]} 
-        lightsColors={["#f97316", "#9333ea", "#3b82f6", "#06b6d4"]} 
-        lightsIntensity={140} 
+        tubesColors={["#ff5a1f", "#f59e0b", "#8b5cf6"]} 
+        lightsColors={["#ff5a1f", "#9333ea", "#3b82f6", "#06b6d4"]} 
+        lightsIntensity={180} 
       />
+
+      {/* Fullscreen Demo Modal */}
+      {showDemo && (
+        <div className="fixed inset-0 z-50 bg-black">
+          <DemoOne />
+          <button
+            type="button"
+            onClick={() => setShowDemo(false)}
+            className="fixed top-6 right-6 z-50 flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900/90 hover:bg-zinc-800 text-white border border-white/20 text-xs font-mono font-medium shadow-2xl backdrop-blur cursor-pointer transition-all hover:scale-105"
+          >
+            <span>✕ Close Demo</span>
+          </button>
+        </div>
+      )}
+
+      {/* Quick Launch Floating Badge for Standalone Tubes Cursor Demo */}
+      <button
+        type="button"
+        onClick={() => setShowDemo(true)}
+        className="fixed left-4 bottom-5 z-40 flex items-center gap-2 px-3.5 py-2 rounded-full bg-zinc-900/90 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-orange-500/30 hover:border-orange-500/60 text-xs font-mono shadow-2xl backdrop-blur transition-all hover:scale-105 cursor-pointer group"
+        title="Open Fullscreen Interactive Tubes Cursor Demo"
+      >
+        <span className="w-2 h-2 rounded-full bg-orange-500 group-hover:scale-125 transition-transform" />
+        <span className="flex items-center gap-1.5 font-sans font-medium text-[11px] uppercase tracking-wider">
+          <Sparkles className="w-3 h-3 text-orange-400" />
+          Tubes Cursor Demo
+        </span>
+      </button>
+
 
       {/* Global Translucent Frosted Floating Navbar */}
       <FloatingNavbar />

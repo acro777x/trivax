@@ -1,4 +1,6 @@
 import React, { useEffect, useRef } from 'react';
+// Direct import from installed package for instantaneous, offline-ready bundling
+import TubesCursorModule from 'threejs-components/build/cursors/tubes1.min.js';
 
 export interface TubesCursorProps {
   className?: string;
@@ -17,7 +19,7 @@ export interface TubesCursorProps {
 // I've renamed the function from "component" to "TubesCursor".
 export default function TubesCursor({
   className = "h-screen w-screen bg-black font-['Montserrat',_sans-serif] overflow-hidden cursor-pointer",
-  tubesColors = ["#5e72e4", "#8965e0", "#f5365c"],
+  tubesColors = ["#f97316", "#8b5cf6", "#f5365c"],
   lightsColors = ["#21d4fd", "#b721ff", "#f4d03f", "#11cdef"],
   lightsIntensity = 200,
   showContent = true,
@@ -42,72 +44,8 @@ export default function TubesCursor({
       .map(() => "#" + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'));
   };
 
-  // This effect runs once when the component mounts
-  useEffect(() => {
-    // The error "Computed radius is NaN" suggests a race condition where the animation 
-    // library initializes before the canvas element has its final dimensions, leading 
-    // to invalid geometry calculations. Delaying the initialization with setTimeout 
-    // ensures the DOM is fully painted and ready.
-    const initTimer = setTimeout(() => {
-      const loadEngine = async () => {
-        try {
-          // Dynamic import from CDN as requested, with fallback to local package
-          const module = await import(
-            /* @vite-ignore */ 'https://cdn.jsdelivr.net/npm/threejs-components@0.0.19/build/cursors/tubes1.min.js'
-          );
-          return module.default || module;
-        } catch (cdnErr) {
-          try {
-            const localMod = await import('threejs-components/build/cursors/tubes1.min.js');
-            return localMod.default || localMod;
-          } catch (localErr) {
-            console.error("Failed to load TubesCursor module:", cdnErr, localErr);
-            return null;
-          }
-        }
-      };
-
-      loadEngine().then((TubesCursorFactory) => {
-        if (!TubesCursorFactory) return;
-
-        // Ensure the canvas element is still available before initializing
-        if (canvasRef.current) {
-          try {
-            // Initialize the TubesCursor animation
-            const app = TubesCursorFactory(canvasRef.current, {
-              tubes: {
-                colors: tubesColors,
-                lights: {
-                  intensity: lightsIntensity,
-                  colors: lightsColors
-                }
-              }
-            });
-            // Store the instance in our ref for later use
-            appRef.current = app;
-          } catch (e) {
-            console.error("Failed to initialize TubesCursor instance:", e);
-          }
-        }
-      });
-    }, 100); // 100ms delay to allow for DOM rendering
-
-    // Cleanup function to dispose of the animation and clear the timeout
-    return () => {
-      clearTimeout(initTimer);
-      // Check if app was initialized and has a dispose method before calling
-      if (appRef.current && typeof appRef.current.dispose === 'function') {
-        try {
-          appRef.current.dispose();
-        } catch {
-          // Ignore disposal errors on unmount
-        }
-      }
-    };
-  }, []); // The empty dependency array ensures this effect runs only once
-
-  // Handles click events on the main container
-  const handleClick = () => {
+  // Handles click events on the main container or window
+  const triggerColorChange = () => {
     if (appRef.current && appRef.current.tubes) {
       const newTubeColors = randomColors(3);
       const newLightColors = randomColors(4);
@@ -122,14 +60,110 @@ export default function TubesCursor({
     }
   };
 
+  // This effect runs once when the component mounts
+  useEffect(() => {
+    let disposed = false;
+    let frameId: number | null = null;
+    let timerId: any = null;
+
+    const resolveFactory = async () => {
+      if (typeof TubesCursorModule === 'function') {
+        return TubesCursorModule;
+      }
+      if (TubesCursorModule && typeof (TubesCursorModule as any).default === 'function') {
+        return (TubesCursorModule as any).default;
+      }
+      try {
+        const cdnModule = await import(
+          /* @vite-ignore */ 'https://cdn.jsdelivr.net/npm/threejs-components@0.0.19/build/cursors/tubes1.min.js'
+        );
+        return cdnModule.default || cdnModule;
+      } catch (err) {
+        console.error("Failed to load TubesCursor module:", err);
+        return null;
+      }
+    };
+
+    const initAnimation = async () => {
+      const TubesFactory = await resolveFactory();
+      if (disposed || !TubesFactory || !canvasRef.current) return;
+
+      const canvas = canvasRef.current;
+      const parent = canvas.parentElement;
+
+      // Ensure the parent element has non-zero geometry to avoid "Computed radius is NaN"
+      if (!parent || parent.offsetWidth === 0 || parent.offsetHeight === 0) {
+        frameId = requestAnimationFrame(initAnimation);
+        return;
+      }
+
+      try {
+        const app = TubesFactory(canvas, {
+          tubes: {
+            colors: tubesColors,
+            lights: {
+              intensity: lightsIntensity,
+              colors: lightsColors
+            }
+          }
+        });
+        if (!disposed) {
+          appRef.current = app;
+        } else if (app && typeof app.dispose === 'function') {
+          app.dispose();
+        }
+      } catch (err) {
+        console.error("Failed to initialize TubesCursor instance:", err);
+      }
+    };
+
+    // Small delay ensuring DOM layout has committed
+    timerId = setTimeout(() => {
+      initAnimation();
+    }, 60);
+
+    // If in backgroundOnly mode, allow clicks on non-interactive regions of the window to randomize colors
+    const handleGlobalClick = (e: MouseEvent) => {
+      if (!backgroundOnly) return;
+      const target = e.target as HTMLElement | null;
+      const isInteractive = target?.closest('a, button, input, textarea, select, [role="button"], dialog, .chat-panel');
+      if (!isInteractive) {
+        triggerColorChange();
+      }
+    };
+
+    if (backgroundOnly) {
+      window.addEventListener('click', handleGlobalClick);
+    }
+
+    return () => {
+      disposed = true;
+      if (timerId) clearTimeout(timerId);
+      if (frameId) cancelAnimationFrame(frameId);
+      if (backgroundOnly) {
+        window.removeEventListener('click', handleGlobalClick);
+      }
+      if (appRef.current && typeof appRef.current.dispose === 'function') {
+        try {
+          appRef.current.dispose();
+        } catch {
+          // ignore cleanup errors on unmount
+        }
+        appRef.current = null;
+      }
+    };
+  }, [backgroundOnly]);
+
   if (backgroundOnly) {
     return (
       <div 
-        onClick={handleClick} 
-        className="pointer-events-none fixed inset-0 z-0 overflow-hidden" 
+        className="pointer-events-none fixed inset-0 z-30 w-screen h-screen overflow-hidden mix-blend-screen"
         aria-hidden="true"
       >
-        <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
+        <canvas 
+          ref={canvasRef} 
+          className="absolute inset-0 w-full h-full pointer-events-none" 
+        />
       </div>
     );
   }
@@ -137,11 +171,11 @@ export default function TubesCursor({
   return (
     // Main container with full-screen styles and click handler
     <div
-      onClick={handleClick}
+      onClick={triggerColorChange}
       className={className}
     >
       {/* Canvas element for the animation, positioned behind everything else */}
-      <canvas ref={canvasRef} className="fixed inset-0 z-0" />
+      <canvas ref={canvasRef} className="fixed inset-0 z-0 w-full h-full" />
       
       {/* Hero content displayed over the canvas */}
       {showContent && (
