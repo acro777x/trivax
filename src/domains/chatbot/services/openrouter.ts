@@ -139,15 +139,15 @@ export async function streamOpenRouterChat({
 
       // Handle 401 Unauthorized
       if (response.status === 401) {
-        throw new Error("Invalid OpenRouter API Key. Please verify your key in Chat Settings.");
+        throw new Error("Assistant service is temporarily updating. Please email us at info@kavirox.space or try again.");
       }
 
       // Handle 429 Rate Limit
       if (response.status === 429) {
-        throw new Error(`OpenRouter rate limit reached for model '${model}'. Try selecting another free model in Chat Settings.`);
+        throw new Error("Assistant is receiving high traffic right now. Please try your question again in a moment.");
       }
 
-      throw new Error(`OpenRouter API error (${response.status}): ${errorMsg}`);
+      throw new Error("Assistant is temporarily unavailable. Please try again or email info@kavirox.space.");
     }
 
     if (!response.body) {
@@ -262,7 +262,7 @@ I can help you explore:
 • **WhatsApp Automated Commerce** (cart recovery & order alerts)
 • **Our 3 Flexible Engagement Models**
 
-*(Tip: You can also connect your own free OpenRouter API key in the top-right chat settings to chat with live LLMs!)* What can I assist you with today?`;
+What can I assist you with today?`;
   }
 
   // Simulate streaming typing effect

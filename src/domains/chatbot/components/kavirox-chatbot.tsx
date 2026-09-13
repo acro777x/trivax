@@ -1,34 +1,24 @@
 import React, { useState, useEffect, useRef } from "react";
 import { 
-  MessageSquare, 
   X, 
   Send, 
   Sparkles, 
-  Settings, 
   RotateCcw, 
   ArrowUpRight, 
   Bot, 
   User, 
   Square,
-  Compass,
-  CheckCircle2,
   Mail
 } from "lucide-react";
 import { ChatMessage } from "../types";
-import { 
-  streamOpenRouterChat, 
-  getStoredApiKey, 
-  getStoredModel, 
-  OPENROUTER_FREE_MODELS 
-} from "../services/openrouter";
-import { ChatbotSettingsModal } from "./chatbot-settings-modal";
+import { streamOpenRouterChat } from "../services/openrouter";
 import { openEmailInquiry } from "@/shared/lib/email-inquiry";
 
 const INITIAL_MESSAGES: ChatMessage[] = [
   {
     id: "welcome-1",
     role: "assistant",
-    content: "Hi! I'm the **Kavirox AI Concierge**. I can answer questions about our **11 core engineering services**, **turnkey D2C solutions**, **custom RAG chatbots**, or help you kick off a project. What can I assist you with?",
+    content: "Hi! I'm the **Kavirox AI Assistant**. Feel free to ask me anything about our services, building custom RAG chatbots, or how we partner with brands. What are you looking to build?",
     timestamp: Date.now()
   }
 ];
@@ -53,20 +43,11 @@ export function KaviroxChatbot() {
   });
   const [input, setInput] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [currentModel, setCurrentModel] = useState(getStoredModel());
-  const [hasApiKey, setHasApiKey] = useState(Boolean(getStoredApiKey()));
   const [showTeaser, setShowTeaser] = useState(true);
 
   const abortControllerRef = useRef<AbortController | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
-
-  // Sync active model & key status
-  const refreshSettingsState = () => {
-    setCurrentModel(getStoredModel());
-    setHasApiKey(Boolean(getStoredApiKey()));
-  };
 
   // Persist conversation to session
   useEffect(() => {
@@ -92,8 +73,6 @@ export function KaviroxChatbot() {
     }
   }, [isOpen]);
 
-  const activeModelMeta = OPENROUTER_FREE_MODELS.find(m => m.id === currentModel) || OPENROUTER_FREE_MODELS[0];
-
   const handleSend = async (textToSend?: string) => {
     const query = (textToSend || input).trim();
     if (!query || isGenerating) return;
@@ -116,8 +95,7 @@ export function KaviroxChatbot() {
       role: "assistant",
       content: "",
       timestamp: Date.now(),
-      isStreaming: true,
-      modelUsed: activeModelMeta.name
+      isStreaming: true
     };
 
     setMessages([...newMessages, initialAssistantMsg]);
@@ -128,7 +106,6 @@ export function KaviroxChatbot() {
     try {
       await streamOpenRouterChat({
         messages: newMessages,
-        model: currentModel,
         signal: controller.signal,
         onChunk: (_, accumulated) => {
           setMessages(prev => 
@@ -141,18 +118,22 @@ export function KaviroxChatbot() {
             prev.map(m => m.id === assistantId ? { ...m, content: fullText, isStreaming: false } : m)
           );
         },
-        onError: (err) => {
+        onError: () => {
           setIsGenerating(false);
-          const errorMsg = `⚠️ **Connection Notice**: ${err.message}\n\n*You can still browse our verified knowledge or switch models in Chat Settings.*`;
+          const errorMsg = "I'm experiencing a temporary delay right now. You can email us directly at info@kavirox.space or try asking again.";
           setMessages(prev => 
             prev.map(m => m.id === assistantId ? { ...m, content: errorMsg, isStreaming: false } : m)
           );
         }
       });
-    } catch (err: any) {
+    } catch {
       setIsGenerating(false);
       setMessages(prev => 
-        prev.map(m => m.id === assistantId ? { ...m, content: `Error: ${err.message}`, isStreaming: false } : m)
+        prev.map(m => m.id === assistantId ? { 
+          ...m, 
+          content: "I'm experiencing a temporary delay right now. You can email us directly at info@kavirox.space or try asking again.", 
+          isStreaming: false 
+        } : m)
       );
     }
   };
@@ -182,20 +163,17 @@ export function KaviroxChatbot() {
     }
   };
 
-  // Helper to render basic markdown formatting (bold, bullets, linebreaks)
+  // Helper to render formatted text (bold, bullets, linebreaks)
   const renderFormattedText = (content: string) => {
     const lines = content.split("\n");
     return lines.map((line, idx) => {
-      // Empty line
       if (!line.trim()) {
         return <div key={idx} className="h-2" />;
       }
 
-      // Bullet points
       const isBullet = line.trim().startsWith("•") || line.trim().startsWith("-");
       const cleanLine = isBullet ? line.trim().replace(/^[•-]\s*/, "") : line;
 
-      // Parse bold segments **text**
       const parts = cleanLine.split(/(\*\*.*?\*\*)/g);
       const formattedParts = parts.map((part, pIdx) => {
         if (part.startsWith("**") && part.endsWith("**")) {
@@ -225,10 +203,10 @@ export function KaviroxChatbot() {
         {showTeaser && !isOpen && (
           <div className="hidden sm:flex items-center gap-2.5 px-3.5 py-2 rounded-full bg-[#121218]/90 backdrop-blur-xl border border-white/15 text-xs text-zinc-300 shadow-2xl animate-in fade-in slide-in-from-right-4 duration-300">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping shrink-0" />
-            <span className="font-mono">Ask Kavirox AI about our services & RAG bots</span>
+            <span className="font-mono">Have questions about our services or RAG bots?</span>
             <button
               onClick={() => setShowTeaser(false)}
-              className="text-zinc-500 hover:text-white ml-1 text-xs"
+              className="text-zinc-500 hover:text-white ml-1 text-xs cursor-pointer"
               title="Dismiss"
             >
               ×
@@ -251,8 +229,8 @@ export function KaviroxChatbot() {
               ? "0 8px 30px rgba(0,0,0,0.6)" 
               : "0 10px 40px -8px rgba(0,0,0,0.7), inset 0 1px 0 0 rgba(255,255,255,0.15)"
           }}
-          title={isOpen ? "Close AI Concierge" : "Open Kavirox AI Concierge"}
-          aria-label="Open AI Concierge"
+          title={isOpen ? "Close Assistant" : "Ask Kavirox AI"}
+          aria-label="Open Kavirox Assistant"
         >
           {/* Status Dot */}
           <div className="relative flex items-center justify-center">
@@ -273,22 +251,22 @@ export function KaviroxChatbot() {
         </button>
       </div>
 
-      {/* 2. Interactive Concierge Chat Window */}
+      {/* 2. Simple, High-End Concierge Chat Window */}
       {isOpen && (
         <div
-          className="fixed bottom-20 right-3 sm:right-6 z-50 w-[calc(100vw-1.5rem)] sm:w-[430px] max-h-[640px] h-[80vh] flex flex-col rounded-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-200"
+          className="fixed bottom-20 right-3 sm:right-6 z-50 w-[calc(100vw-1.5rem)] sm:w-[420px] max-h-[620px] h-[80vh] flex flex-col rounded-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-200"
           style={{
-            background: "rgba(12, 12, 16, 0.88)",
+            background: "rgba(12, 12, 16, 0.90)",
             backdropFilter: "blur(28px) saturate(190%)",
             WebkitBackdropFilter: "blur(28px) saturate(190%)",
             border: "1px solid rgba(255, 255, 255, 0.14)",
             boxShadow: "0 24px 70px -12px rgba(0, 0, 0, 0.9), inset 0 1px 0 0 rgba(255, 255, 255, 0.22)"
           }}
         >
-          {/* Specular Top Sheen */}
+          {/* Specular Top Rim Sheen */}
           <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
 
-          {/* Header Bar */}
+          {/* Clean Header Bar */}
           <div className="px-4 py-3 border-b border-white/10 flex items-center justify-between bg-black/30">
             <div className="flex items-center gap-2.5 min-w-0">
               <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-[#09090b] font-black text-xs shrink-0 shadow-[0_0_8px_rgba(16,185,129,0.4)]">
@@ -296,21 +274,12 @@ export function KaviroxChatbot() {
               </div>
               <div className="min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <h2 className="text-xs font-semibold text-white truncate">Kavirox AI Concierge</h2>
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+                  <h2 className="text-xs font-semibold text-white truncate">Kavirox AI</h2>
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0 animate-pulse" />
                 </div>
-                {/* Active Model Pill - Clickable to open settings */}
-                <button
-                  type="button"
-                  onClick={() => setIsSettingsOpen(true)}
-                  className="flex items-center gap-1 text-[10px] font-mono text-zinc-400 hover:text-orange-400 transition-colors cursor-pointer text-left truncate"
-                  title="Click to configure OpenRouter models & key"
-                >
-                  <span className="truncate">{activeModelMeta.name}</span>
-                  <span className="text-[9px] px-1 py-0.2 rounded bg-white/5 border border-white/10 text-emerald-400">
-                    Free
-                  </span>
-                </button>
+                <p className="text-[11px] font-mono text-zinc-400 truncate">
+                  Online • Studio Assistant
+                </p>
               </div>
             </div>
 
@@ -326,17 +295,9 @@ export function KaviroxChatbot() {
               </button>
               <button
                 type="button"
-                onClick={() => setIsSettingsOpen(true)}
-                className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer"
-                title="OpenRouter settings & key"
-              >
-                <Settings className="w-3.5 h-3.5" />
-              </button>
-              <button
-                type="button"
                 onClick={() => setIsOpen(false)}
                 className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer"
-                title="Minimize chat"
+                title="Close chat"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -349,9 +310,11 @@ export function KaviroxChatbot() {
               const isAssistant = msg.role === "assistant";
               const isProjectInquiryRelated = 
                 isAssistant && 
-                (msg.content.toLowerCase().includes("email") || 
-                 msg.content.toLowerCase().includes("project") || 
-                 msg.content.toLowerCase().includes("info@kavirox.space"));
+                msg.id !== "welcome-1" &&
+                (msg.content.includes("info@kavirox.space") || 
+                 msg.content.toLowerCase().includes("inquiry brief") || 
+                 msg.content.toLowerCase().includes("project inquiry") ||
+                 msg.content.toLowerCase().includes("pre-written"));
 
               return (
                 <div
@@ -378,12 +341,12 @@ export function KaviroxChatbot() {
                       <span className="inline-block w-1.5 h-3.5 ml-1 bg-orange-400 animate-pulse align-middle" />
                     )}
 
-                    {/* Contextual Action Button to Open Email Inquiry */}
+                    {/* Contextual Action Button - Only when actively discussing starting a project */}
                     {isProjectInquiryRelated && !msg.isStreaming && (
                       <div className="mt-3 pt-2.5 border-t border-white/10 flex items-center gap-2">
                         <button
                           type="button"
-                          onClick={() => openEmailInquiry({ source: "Chatbot Concierge" })}
+                          onClick={() => openEmailInquiry({ source: "Chatbot Assistant" })}
                           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-semibold bg-orange-600 hover:bg-orange-500 text-white shadow-sm transition-all cursor-pointer"
                         >
                           <Mail className="w-3 h-3" />
@@ -405,7 +368,7 @@ export function KaviroxChatbot() {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Starter Suggestion Chips (Shown on initial conversation) */}
+          {/* Starter Suggestion Chips */}
           {messages.length <= 2 && !isGenerating && (
             <div className="px-4 py-2 border-t border-white/5 bg-black/20 flex flex-wrap gap-1.5">
               {STARTER_PROMPTS.map((prompt, pIdx) => (
@@ -465,27 +428,12 @@ export function KaviroxChatbot() {
               )}
             </form>
 
-            {/* Micro Status Sub-bar */}
-            <div className="pt-2 px-1 flex items-center justify-between text-[10px] font-mono text-zinc-500">
-              <span>Shift+Enter for newline</span>
-              <button
-                type="button"
-                onClick={() => setIsSettingsOpen(true)}
-                className="hover:text-zinc-300 transition-colors flex items-center gap-1"
-              >
-                <span>{hasApiKey ? "● OpenRouter Live" : "○ Fallback Knowledge Mode"}</span>
-              </button>
+            <div className="pt-2 px-1 text-[10px] font-mono text-zinc-500 text-center select-none">
+              Kavirox Digital Systems • Studio Assistant
             </div>
           </div>
         </div>
       )}
-
-      {/* 3. Settings Drawer / Modal */}
-      <ChatbotSettingsModal
-        isOpen={isSettingsOpen}
-        onClose={() => setIsSettingsOpen(false)}
-        onSaved={refreshSettingsState}
-      />
     </>
   );
 }
