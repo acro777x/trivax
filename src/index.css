@@ -5,6 +5,11 @@
   --font-sans: "Inter", system-ui, sans-serif;
   --color-background: var(--bg-0);
   --color-foreground: var(--text-100);
+  --color-primary: var(--primary);
+  --color-secondary: var(--bg-200);
+  --color-card: var(--bg-100);
+  --color-accent: var(--bg-300);
+  --color-muted: var(--text-400);
 }
 
 :root {
@@ -16,6 +21,7 @@
   --text-200: #e4e4e7;
   --text-300: #a1a1aa;
   --text-400: #71717a;
+  --primary: #f97316;
   --radius: 0.5rem;
 }
 
