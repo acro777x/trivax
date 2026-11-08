@@ -6,24 +6,13 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import './ScrollFloat.css';
 
-gsap.registerPlugin(ScrollTrigger);
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
-const clampToScroll = position =>
-  typeof position === 'string' && !position.startsWith('clamp(') ? `clamp(${position})` : position;
-
 const clamp01 = value => Math.min(Math.max(value, 0), 1);
-
-const smoothstep = (from, to, value) => {
-  const k = clamp01((value - from) / (to - from));
-  return k * k * (3 - 2 * k);
-};
-
-const random = (index, salt) => {
-  const value = Math.sin((index + 1) * 12.9898 + salt * 78.233) * 43758.5453;
-  return value - Math.floor(value);
-};
 
 const getDelays = (count, order, stagger) => {
   const middle = (count - 1) / 2;
@@ -33,34 +22,28 @@ const getDelays = (count, order, stagger) => {
     if (order === 'edges') return middle - Math.abs(index - middle);
     return index;
   });
-  if (order === 'random') {
-    const shuffled = ranks.map((_, index) => index).sort((a, b) => random(a, 9) - random(b, 9));
-    shuffled.forEach((target, rank) => {
-      ranks[target] = rank;
-    });
-  }
   const first = Math.min(...ranks);
   return ranks.map(rank => (rank - first) * Math.max(0, stagger));
 };
 
-const ScrollFloat = ({
+export const ScrollFloat = ({
   children,
   as: Component = 'span',
   scrollContainerRef,
   containerClassName = '',
   textClassName = '',
   effect = 'float',
-  splitBy = 'chars',
+  splitBy = 'words',
   direction = 'up',
   order = 'start',
   fromColor = 'currentColor',
-  animationDuration = 1,
-  ease = 'back.inOut(2)',
-  scrollStart = 'center bottom+=50%',
-  scrollEnd = 'bottom bottom-=40%',
-  stagger = 0.03,
-  distance = 120,
-  stretch = 2.3,
+  animationDuration = 0.85,
+  ease = 'power3.out',
+  scrollStart = 'top 88%',
+  scrollEnd = 'bottom 20%',
+  stagger = 0.04,
+  distance = 60,
+  stretch = 1,
   smoothing = 0
 }) => {
   const containerRef = useRef(null);
@@ -87,18 +70,23 @@ const ScrollFloat = ({
         word
       ) : (
         <span className="scroll-float-word" key={wordIndex}>
-          {Array.from(word).map((char, charIndex) => (
-            <span className="scroll-float-char" key={charIndex} style={shiftStyle}>
-              {char}
+          {splitBy === 'words' ? (
+            <span className="scroll-float-char" style={shiftStyle}>
+              {word}
             </span>
-          ))}
+          ) : (
+            Array.from(word).map((char, charIndex) => (
+              <span className="scroll-float-char" key={charIndex} style={shiftStyle}>
+                {char}
+              </span>
+            ))
+          )}
         </span>
       )
     );
-  }, [text, shiftStyle]);
+  }, [text, splitBy, shiftStyle]);
 
   const [mounted, setMounted] = useState(false);
-
   useEffect(() => setMounted(true), []);
 
   useIsomorphicLayoutEffect(() => {
@@ -108,113 +96,40 @@ const ScrollFloat = ({
     if (scrollContainerRef && !scrollContainerRef.current) return;
 
     const scroller = scrollContainerRef?.current || window;
-    const pieces = el.querySelectorAll(splitBy === 'words' ? '.scroll-float-word' : '.scroll-float-char');
+    const pieces = el.querySelectorAll('.scroll-float-char');
     const targets = pieces.length ? Array.from(pieces) : [textEl];
-    const indexOf = new Map(targets.map((target, index) => [target, index]));
-    const at = fn => (_, target) => fn(indexOf.get(target) ?? 0);
-    const middle = (targets.length - 1) / 2;
-    const edge = index => (middle > 0 ? (index - middle) / middle : 0);
     const delays = getDelays(targets.length, order, stagger);
-    const sign = direction === 'down' ? -1 : 1;
-    const reach = Math.max(0, Number(distance) || 0) / 120;
-    const squeeze = stretch > 0 ? stretch ** -0.43 : 1;
-    const baseEase = gsap.parseEase(ease) || (p => p);
-    const timing = p => clamp01(baseEase(p));
-    const size = () => parseFloat(getComputedStyle(textEl).fontSize) || 16;
-    const swell = p => {
-      const t = timing(p);
-      return 1 - Math.cos(t * Math.PI * 2.5) * Math.pow(1 - t, 2.6);
-    };
-    const sway = p => {
-      const t = timing(p);
-      return Math.sin(t * Math.PI * 2.5) * Math.pow(1 - t, 2.6);
-    };
+
     const mm = gsap.matchMedia();
 
     mm.add('(prefers-reduced-motion: no-preference)', () => {
-      const timeline = gsap.timeline({
-        scrollTrigger: {
-          trigger: el,
-          scroller,
-          start: scrollStart,
-          end: clampToScroll(scrollEnd),
-          scrub: smoothing > 0 ? smoothing : true,
-          invalidateOnRefresh: true
+      // Trigger once on view with proper duration, eliminating scrub jerkiness and freeze
+      gsap.fromTo(
+        targets,
+        {
+          opacity: 0,
+          y: direction === 'up' ? '105%' : '-105%',
+          rotateX: effect === 'flip' ? 35 : 0,
+        },
+        {
+          opacity: 1,
+          y: '0%',
+          rotateX: 0,
+          duration: animationDuration,
+          stagger: index => delays[index] || 0,
+          ease,
+          scrollTrigger: {
+            trigger: el,
+            scroller,
+            start: scrollStart,
+            once: true,
+          },
         }
-      });
-      const add = (fromVars, toVars) => {
-        gsap.set(targets, { willChange: 'opacity, transform', ...fromVars });
-        return timeline.fromTo(
-          targets,
-          { willChange: 'opacity, transform', ...fromVars },
-          { duration: animationDuration, stagger: index => delays[index] || 0, ...toVars },
-          0
-        );
-      };
+      );
+    });
 
-      if (effect === 'flip') {
-        add(
-          {
-            rotationX: -90 * sign,
-            transformPerspective: () => size() * 4,
-            transformOrigin: () => `50% 50% ${(-size() * 0.55 * reach).toFixed(2)}`,
-            backfaceVisibility: 'hidden'
-          },
-          { ease, rotationX: 0 }
-        );
-        add({ opacity: 0 }, { ease: p => smoothstep(0.05, 0.55, timing(p)), opacity: 1 });
-      } else if (effect === 'scatter') {
-        add(
-          {
-            x: at(index => ((random(index, 1) * 2 - 1) * 1.3 - edge(index) * 0.9) * size() * reach),
-            y: at(index => sign * (0.35 + random(index, 2)) * size() * 1.1 * reach),
-            rotation: at(index => (random(index, 3) < 0.5 ? -1 : 1) * (40 + random(index, 4) * 120)),
-            scale: at(index => 0.35 + random(index, 5) * 0.9),
-            transformOrigin: '50% 50%'
-          },
-          { ease, x: 0, y: 0, rotation: 0, scale: 1 }
-        );
-        add({ opacity: 0 }, { ease: p => smoothstep(0, 0.4, timing(p)), opacity: 1 });
-      } else if (effect === 'blur') {
-        add(
-          {
-            willChange: 'opacity, transform, filter',
-            opacity: 0,
-            y: () => sign * size() * 0.3 * reach,
-            scale: 1.45,
-            filter: () => `blur(${(size() * 0.2).toFixed(2)}px)`,
-            transformOrigin: '50% 50%'
-          },
-          { ease, opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }
-        );
-      } else if (effect === 'wave') {
-        add(
-          {
-            yPercent: 120 * reach * sign,
-            scaleY: stretch,
-            scaleX: squeeze,
-            transformOrigin: sign > 0 ? '50% 100%' : '50% 0%'
-          },
-          { ease: swell, yPercent: 0, scaleY: 1, scaleX: 1 }
-        );
-        add({ rotation: 0 }, { ease: sway, rotation: -16 * sign });
-        add({ opacity: 0 }, { ease: p => clamp01(timing(p) * 2.5), opacity: 1 });
-      } else {
-        add(
-          {
-            opacity: 0,
-            yPercent: 120 * reach * sign,
-            scaleY: stretch,
-            scaleX: squeeze,
-            transformOrigin: sign > 0 ? '50% 0%' : '50% 100%'
-          },
-          { ease, opacity: 1, yPercent: 0, scaleY: 1, scaleX: 1 }
-        );
-      }
-
-      if (shiftColor) {
-        add({ '--scroll-float-mix': 1 }, { ease: p => smoothstep(0.5, 1, timing(p)), '--scroll-float-mix': 0 });
-      }
+    mm.add('(prefers-reduced-motion: reduce)', () => {
+      gsap.set(targets, { opacity: 1, y: '0%', rotateX: 0 });
     });
 
     return () => mm.revert();
@@ -226,21 +141,16 @@ const ScrollFloat = ({
     splitBy,
     direction,
     order,
-    shiftColor,
     animationDuration,
     ease,
     scrollStart,
-    scrollEnd,
     stagger,
-    distance,
-    stretch,
-    smoothing
   ]);
 
   return (
     <Component
       ref={containerRef}
-      className={`scroll-float ${effect === 'float' ? '' : 'scroll-float--open'} ${containerClassName}`}
+      className={`scroll-float ${containerClassName}`}
     >
       {text !== null && <span className="scroll-float-sr">{text}</span>}
       <span

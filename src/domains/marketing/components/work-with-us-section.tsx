@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { Suspense, lazy, useEffect, useRef } from 'react';
 import ScrollFloat from '@/components/ui/ScrollFloat';
 import { Package, Wrench, Code2, Layers, ArrowUpRight } from 'lucide-react';
 import { getInquiryWebmailUrl } from '@/shared/lib/email-inquiry';
@@ -9,6 +9,8 @@ import { isQaMode } from '@/shared/hooks/use-device-tier';
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
+
+const Particles = lazy(() => import('@/components/ui/Particles'));
 
 interface WorkModel {
   number: string;
@@ -62,13 +64,13 @@ export const WorkWithUsSection: React.FC = () => {
     const ctx = gsap.context(() => {
       gsap.fromTo(
         cards,
-        { opacity: 0, y: 44, scale: 0.95 },
+        { opacity: 0, y: 64, scale: 0.95 },
         {
           opacity: 1,
           y: 0,
           scale: 1,
-          duration: 0.7,
-          stagger: 0.12,
+          duration: 0.85,
+          stagger: 0.16,
           ease: 'power3.out',
           scrollTrigger: {
             trigger: el,
@@ -85,28 +87,63 @@ export const WorkWithUsSection: React.FC = () => {
   return (
     <section
       id="solutions"
-      className="relative w-full py-20 sm:py-24 md:py-28 px-5 sm:px-8 md:px-12 max-w-7xl mx-auto scroll-mt-24"
+      className="relative w-full py-20 sm:py-24 md:py-28 px-5 sm:px-8 md:px-12 max-w-7xl mx-auto scroll-mt-24 overflow-hidden isolate"
       aria-label="How you can work with Kavirox"
     >
       <span id="work-with-us" className="sr-only" />
-      {/* Eyebrow and Heading */}
-      <div className="max-w-3xl mb-12 sm:mb-16">
+
+      {/* Dedicated Original Particles Background for Work With Us Section */}
+      <div className="absolute inset-0 pointer-events-none -z-10 overflow-hidden" aria-hidden="true">
+        <Suspense fallback={null}>
+          <Particles
+            particleColors={["#ffffff", "#ffffff", "#ffffff"]}
+            particleCount={200}
+            particleSpread={10}
+            speed={0.1}
+            particleBaseSize={100}
+            glow={0.5}
+            twinkle={0.3}
+            moveParticlesOnHover
+            hoverEffect="parallax"
+            sizeRandomness={1}
+            shape="circle"
+            depthOfField={0}
+            connections={false}
+            connectionDistance={110}
+            particleHoverFactor={1}
+            hoverRadius={140}
+            drift="none"
+            driftSpeed={1}
+            alphaParticles={false}
+            disableRotation={false}
+            cameraDistance={20}
+            variation={0}
+            opacity={1}
+            clickBurst
+            intro
+            lightMode={false}
+          />
+        </Suspense>
+      </div>
+
+      {/* Eyebrow and Heading with Zero-Collision Spacing */}
+      <div className="max-w-3xl mb-12 sm:mb-16 relative z-10">
         <div className="inline-flex items-center gap-2 text-xs font-mono text-primary uppercase tracking-widest mb-3">
           <span className="w-4 h-[1px] bg-primary" />
           <span>Work with us</span>
         </div>
-        <h2 className="font-display font-extrabold text-3xl sm:text-5xl md:text-6xl text-text tracking-tight leading-[1.08] text-balance">
-          <ScrollFloat effect="float" splitBy="words" animationDuration={0.8} stagger={0.03}>
+        <h2 className="font-display font-extrabold text-3xl sm:text-5xl md:text-6xl text-text tracking-tight leading-[1.08] text-balance mb-4">
+          <ScrollFloat effect="float" splitBy="words" animationDuration={0.85} stagger={0.035}>
             Four ways to start.
           </ScrollFloat>
         </h2>
-        <p className="mt-4 text-text-muted text-base sm:text-lg max-w-2xl leading-relaxed text-pretty">
+        <p className="text-text-muted text-base sm:text-lg max-w-2xl leading-relaxed text-pretty">
           Use a product as it is, have us set it up, build something custom, or start from a product and extend it.
         </p>
       </div>
 
-      {/* 4 Cards Grid with Desktop Connector Line & Scroll Entrance Animation */}
-      <div ref={cardsRef} className="relative">
+      {/* 4 Cards Grid with Desktop Connector Line & Smooth Staggered Cascade */}
+      <div ref={cardsRef} className="relative z-10">
         {/* Desktop Connector line with traveling pulse */}
         <div
           className="hidden lg:block absolute top-12 left-8 right-8 h-[1px] bg-white/10 pointer-events-none -z-10"
@@ -125,17 +162,17 @@ export const WorkWithUsSection: React.FC = () => {
                 data-cursor-label="Start"
               >
                 <div>
-                  {/* Top row: Icon tile + Plain Numeral */}
+                  {/* Top row: Icon + Plain Numeral */}
                   <div className="flex items-center justify-between mb-6">
-                    <div className="w-10 h-10 rounded-xl bg-surface2 border border-white/10 flex items-center justify-center text-primary group-hover:bg-primary/10 transition-colors">
+                    <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary group-hover:scale-105 transition-transform">
                       <Icon className="w-5 h-5" />
                     </div>
-                    <span className="font-mono text-sm font-semibold text-primary/80 tabular-nums">
+                    <span className="font-mono text-sm font-semibold text-text-muted/60">
                       {model.number}
                     </span>
                   </div>
 
-                  {/* Title & Description */}
+                  {/* Title & Body */}
                   <h3 className="font-display font-bold text-xl text-white group-hover:text-primary transition-colors mb-2.5">
                     {model.title}
                   </h3>
@@ -144,17 +181,22 @@ export const WorkWithUsSection: React.FC = () => {
                   </p>
                 </div>
 
-                {/* Subtle Bottom Action */}
-                <div className="pt-6 border-t border-white/5 mt-6 flex items-center justify-between text-xs font-mono text-text-muted group-hover:text-white transition-colors">
-                  <span>Get started</span>
+                {/* Bottom Action CTA */}
+                <div className="pt-6 border-t border-white/10 mt-6 flex items-center justify-between">
                   <a
-                    href={getInquiryWebmailUrl({ source: `Work Model: ${model.title}` })}
+                    href={getInquiryWebmailUrl({
+                      source: `Work Model: ${model.title}`,
+                      modelTitle: model.title,
+                    })}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-1 rounded-full bg-white/5 group-hover:bg-primary/20 group-hover:text-primary transition-colors"
+                    className="font-mono text-xs font-semibold text-white/90 group-hover:text-primary transition-colors inline-flex items-center gap-1"
                   >
-                    <ArrowUpRight className="w-3.5 h-3.5" />
+                    <span>Get started</span>
                   </a>
+                  <div className="w-7 h-7 rounded-full bg-white/5 group-hover:bg-primary/20 flex items-center justify-center text-text-muted group-hover:text-primary transition-colors">
+                    <ArrowUpRight className="w-3.5 h-3.5 stroke-[2.5]" />
+                  </div>
                 </div>
               </div>
             );

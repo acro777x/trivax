@@ -71,6 +71,8 @@
   height: calc(100% + 48px);
   pointer-events: none;
   background: transparent;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .specular-button__label {
@@ -80,4 +82,4 @@
   align-items: center;
   gap: inherit;
 }
-
+

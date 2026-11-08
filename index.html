@@ -45,10 +45,24 @@
     <meta name="twitter:image" content="https://kavirox.space/og-image.png" />
 
     <!-- Favicon and Brand Icons -->
-    <link rel="icon" type="image/svg+xml" href="/kavirox-mark.svg" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/kavirox-mark-32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/kavirox-mark-16.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/svg+xml" href="./kavirox-mark.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./kavirox-mark-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="./kavirox-mark-16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
+
+    <!-- GitHub Pages SPA redirect receiver -->
+    <script type="text/javascript">
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
 
     <!-- JSON-LD Structured Data Schema -->
     <script type="application/ld+json">
@@ -81,6 +95,6 @@
   </head>
   <body class="bg-[#050a06] text-[#eef5ea] antialiased selection:bg-[#a8e62e]/30 selection:text-white">
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module" src="./src/main.tsx"></script>
   </body>
 </html>
