@@ -140,21 +140,23 @@ export function App() {
       <KaviroxPreloader />
 
       {/* Target Cursor: Desktop PC and fine pointer devices */}
-      <TargetCursor
-        targetSelector=".cursor-target"
-        cursorColor="#38bdf8"
-        cursorColorOnTarget="#38bdf8"
-        hideDefaultCursor={false}
-        size={36}
-        cornerSize={10}
-        thickness={2.5}
-        padding={6}
-        dotSize={4}
-        spinDuration={2}
-        hoverDuration={0.2}
-        parallaxOn={true}
-        matchRadius={true}
-      />
+      {tier === 'full' && (
+        <TargetCursor
+          targetSelector=".cursor-target"
+          cursorColor="#38bdf8"
+          cursorColorOnTarget="#38bdf8"
+          hideDefaultCursor={false}
+          size={36}
+          cornerSize={10}
+          thickness={2.5}
+          padding={6}
+          dotSize={4}
+          spinDuration={2}
+          hoverDuration={0.2}
+          parallaxOn={true}
+          matchRadius={true}
+        />
+      )}
 
       {currentProductSlug ? (
         /* Product Detail View */

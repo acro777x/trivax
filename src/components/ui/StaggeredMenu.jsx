@@ -445,24 +445,26 @@ export const StaggeredMenu = ({
 
           {productItems && productItems.length > 0 && (
             <div className="sm-products-group mt-6 pt-4 border-t border-white/10">
-              <h4 className="text-xs font-mono uppercase text-primary tracking-widest mb-2.5 px-2">
-                Products
-              </h4>
-              <ul className="grid grid-cols-2 gap-1.5 list-none p-0 m-0">
+              <div className="flex items-center justify-between mb-3 px-2">
+                <h4 className="text-xs font-mono uppercase text-primary tracking-widest m-0">
+                  Products
+                </h4>
+                <span className="text-[11px] font-mono text-text-muted/60">Swipe →</span>
+              </div>
+              <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2 px-1">
                 {productItems.map((prod, pIdx) => (
-                  <li key={prod.label + pIdx}>
-                    <a
-                      href={prod.link}
-                      className="block px-2.5 py-1.5 rounded-lg text-sm text-text-muted hover:text-white hover:bg-white/5 transition-colors"
-                      onClick={() => {
-                        toggleMenu();
-                      }}
-                    >
-                      {prod.label}
-                    </a>
-                  </li>
+                  <a
+                    key={prod.label + pIdx}
+                    href={prod.link}
+                    className="shrink-0 px-3.5 py-2 rounded-xl text-xs font-mono bg-white/5 border border-white/10 text-text-muted hover:text-white hover:border-primary/50 hover:bg-primary/10 transition-all whitespace-nowrap"
+                    onClick={() => {
+                      toggleMenu();
+                    }}
+                  >
+                    {prod.label}
+                  </a>
                 ))}
-              </ul>
+              </div>
             </div>
           )}
           {displaySocials && socialItems && socialItems.length > 0 && (

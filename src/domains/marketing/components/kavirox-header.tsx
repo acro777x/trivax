@@ -169,7 +169,7 @@ export const KaviroxHeader: React.FC = () => {
 
   // Mobile Floating Frosted Glass Bar + Staggered Menu
   return (
-    <div className="fixed top-0 left-0 w-full z-40">
+    <div className="fixed top-0 left-0 w-full z-40 pointer-events-none">
       <StaggeredMenu
         position="right"
         isFixed={true}
