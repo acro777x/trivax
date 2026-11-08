@@ -139,24 +139,22 @@ export function App() {
       {/* 0. Optional Short Preloader (max 850ms, session-flagged, reduced-motion safe) */}
       <KaviroxPreloader />
 
-      {/* Target Cursor: Desktop PC and fine pointer devices */}
-      {tier === 'full' && (
-        <TargetCursor
-          targetSelector=".cursor-target"
-          cursorColor="#38bdf8"
-          cursorColorOnTarget="#38bdf8"
-          hideDefaultCursor={false}
-          size={36}
-          cornerSize={10}
-          thickness={2.5}
-          padding={6}
-          dotSize={4}
-          spinDuration={2}
-          hoverDuration={0.2}
-          parallaxOn={true}
-          matchRadius={true}
-        />
-      )}
+      {/* Target Cursor: Active on all pointer/desktop interfaces */}
+      <TargetCursor
+        targetSelector=".cursor-target"
+        cursorColor="#38bdf8"
+        cursorColorOnTarget="#38bdf8"
+        hideDefaultCursor={false}
+        size={36}
+        cornerSize={10}
+        thickness={2.5}
+        padding={6}
+        dotSize={4}
+        spinDuration={2}
+        hoverDuration={0.2}
+        parallaxOn={true}
+        matchRadius={true}
+      />
 
       {currentProductSlug ? (
         /* Product Detail View */

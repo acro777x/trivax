@@ -334,7 +334,7 @@ export const ProductsSection: React.FC<ProductsSectionProps> = ({ onOpenProduct 
               (sliderRef as any).current = node;
               (compactGridRef as any).current = node;
             }}
-            className="flex gap-4 sm:gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-6 pt-2 -mx-4 px-4 sm:mx-0 sm:px-0 no-scrollbar"
+            className="flex gap-4 sm:gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-6 pt-2 -mx-4 px-4 sm:mx-0 sm:px-0 no-scrollbar scrollbar-none"
             tabIndex={0}
             role="region"
             aria-label="Portfolio projects slider"
