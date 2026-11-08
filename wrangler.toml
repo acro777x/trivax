@@ -1,7 +1,13 @@
 name = "kavirox-space"
+main = "public/_worker.js"
 compatibility_date = "2024-09-23"
-pages_build_output_dir = "dist"
+
+[build]
+command = "npm run build"
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
 
 [vars]
-# OpenRouter API key can be set in Cloudflare Dashboard Secrets or below for local dev
 DEFAULT_MODEL = "openrouter/free"

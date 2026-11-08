@@ -128,20 +128,20 @@ export const KaviroxHero: React.FC = () => {
 
 
       {/* 3. Centered Content Container */}
-      <div className="relative z-10 max-w-[880px] w-full mx-auto flex flex-col items-center justify-center pt-14 sm:pt-16 pb-12 sm:pb-14">
+      <div className="relative z-10 max-w-[940px] w-full mx-auto flex flex-col items-center justify-center pt-12 sm:pt-16 mt-14 sm:mt-16 pb-12 sm:pb-16">
         {/* Eyebrow Label with Clean Kinetic Status Ticker */}
-        <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#0a1122]/90 border border-white/15 text-xs font-mono tracking-wider text-text-muted backdrop-blur-md mb-5 sm:mb-6 shadow-[0_4px_16px_rgba(0,0,0,0.5)]">
-          <span className="w-2 h-2 rounded-full bg-[#a8e62e] shadow-[0_0_8px_rgba(168,230,46,0.8)] animate-pulse shrink-0" />
-          <div className="h-5 overflow-hidden relative min-w-[110px] text-left">
+        <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-[#0a1122]/90 border border-white/20 text-xs sm:text-sm font-mono tracking-wider text-text-muted backdrop-blur-md mb-6 sm:mb-7 shadow-[0_8px_24px_rgba(0,0,0,0.55)]">
+          <span className="w-2.5 h-2.5 rounded-full bg-[#a8e62e] shadow-[0_0_10px_rgba(168,230,46,0.9)] animate-pulse shrink-0" />
+          <div className="h-7 overflow-hidden relative min-w-[160px] sm:min-w-[185px] text-left">
             <div
               className="transition-transform duration-500 ease-out"
-              style={{ transform: `translateY(-${tickerIndex * 20}px)` }}
+              style={{ transform: `translateY(-${tickerIndex * 28}px)` }}
             >
               {TICKER_WORDS.map((word, idx) => (
                 <div
                   key={idx}
-                  className={`h-5 flex items-center font-mono font-medium text-xs tracking-wider transition-opacity duration-300 ${
-                    tickerIndex === idx ? 'text-[#38bdf8] opacity-100' : 'text-[#38bdf8]/40 opacity-40'
+                  className={`h-7 flex items-center font-mono font-semibold text-xs sm:text-sm tracking-widest uppercase transition-opacity duration-300 ${
+                    tickerIndex === idx ? 'text-[#38bdf8] opacity-100' : 'text-[#38bdf8]/30 opacity-30'
                   }`}
                 >
                   {word}
@@ -151,13 +151,13 @@ export const KaviroxHero: React.FC = () => {
           </div>
         </div>
 
-        {/* Headline */}
-        <h1 className="font-display font-extrabold text-3xl sm:text-5xl md:text-6xl lg:text-[76px] text-text tracking-tight leading-[1.04] text-balance mb-3 sm:mb-4">
+        {/* Headline: Tight, Balanced Two-Line Hero Lockup */}
+        <h1 className="font-display font-extrabold text-3xl sm:text-5xl md:text-6xl lg:text-[76px] text-text tracking-tight leading-[0.98] text-balance mb-4 sm:mb-5">
           <span className="sr-only">Products that solve problems.</span>
-          <span aria-hidden="true" className="inline-flex flex-wrap items-baseline justify-center gap-x-2.5 sm:gap-x-3.5">
-            <span className="block sm:inline">Products that </span>
-            <span className="inline-flex items-baseline gap-x-2.5 sm:gap-x-3.5 whitespace-nowrap">
-              <span className="inline-block translate-y-[0.14em] sm:translate-y-[0.16em] text-[#a8e62e] overflow-visible">
+          <span aria-hidden="true" className="inline-flex flex-col items-center justify-center">
+            <span className="block leading-[0.98]">Products that</span>
+            <span className="inline-flex items-center justify-center gap-x-2.5 sm:gap-x-3.5 whitespace-nowrap -mt-1 sm:-mt-2">
+              <span className="inline-block text-[#a8e62e] overflow-visible">
                 <StrokeText
                   text="solve"
                   fontSize={strokeFontSize}
