@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 640" fill="none">
+  <defs>
+    <linearGradient id="kavirox-brand-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#9bd400" />
+      <stop offset="45%" stop-color="#72c50e" />
+      <stop offset="100%" stop-color="#1b8f1b" />
+    </linearGradient>
+    <filter id="kavirox-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  <!-- Brackets: light / 80% opacity on dark backgrounds -->
+  <g class="kavirox-brackets" fill="currentColor" fill-opacity="0.8">
+    <path d="M 89 238 L 12 303 L 7 310 L 6 319 L 12 331 L 86 392 L 96 394 L 106 384 L 104 369 L 44 317 L 104 264 L 106 259 L 104 244 L 96 238 Z" /> <path d="M 656 237 L 648 243 L 646 248 L 648 262 L 713 316 L 650 369 L 648 383 L 651 389 L 656 393 L 663 394 L 670 391 L 744 332 L 751 323 L 752 313 L 747 303 L 675 244 L 664 237 Z" />
+  </g>
+  <!-- Core emblem & pixel squares with brand gradient -->
+  <g class="kavirox-emblem" fill="url(#kavirox-brand-grad)">
+    <path d="M 108 452 L 125 486 L 146 516 L 175 547 L 201 569 L 234 590 L 278 610 L 318 622 L 368 629 L 409 629 L 458 622 L 496 611 L 547 587 L 592 555 L 624 523 L 656 477 L 667 454 L 665 449 L 603 450 L 576 484 L 558 502 L 529 525 L 507 538 L 475 552 L 451 559 L 409 565 L 375 565 L 326 557 L 276 537 L 249 520 L 221 496 L 200 472 L 188 453 L 183 450 L 134 449 L 109 450 Z" /> <path d="M 418 334 L 371 382 L 372 386 L 500 510 L 510 509 L 559 470 L 558 464 L 429 338 L 423 334 Z" /> <path d="M 164 254 L 164 271 L 181 271 L 180 254 Z" /> <path d="M 137 229 L 137 246 L 154 246 L 153 229 Z" /> <path d="M 126 197 L 107 198 L 105 201 L 106 220 L 128 220 L 128 199 Z" /> <path d="M 172 189 L 170 191 L 170 222 L 201 222 L 201 191 Z" /> <path d="M 130 145 L 131 183 L 168 182 L 167 144 Z" /> <path d="M 94 113 L 95 138 L 120 137 L 119 112 L 101 111 Z" /> <path d="M 136 60 L 134 62 L 134 94 L 136 96 L 169 95 L 169 61 L 150 59 Z" /> <path d="M 588 81 L 548 52 L 496 27 L 467 18 L 436 12 L 386 9 L 324 17 L 278 32 L 242 50 L 201 79 L 200 102 L 172 103 L 172 142 L 210 143 L 211 178 L 213 180 L 240 180 L 244 184 L 244 474 L 247 478 L 253 478 L 540 182 L 540 178 L 538 176 L 449 176 L 441 179 L 310 317 L 319 288 L 319 174 L 316 163 L 307 151 L 296 145 L 240 142 L 240 140 L 267 116 L 306 95 L 357 81 L 404 79 L 453 87 L 480 96 L 502 107 L 536 130 L 569 163 L 651 162 L 651 158 L 625 119 Z" />
+  </g>
+</svg>

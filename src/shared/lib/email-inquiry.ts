@@ -15,7 +15,7 @@ export const KAVIROX_PRIMARY_EMAIL = "info@kavirox.space";
 
 export function generateEmailInquiry(options?: EmailInquiryOptions) {
   const modelSuffix = options?.modelTitle
-    ? ` // ${options.modelTitle}`
+    ? ` — ${options.modelTitle}`
     : "";
 
   const subject = `Project Inquiry: [Your Brand Name]${modelSuffix} — Kavirox Collaboration`;

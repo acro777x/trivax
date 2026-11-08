@@ -1,0 +1,52 @@
+.fold-text {
+  position: relative;
+  display: inline-block;
+  line-height: 1.1;
+  perspective: 1000px;
+}
+
+.fold-text-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.fold-text-visual {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  transform-style: preserve-3d;
+}
+
+.fold-text-segment {
+  display: inline-flex;
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+.fold-text-word {
+  display: inline-flex;
+  white-space: nowrap;
+  transform-style: preserve-3d;
+}
+
+.fold-text-piece {
+  display: inline-block;
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  user-select: none;
+}
+
+.fold-text-slat {
+  display: block;
+  overflow: hidden;
+  position: relative;
+  transform-style: preserve-3d;
+}

@@ -1,243 +1,280 @@
-import React, { useState } from 'react';
-import { useIsMobile } from '@/shared/hooks/use-is-mobile';
-import KaviroxMobileView from '@/domains/mobile/kavirox-mobile-view';
-import FloatingNavbar from '@/domains/marketing/components/floating-navbar';
-import KaviroxEditorialHero from '@/domains/marketing/components/kavirox-editorial-hero';
-import KaviroxServices from '@/domains/services/components/kavirox-services';
-import KaviroxSolutions from '@/domains/solutions/components/kavirox-solutions';
-import KaviroxCapabilities from '@/domains/capabilities/components/kavirox-capabilities';
-import KaviroxChatbot from '@/domains/chatbot/components/kavirox-chatbot';
-import TubesCursor from '@/components/ui/tubes-curor';
-import { ArrowUpRight, Heart, Copy, Check } from 'lucide-react';
-import { LinkedIn, Instagram, X, Threads } from '@aliimam/logos';
-import { getInquiryWebmailUrl, copyInquiryTemplate } from '@/shared/lib/email-inquiry';
+import React, { Suspense, lazy, useState, useEffect, useCallback, useRef } from 'react';
+import { useDeviceTier } from '@/shared/hooks/use-device-tier';
+import { useLenis } from '@/shared/hooks/use-lenis';
+
+import KaviroxPreloader from '@/components/ui/KaviroxPreloader';
+import TargetCursor from '@/components/ui/TargetCursor';
+import KaviroxHeader from '@/domains/marketing/components/kavirox-header';
+import KaviroxHero from '@/domains/marketing/components/kavirox-hero';
+
+const Particles = lazy(() => import('@/components/ui/Particles'));
+
+// Lazy-load below-the-fold sections per docs/redesign/06-performance-tiers.md
+const TechMarquee = lazy(() => import('@/domains/marketing/components/tech-marquee'));
+const ProductsSection = lazy(() =>
+  import('@/domains/products/components/products-section').then((m) => ({
+    default: m.ProductsSection,
+  }))
+);
+const WorkWithUsSection = lazy(() =>
+  import('@/domains/marketing/components/work-with-us-section').then((m) => ({
+    default: m.WorkWithUsSection,
+  }))
+);
+const KaviroxServices = lazy(() => import('@/domains/services/components/kavirox-services'));
+const KaviroxCapabilities = lazy(() => import('@/domains/capabilities/components/kavirox-capabilities'));
+const TrustSection = lazy(() => import('@/domains/marketing/components/trust-section'));
+const FaqSection = lazy(() => import('@/domains/marketing/components/faq-section'));
+const ContactSection = lazy(() => import('@/domains/marketing/components/contact-section'));
+const KaviroxChatbot = lazy(() => import('@/domains/chatbot/components/kavirox-chatbot'));
+const KaviroxFooter = lazy(() =>
+  import('@/domains/marketing/components/kavirox-footer').then((m) => ({
+    default: m.KaviroxFooter,
+  }))
+);
+const ProductDetailView = lazy(() =>
+  import('@/domains/products/components/product-detail-view').then((m) => ({
+    default: m.ProductDetailView,
+  }))
+);
 
 export function App() {
-  const isMobile = useIsMobile();
-  const [copiedTemplate, setCopiedTemplate] = useState(false);
+  const tier = useDeviceTier();
+  const isFull = tier === 'full';
 
-  // If viewing on mobile screen (< 768px), render dedicated touch-optimized mobile experience
-  if (isMobile) {
-    return <KaviroxMobileView />;
-  }
+  // Lenis smooth scroll: Fine pointer + full tier only
+  useLenis(tier);
 
+  // Preserve scroll position when entering product detail view
+  const savedScrollYRef = useRef<number>(0);
 
-  const handleCopyTemplate = async () => {
-    const success = await copyInquiryTemplate({ source: "Studio Footer" });
-    if (success) {
-      setCopiedTemplate(true);
-      setTimeout(() => setCopiedTemplate(false), 2400);
+  // Lightweight SPA Router for /products/:slug
+  const [currentPath, setCurrentPath] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return window.location.pathname;
     }
-  };
+    return '/';
+  });
+
+  const navigateTo = useCallback((path: string) => {
+    if (typeof window === 'undefined') return;
+    if (path.startsWith('/#') || path.startsWith('#')) {
+      const hash = path.includes('#') ? '#' + path.split('#')[1] : '';
+      window.history.pushState({}, '', '/' + hash);
+      setCurrentPath('/');
+      setTimeout(() => {
+        const id = hash.replace(/^#/, '');
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 50);
+      return;
+    }
+
+    if (path.startsWith('/products/')) {
+      savedScrollYRef.current = window.scrollY;
+      window.history.pushState({}, '', path);
+      setCurrentPath(path);
+      window.scrollTo(0, 0);
+      return;
+    }
+
+    if (path === '/' || path === '') {
+      window.history.pushState({}, '', '/');
+      setCurrentPath('/');
+      setTimeout(() => {
+        window.scrollTo({ top: savedScrollYRef.current, behavior: 'instant' });
+      }, 25);
+      return;
+    }
+
+    window.history.pushState({}, '', path);
+    setCurrentPath(path);
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const newPath = window.location.pathname;
+      setCurrentPath(newPath);
+      if (newPath === '/') {
+        setTimeout(() => {
+          window.scrollTo({ top: savedScrollYRef.current, behavior: 'instant' });
+        }, 25);
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  // Intercept local /products/ links for instant SPA transition without reload
+  useEffect(() => {
+    const handleGlobalClick = (e: MouseEvent) => {
+      const anchor = (e.target as HTMLElement).closest('a');
+      if (!anchor) return;
+      const href = anchor.getAttribute('href');
+      if (!href) return;
+
+      if (href.startsWith('/products/')) {
+        e.preventDefault();
+        navigateTo(href);
+      } else if (href.startsWith('/#') && currentPath !== '/') {
+        e.preventDefault();
+        navigateTo(href);
+      }
+    };
+
+    document.addEventListener('click', handleGlobalClick);
+    return () => document.removeEventListener('click', handleGlobalClick);
+  }, [currentPath, navigateTo]);
+
+  // Check if current route is product detail
+  const productMatch = currentPath.match(/^\/products\/([^/?#]+)/);
+  const currentProductSlug = productMatch ? productMatch[1] : null;
+
   return (
-    <div className="min-h-screen bg-[#09090b] text-[#fafafa] font-sans selection:bg-orange-500/30 selection:text-white relative">
-      {/* 3D Tubes Cursor Interactive Ambient Layer (Reactive to mouse, non-blocking) */}
-      <TubesCursor 
-        backgroundOnly={true} 
-        tubesColors={["#ff5a1f", "#f59e0b", "#8b5cf6"]} 
-        lightsColors={["#ff5a1f", "#9333ea", "#3b82f6", "#06b6d4"]} 
-        lightsIntensity={180} 
+    <div className="min-h-screen bg-bg text-text font-sans selection:bg-primary/30 selection:text-white relative">
+      {/* 0. Optional Short Preloader (max 850ms, session-flagged, reduced-motion safe) */}
+      <KaviroxPreloader />
+
+      {/* Target Cursor: Desktop PC and fine pointer devices */}
+      <TargetCursor
+        targetSelector=".cursor-target"
+        cursorColor="#38bdf8"
+        cursorColorOnTarget="#38bdf8"
+        hideDefaultCursor={false}
+        size={36}
+        cornerSize={10}
+        thickness={2.5}
+        padding={6}
+        dotSize={4}
+        spinDuration={2}
+        hoverDuration={0.2}
+        parallaxOn={true}
+        matchRadius={true}
       />
 
-      {/* Global Translucent Frosted Floating Navbar */}
-      <FloatingNavbar />
-
-      {/* Global Right-Edge Vertical Ribbon Badge (Visible across all sections & pages) */}
-      <a 
-        href={getInquiryWebmailUrl({ source: "Global Side Ribbon" })}
-        target="_blank"
-        rel="noopener noreferrer"
-        title="Start a Project with Kavirox (Opens Pre-Written Email in Gmail Web)"
-        className="fixed right-0 top-1/2 -translate-y-1/2 z-30 flex items-center group cursor-pointer select-none"
-      >
-        <div className="bg-orange-600 hover:bg-orange-500 text-white py-5 sm:py-6 px-2 sm:px-2.5 text-[11px] sm:text-xs font-bold tracking-widest uppercase shadow-2xl rounded-l-md sm:rounded-l-lg border-l border-t border-b border-orange-400/40 transition-all duration-200 group-hover:translate-x-[-3px] group-hover:shadow-[0_0_25px_rgba(234,88,12,0.45)]">
-          <span className="rotate-180 [writing-mode:vertical-rl] block">
-            Kavirox.space • Tech & Growth
-          </span>
-        </div>
-      </a>
-
-      {/* 1. Main Hero with Kavirox Logo in Top Left & ThreeUI Chromatic Wordmark Physics */}
-      <KaviroxEditorialHero />
-
-      {/* 2. Services Section: 11 Core Service Lines Grounded in Proposal */}
-      <KaviroxServices />
-
-      {/* 3. Solutions Section: Turnkey Architectures, Blueprints & Metrics */}
-      <KaviroxSolutions />
-
-      {/* 4. Capabilities Section: Complete Tooling Stack, Delivery Lifecycle & Engagement Models */}
-      <KaviroxCapabilities />
-
-      {/* Global Studio Footer & Contact Anchor (Clean, Brutalist, Translucent) */}
-      <footer id="contact" className="relative z-10 bg-zinc-950/40 backdrop-blur-md border-t border-white/10 pt-16 pb-12 text-zinc-400 font-sans">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-12 border-b border-white/10 items-start">
-            <div className="md:col-span-6 space-y-4">
-              <div className="flex items-center gap-3">
-                <img
-                  src="/Kavirox_logo.png"
-                  alt="Kavirox"
-                  className="h-8 md:h-10 w-auto object-contain"
-                  onError={(e) => {
-                    const target = e.currentTarget;
-                    target.style.display = "none";
-                    const fallback = target.parentElement?.querySelector(".footer-fallback");
-                    if (fallback) fallback.classList.remove("hidden");
-                  }}
-                />
-                <div className="footer-fallback hidden text-xl font-bold tracking-tight text-white font-mono">
-                  KAVIROX.SPACE
-                </div>
-              </div>
-              <p className="text-xs md:text-sm text-zinc-400 font-mono max-w-md leading-relaxed">
-                A technology and e-commerce studio helping consumer brands build faster online stores, automate customer messaging, and turn visitors into regular buyers.
-              </p>
-              <div className="flex items-center gap-2 text-xs font-mono text-emerald-400">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                Founded at GBU Incubation Center (AIC-GBU) • Greater Noida, Uttar Pradesh 201312
-              </div>
+      {currentProductSlug ? (
+        /* Product Detail View */
+        <Suspense
+          fallback={
+            <div className="min-h-screen bg-bg flex items-center justify-center text-primary font-mono text-xs">
+              Loading product...
             </div>
+          }
+        >
+          <ProductDetailView
+            slug={currentProductSlug}
+            onBack={() => {
+              if (window.history.length > 1) {
+                window.history.back();
+              } else {
+                navigateTo('/');
+              }
+            }}
+            onNavigateProduct={(newSlug) => navigateTo(`/products/${newSlug}`)}
+          />
+        </Suspense>
+      ) : (
+        /* Landing Page Order per docs/redesign-v2/05-landing-page-v2.md:
+           0 Preloader → 1 Header → 2 Hero → 3 Marquee → 4 Products → 5 Ways to work →
+           6 Services → 7 Solutions → 8 Process → 9 About → 10 FAQ → 11 Contact → 12 Footer
+        */
+        <>
+          {/* 1. Header (Liquid glass desktop, floating bar mobile) */}
+          <KaviroxHeader />
 
-            <div className="md:col-span-3 space-y-2">
-              <div className="text-xs uppercase font-mono tracking-widest text-zinc-200 mb-3">
-                Navigation
+          <main id="main-content" className="relative">
+            {/* 2. Hero: 100svh, centered composition, pure GradientASCII, ZERO particles */}
+            <KaviroxHero />
+
+            {/* Below-Hero Container with Ambient Particles */}
+            <div className="relative isolate overflow-hidden">
+              <div className="absolute inset-0 pointer-events-none -z-10 overflow-hidden" aria-hidden="true">
+                <Suspense fallback={null}>
+                  <Particles
+                    particleColors={["#ffffff", "#ffffff", "#ffffff"]}
+                    particleCount={200}
+                    particleSpread={10}
+                    speed={0.1}
+                    particleBaseSize={100}
+                    glow={0.5}
+                    twinkle={0.3}
+                    moveParticlesOnHover
+                    hoverEffect="parallax"
+                    sizeRandomness={1}
+                    shape="circle"
+                    depthOfField={0}
+                    connections={false}
+                    connectionDistance={110}
+                    particleHoverFactor={1}
+                    hoverRadius={140}
+                    drift="none"
+                    driftSpeed={1}
+                    alphaParticles={false}
+                    disableRotation={false}
+                    cameraDistance={20}
+                    variation={0}
+                    opacity={1}
+                    clickBurst
+                    intro
+                    lightMode={false}
+                  />
+                </Suspense>
               </div>
-              <ul className="space-y-2 text-xs font-mono">
-                <li>
-                  <a href="#" className="hover:text-orange-400 transition-colors">
-                    01 // Index
-                  </a>
-                </li>
-                <li>
-                  <a href="#services" className="hover:text-orange-400 transition-colors">
-                    02 // Services
-                  </a>
-                </li>
-                <li>
-                  <a href="#solutions" className="hover:text-orange-400 transition-colors">
-                    03 // Solutions
-                  </a>
-                </li>
-                <li>
-                  <a href="#capabilities" className="hover:text-orange-400 transition-colors">
-                    04 // Capabilities
-                  </a>
-                </li>
-              </ul>
+
+              <Suspense fallback={<div className="w-full h-24 bg-bg" />}>
+                {/* 3. Marquee: Technologies we build with */}
+                <TechMarquee />
+              </Suspense>
+
+              <Suspense fallback={<div className="w-full min-h-[600px] bg-bg" />}>
+                {/* 4. Products: 7 products, honest badges, phone mocks */}
+                <ProductsSection onOpenProduct={(slug) => navigateTo(`/products/${slug}`)} />
+              </Suspense>
+
+              <Suspense fallback={<div className="w-full min-h-[400px] bg-bg" />}>
+                {/* 5. How you can work with us: 4 cards with connector line */}
+                <WorkWithUsSection />
+              </Suspense>
+
+              <Suspense fallback={<div className="w-full min-h-[600px] bg-bg" />}>
+                {/* 6. Services: 11 lines, 2-column featured first card, capability strip */}
+                <KaviroxServices />
+              </Suspense>
+
+              <Suspense fallback={<div className="w-full min-h-[600px] bg-bg" />}>
+                {/* 7. Process: How a project runs, Step 1..Step 6 with scroll-drawn line */}
+                <KaviroxCapabilities />
+              </Suspense>
+
+              <Suspense fallback={<div className="w-full min-h-[300px] bg-bg" />}>
+                {/* 9. About and trust: Verifiable proof tiles, no invented stats */}
+                <TrustSection />
+              </Suspense>
+
+              <Suspense fallback={<div className="w-full min-h-[400px] bg-bg" />}>
+                {/* 10. FAQ: Two-column accessible accordion */}
+                <FaqSection />
+              </Suspense>
+
+              <Suspense fallback={<div className="w-full min-h-[500px] bg-bg" />}>
+                {/* 11. Contact: Dual path (project / product), Soft Aurora, Shine Border */}
+                <ContactSection />
+              </Suspense>
             </div>
+          </main>
 
-            <div className="md:col-span-3 space-y-3">
-              <div className="text-xs uppercase font-mono tracking-widest text-zinc-200 mb-2">
-                Connect
-              </div>
-              <div className="text-xs font-mono text-zinc-300">
-                Direct Inquiries:
-              </div>
+          <Suspense fallback={<div className="w-full min-h-[200px] bg-surface" />}>
+            {/* 12. Footer: 4 columns, 7 product links, cropped wordmark watermark */}
+            <KaviroxFooter />
+          </Suspense>
+        </>
+      )}
 
-              {/* Primary Email CTA (Redirects to Email Website with Pre-Written Brief) */}
-              <a
-                href={getInquiryWebmailUrl({ source: "Studio Footer Direct Inquiry" })}
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Open Pre-Written Inquiry Email in Gmail Web"
-                className="inline-flex items-center justify-center gap-2 w-full py-2 px-3.5 rounded-lg text-xs font-semibold bg-orange-600 hover:bg-orange-500 text-white shadow-md shadow-orange-600/20 transition-all font-sans"
-              >
-                <span>Email Us (Pre-Written Brief)</span>
-                <ArrowUpRight className="w-3.5 h-3.5" />
-              </a>
-
-              {/* Direct Email Address & Template Copy */}
-              <div className="flex items-center justify-between gap-2 pt-1 text-xs font-mono">
-                <a
-                  href={getInquiryWebmailUrl({ source: "Studio Footer Email Link" })}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-orange-400 hover:text-orange-300 transition-colors"
-                >
-                  info@kavirox.space
-                  <ArrowUpRight className="w-3 h-3" />
-                </a>
-
-                <button
-                  type="button"
-                  onClick={handleCopyTemplate}
-                  className="text-zinc-400 hover:text-white transition-colors text-[11px] underline underline-offset-2 inline-flex items-center gap-1 cursor-pointer"
-                  title="Copy pre-written inquiry email template to clipboard"
-                >
-                  {copiedTemplate ? (
-                    <>
-                      <Check className="w-3 h-3 text-emerald-400" />
-                      <span className="text-emerald-400">Copied!</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-3 h-3" />
-                      <span>Copy Template</span>
-                    </>
-                  )}
-                </button>
-              </div>
-
-              <p className="text-[11px] text-zinc-500 font-mono leading-relaxed pt-0.5">
-                Pre-written inquiry brief opens in Gmail Web. Just edit your brand name & send.
-              </p>
-
-              {/* Social Channels */}
-              <div className="flex items-center gap-4 pt-3 text-zinc-400">
-                <a
-                  href="https://www.linkedin.com/company/kavirox/posts/?feedView=all"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="transition-transform hover:scale-110 hover:text-white"
-                  aria-label="LinkedIn"
-                >
-                  <LinkedIn />
-                </a>
-                <a
-                  href="https://www.instagram.com/kavirox.space?stkn=encybWN2NTFhZ291"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="transition-transform hover:scale-110 hover:text-white"
-                  aria-label="Instagram"
-                >
-                  <Instagram />
-                </a>
-                <a
-                  href="https://x.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="transition-transform hover:scale-110 hover:text-white"
-                  aria-label="X"
-                >
-                  <X />
-                </a>
-                <a
-                  href="https://threads.net"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="transition-transform hover:scale-110 hover:text-white"
-                  aria-label="Threads"
-                >
-                  <Threads />
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div className="pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-mono text-zinc-500">
-            <div>
-              © {new Date().getFullYear()} Kavirox.space. All rights reserved.
-            </div>
-            <div className="flex items-center gap-1">
-              Built with precision & high-performance engineering
-            </div>
-          </div>
-        </div>
-      </footer>
-
-      {/* Interactive AI Studio Concierge (OpenRouter Free Model Integration) */}
-      <KaviroxChatbot />
+      {/* Global AI Assistant (48px round mobile, compact desktop pill, 85dvh bottom sheet) */}
+      <Suspense fallback={null}>
+        <KaviroxChatbot />
+      </Suspense>
     </div>
   );
 }

@@ -1,0 +1,40 @@
+{
+  "viewports": {},
+  "console_errors": [],
+  "horizontal_scroll_issues": [],
+  "double_slash_ornament_found": [],
+  "fonts_verified": {
+    "phone": {
+      "h1Font": "\"Bricolage Grotesque Variable\", system-ui, -apple-system, sans-serif",
+      "h2Font": "\"Bricolage Grotesque Variable\", system-ui, -apple-system, sans-serif",
+      "pFont": "\"Geist Variable\", system-ui, -apple-system, sans-serif"
+    },
+    "tablet": {
+      "h1Font": "\"Bricolage Grotesque Variable\", system-ui, -apple-system, sans-serif",
+      "h2Font": "\"Bricolage Grotesque Variable\", system-ui, -apple-system, sans-serif",
+      "pFont": "\"Geist Variable\", system-ui, -apple-system, sans-serif"
+    },
+    "laptop": {
+      "h1Font": "\"Bricolage Grotesque Variable\", system-ui, -apple-system, sans-serif",
+      "h2Font": "\"Bricolage Grotesque Variable\", system-ui, -apple-system, sans-serif",
+      "pFont": "\"Geist Variable\", system-ui, -apple-system, sans-serif"
+    },
+    "desktop": {
+      "h1Font": "\"Bricolage Grotesque Variable\", system-ui, -apple-system, sans-serif",
+      "h2Font": "\"Bricolage Grotesque Variable\", system-ui, -apple-system, sans-serif",
+      "pFont": "\"Geist Variable\", system-ui, -apple-system, sans-serif"
+    },
+    "large-desktop": {
+      "h1Font": "\"Bricolage Grotesque Variable\", system-ui, -apple-system, sans-serif",
+      "h2Font": "\"Bricolage Grotesque Variable\", system-ui, -apple-system, sans-serif",
+      "pFont": "\"Geist Variable\", system-ui, -apple-system, sans-serif"
+    }
+  },
+  "interactions": {
+    "phone_product_detail": "Passed",
+    "phone_back_button": "Passed",
+    "desktop_product_detail": "Passed",
+    "desktop_back_button": "Passed",
+    "contact_focus_hides_launcher": "Verified"
+  }
+}

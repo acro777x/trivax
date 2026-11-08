@@ -1,0 +1,31 @@
+.scroll-float {
+  display: inline-block;
+  overflow: visible;
+}
+
+.scroll-float-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.scroll-float-text {
+  display: inline-block;
+}
+
+.scroll-float-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.scroll-float-char {
+  display: inline-block;
+  will-change: transform, opacity;
+  transform-origin: center bottom;
+}

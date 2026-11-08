@@ -2,10 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { 
   X, 
   Send, 
-  Sparkles, 
   RotateCcw, 
   ArrowUpRight, 
-  Bot, 
   User, 
   Square,
   Mail,
@@ -14,20 +12,22 @@ import {
 import { ChatMessage } from "../types";
 import { streamOpenRouterChat } from "../services/openrouter";
 import { openEmailInquiry } from "@/shared/lib/email-inquiry";
+import LatticeLoader from "@/components/ui/LatticeLoader";
+import { LogoMark } from "@/shared/components/logo";
 
 const INITIAL_MESSAGES: ChatMessage[] = [
   {
     id: "welcome-1",
     role: "assistant",
-    content: "Hi! I'm the **Kavirox Assistant**. Ask me anything about our services, store builds, custom RAG chatbots, or pricing.",
+    content: "Hi, I'm Kavirox's assistant. Ask me about our products or services.",
     timestamp: Date.now()
   }
 ];
 
 const STARTER_PROMPTS = [
-  "What services do you offer?",
-  "How do your RAG chatbots work?",
-  "Pricing & engagement models"
+  "What products do you build?",
+  "How can we work together?",
+  "What services do you deliver?"
 ];
 
 export function KaviroxChatbot() {
@@ -44,10 +44,36 @@ export function KaviroxChatbot() {
   const [input, setInput] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [replyingTo, setReplyingTo] = useState<ChatMessage | null>(null);
+  const [hideLauncher, setHideLauncher] = useState(false);
 
   const abortControllerRef = useRef<AbortController | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const touchStartY = useRef<number | null>(null);
+
+  // Hide launcher when contact form field is focused per doc 17 S0
+  useEffect(() => {
+    const contactSection = document.getElementById("contact");
+    if (!contactSection) return;
+
+    const handleFocusIn = (e: FocusEvent) => {
+      const target = e.target as HTMLElement;
+      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.tagName === "SELECT")) {
+        setHideLauncher(true);
+      }
+    };
+
+    const handleFocusOut = () => {
+      setHideLauncher(false);
+    };
+
+    contactSection.addEventListener("focusin", handleFocusIn);
+    contactSection.addEventListener("focusout", handleFocusOut);
+    return () => {
+      contactSection.removeEventListener("focusin", handleFocusIn);
+      contactSection.removeEventListener("focusout", handleFocusOut);
+    };
+  }, []);
 
   // Persist conversation to session
   useEffect(() => {
@@ -65,10 +91,17 @@ export function KaviroxChatbot() {
     }
   }, [messages, isOpen]);
 
-  // Focus input when chat opens
+  // Focus input when chat opens & Escape key listener
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 150);
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          setIsOpen(false);
+        }
+      };
+      window.addEventListener("keydown", handleKeyDown);
+      return () => window.removeEventListener("keydown", handleKeyDown);
     }
   }, [isOpen]);
 
@@ -130,7 +163,7 @@ export function KaviroxChatbot() {
         },
         onError: () => {
           setIsGenerating(false);
-          const errorMsg = "I'm experiencing a temporary delay right now. You can email us directly at info@kavirox.space or try asking again.";
+          const errorMsg = "I'm experiencing a temporary delay. You can email us directly at info@kavirox.space or try asking again.";
           setMessages(prev => 
             prev.map(m => m.id === assistantId ? { ...m, content: errorMsg, isStreaming: false } : m)
           );
@@ -141,7 +174,7 @@ export function KaviroxChatbot() {
       setMessages(prev => 
         prev.map(m => m.id === assistantId ? { 
           ...m, 
-          content: "I'm experiencing a temporary delay right now. You can email us directly at info@kavirox.space or try asking again.", 
+          content: "I'm experiencing a temporary delay. You can email us directly at info@kavirox.space or try asking again.", 
           isStreaming: false 
         } : m)
       );
@@ -195,7 +228,7 @@ export function KaviroxChatbot() {
       if (isBullet) {
         return (
           <div key={idx} className="flex items-start gap-2 my-0.5 ml-1">
-            <span className="text-orange-400 text-xs mt-1">•</span>
+            <span className="text-primary text-xs mt-1">•</span>
             <span className="flex-1">{formattedParts}</span>
           </div>
         );
@@ -207,15 +240,41 @@ export function KaviroxChatbot() {
 
   return (
     <>
-      {/* 1. Floating Launcher Badge (Bottom-Right) */}
-      <div className="fixed bottom-5 right-5 z-40 flex items-center gap-3">
-        {/* Launcher Button */}
+      {/* 1. Floating Launcher (48px round icon on mobile, compact pill on desktop) */}
+      <div
+        className={`fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-40 transition-all duration-300 ${
+          hideLauncher ? 'opacity-0 pointer-events-none translate-y-6' : 'opacity-100 translate-y-0'
+        }`}
+      >
+        {/* Mobile: 48px round icon button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className={`relative group flex items-center gap-2 px-3 sm:px-3.5 py-2 rounded-full transition-all duration-300 shadow-2xl cursor-pointer ${
+          className={`sm:hidden w-12 h-12 rounded-full flex items-center justify-center transition-all duration-200 shadow-2xl cursor-pointer ${
             isOpen
-              ? "bg-zinc-800 text-white border border-white/20 scale-95"
-              : "bg-[#101014]/90 hover:bg-[#16161d] text-white border border-white/15 hover:border-orange-500/40 hover:shadow-orange-500/20 hover:scale-105"
+              ? "bg-surface-2 text-text border border-line"
+              : "bg-surface text-text border border-line hover:border-primary/50"
+          }`}
+          style={{
+            backdropFilter: "blur(20px)",
+            WebkitBackdropFilter: "blur(20px)",
+            boxShadow: "0 10px 40px -8px rgba(0,0,0,0.7)",
+          }}
+          aria-label={isOpen ? "Close Assistant" : "Ask Kavirox"}
+        >
+          {isOpen ? (
+            <X className="w-5 h-5 text-text" />
+          ) : (
+            <LogoMark size={22} glow={false} />
+          )}
+        </button>
+
+        {/* Desktop: compact pill with 'Ask Kavirox' */}
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className={`hidden sm:flex items-center gap-2.5 px-3.5 py-2 rounded-full transition-all duration-200 shadow-2xl cursor-pointer ${
+            isOpen
+              ? "bg-surface-2 text-text border border-line scale-95"
+              : "bg-surface/90 text-text border border-line hover:border-primary/50 hover:shadow-[0_0_20px_rgba(168,230,46,0.25)] hover:scale-105"
           }`}
           style={{
             backdropFilter: "blur(20px)",
@@ -224,53 +283,60 @@ export function KaviroxChatbot() {
               ? "0 8px 30px rgba(0,0,0,0.6)" 
               : "0 10px 40px -8px rgba(0,0,0,0.7), inset 0 1px 0 0 rgba(255,255,255,0.15)"
           }}
-          title={isOpen ? "Close Assistant" : "Ask Kavirox AI"}
-          aria-label="Open Kavirox Assistant"
+          aria-label={isOpen ? "Close Assistant" : "Ask Kavirox"}
         >
           {/* Status Dot */}
           <div className="relative flex items-center justify-center">
-            <span className="w-2 h-2 rounded-full bg-emerald-500" />
-            <span className="absolute w-3.5 h-3.5 rounded-full bg-emerald-400/30 animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-primary" />
+            <span className="absolute w-3.5 h-3.5 rounded-full bg-primary/30 animate-pulse" />
           </div>
 
-          {/* Minimal K Icon Mark */}
-          <div className="w-4.5 h-4.5 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-[#09090b] font-sans font-black text-[9px] leading-none shadow-[0_0_8px_rgba(16,185,129,0.35)]">
-            K
-          </div>
+          <LogoMark size={18} glow={false} />
 
-          <span className="hidden sm:inline text-xs font-semibold tracking-wide">
-            {isOpen ? "Close" : "Ask AI"}
+          <span className="text-xs font-sans font-semibold tracking-wide">
+            {isOpen ? "Close" : "Ask Kavirox"}
           </span>
-
-          <Sparkles className="w-3 h-3 text-orange-400 transition-transform group-hover:rotate-12" />
         </button>
       </div>
 
-      {/* 2. Sleek, Minimal Concierge Chat Window */}
+      {/* 2. Concierge Chat Window (85dvh bottom sheet on mobile, floating box on desktop) */}
       {isOpen && (
         <div
-          className="fixed bottom-18 right-3 sm:right-5 z-50 w-[calc(100vw-1.5rem)] sm:w-[360px] max-h-[500px] h-[66vh] flex flex-col rounded-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-3 duration-200"
+          onTouchStart={(e) => {
+            touchStartY.current = e.touches[0].clientY;
+          }}
+          onTouchEnd={(e) => {
+            if (touchStartY.current !== null) {
+              const deltaY = e.changedTouches[0].clientY - touchStartY.current;
+              if (deltaY > 80) {
+                setIsOpen(false);
+              }
+              touchStartY.current = null;
+            }
+          }}
+          className="fixed inset-x-0 bottom-0 z-50 h-[85dvh] max-h-[85dvh] w-full rounded-t-[24px] rounded-b-none flex flex-col overflow-hidden sm:inset-auto sm:bottom-20 sm:right-6 sm:w-[380px] sm:h-[540px] sm:max-h-[600px] sm:rounded-2xl animate-in fade-in slide-in-from-bottom-3 duration-200"
           style={{
-            background: "rgba(12, 12, 16, 0.92)",
-            backdropFilter: "blur(28px) saturate(190%)",
-            WebkitBackdropFilter: "blur(28px) saturate(190%)",
-            border: "1px solid rgba(255, 255, 255, 0.14)",
-            boxShadow: "0 24px 70px -12px rgba(0, 0, 0, 0.9), inset 0 1px 0 0 rgba(255, 255, 255, 0.22)"
+            background: "rgba(11, 18, 12, 0.96)",
+            backdropFilter: "blur(28px)",
+            WebkitBackdropFilter: "blur(28px)",
+            border: "1px solid rgba(255, 255, 255, 0.12)",
+            boxShadow: "0 24px 70px -12px rgba(0, 0, 0, 0.9)"
           }}
         >
-          {/* Specular Top Rim Sheen */}
+          {/* Mobile top drag handle */}
+          <div className="w-12 h-1 bg-white/20 rounded-full mx-auto my-2 sm:hidden cursor-grab shrink-0" />
+
+          {/* Top Rim Specular Sheen */}
           <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
 
-          {/* Minimal Header Bar */}
-          <div className="px-3.5 py-2.5 border-b border-white/10 flex items-center justify-between bg-black/40">
-            <div className="flex items-center gap-2 min-w-0">
-              <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-[#09090b] font-black text-[10px] shrink-0 shadow-[0_0_8px_rgba(16,185,129,0.4)]">
-                K
-              </div>
+          {/* Header Bar */}
+          <div className="px-4 py-3 border-b border-white/10 flex items-center justify-between bg-black/40 shrink-0">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <LogoMark size={20} glow={false} />
               <div className="min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <h2 className="text-xs font-semibold text-white truncate">Kavirox AI</h2>
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0 animate-pulse" />
+                  <h2 className="text-xs font-semibold text-text truncate">Kavirox Assistant</h2>
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0 animate-pulse" />
                 </div>
               </div>
             </div>
@@ -283,7 +349,7 @@ export function KaviroxChatbot() {
                 className="p-1 rounded-md text-zinc-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer"
                 title="Reset conversation"
               >
-                <RotateCcw className="w-3 h-3" />
+                <RotateCcw className="w-3.5 h-3.5" />
               </button>
               <button
                 type="button"
@@ -291,78 +357,85 @@ export function KaviroxChatbot() {
                 className="p-1 rounded-md text-zinc-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer"
                 title="Close chat"
               >
-                <X className="w-3.5 h-3.5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
           </div>
 
           {/* Messages Thread */}
-          <div className="flex-1 overflow-y-auto p-3 space-y-2.5 scrollbar-thin scrollbar-thumb-white/10 text-xs">
+          <div className="flex-1 overflow-y-auto p-4 space-y-3.5 text-xs text-text-muted font-sans scrollbar-none">
             {messages.map((msg) => {
               const isAssistant = msg.role === "assistant";
-              const isProjectInquiryRelated = 
-                isAssistant && 
-                msg.id !== "welcome-1" &&
-                (msg.content.includes("info@kavirox.space") || 
-                 msg.content.toLowerCase().includes("inquiry brief") || 
-                 msg.content.toLowerCase().includes("project inquiry") ||
-                 msg.content.toLowerCase().includes("pre-written"));
+              const isProjectInquiryRelated =
+                isAssistant &&
+                (msg.content.toLowerCase().includes("discuss a project") ||
+                  msg.content.toLowerCase().includes("pre-written project brief") ||
+                  msg.content.toLowerCase().includes("email us") ||
+                  msg.content.toLowerCase().includes("info@kavirox.space"));
 
               return (
                 <div
                   key={msg.id}
-                  className={`group/msg flex gap-2.5 ${isAssistant ? "items-start" : "items-end justify-end"}`}
+                  className={`group/msg flex items-end gap-2 ${
+                    isAssistant ? "justify-start" : "justify-end"
+                  }`}
                 >
                   {isAssistant && (
-                    <div className="w-5 h-5 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-orange-400 mt-1 shrink-0">
-                      <Bot className="w-3 h-3" />
+                    <div className="w-6 h-6 rounded-full bg-primary/10 border border-primary/25 flex items-center justify-center shrink-0 mb-1">
+                      <LogoMark size={14} glow={false} />
                     </div>
                   )}
 
-                  <div className="flex flex-col max-w-[85%]">
+                  <div className={`max-w-[85%] ${isAssistant ? "items-start" : "items-end"}`}>
+                    {/* Render Quoted Reply Banner */}
+                    {msg.replyTo && (
+                      <div className="mb-1 px-2.5 py-1 rounded-lg bg-surface-2/80 border-l-2 border-primary/60 text-[10px] text-text-muted/80 truncate">
+                        <span className="font-mono text-primary font-medium mr-1">
+                          {msg.replyTo.role === "assistant" ? "Kavirox:" : "You:"}
+                        </span>
+                        {msg.replyTo.text}
+                      </div>
+                    )}
+
                     <div
-                      className={`rounded-2xl px-3.5 py-2.5 text-xs ${
+                      className={`p-3 rounded-2xl text-xs ${
                         isAssistant
-                          ? "bg-white/[0.05] border border-white/10 text-zinc-200"
-                          : "bg-orange-600 text-white rounded-br-none shadow-md shadow-orange-600/20"
+                          ? "bg-surface-2 text-text border border-line rounded-bl-sm"
+                          : "bg-primary text-primary-ink font-medium rounded-br-sm shadow-[0_0_15px_rgba(168,230,46,0.2)]"
                       }`}
                     >
-                      {/* Replied Context Bubble Quote */}
-                      {msg.replyTo && (
-                        <div
-                          className={`mb-2 px-2.5 py-1.5 rounded-lg text-[11px] font-mono border-l-2 ${
-                            isAssistant
-                              ? "bg-white/[0.05] border-orange-400 text-zinc-300"
-                              : "bg-black/25 border-white/70 text-orange-100"
-                          }`}
-                        >
-                          <div className="flex items-center gap-1 opacity-75 text-[9px] font-semibold">
-                            <Reply className="w-2.5 h-2.5" />
-                            <span>Replying to {msg.replyTo.role === "assistant" ? "Kavirox AI" : "You"}:</span>
-                          </div>
-                          <span className="truncate block italic text-[10px] mt-0.5 opacity-90">
-                            "{msg.replyTo.text.replace(/\*\*/g, "")}"
-                          </span>
+                      {/* Thinking State with Lattice Loader */}
+                      {isAssistant && msg.content === "" && msg.isStreaming ? (
+                        <div className="py-1">
+                          <LatticeLoader
+                            status="working"
+                            cellSize={4}
+                            gap={2}
+                            grid={3}
+                            color="#38bdf8"
+                            showTimer={false}
+                            label="Thinking..."
+                          />
                         </div>
+                      ) : (
+                        <>
+                          {renderFormattedText(msg.content)}
+                          {msg.isStreaming && (
+                            <span className="inline-block w-1.5 h-3.5 ml-1 bg-primary animate-pulse align-middle" />
+                          )}
+                        </>
                       )}
 
-                      {renderFormattedText(msg.content)}
-
-                      {/* Streaming Cursor */}
-                      {msg.isStreaming && (
-                        <span className="inline-block w-1.5 h-3.5 ml-1 bg-orange-400 animate-pulse align-middle" />
-                      )}
-
-                      {/* Contextual Action Button - Only when actively discussing starting a project */}
+                      {/* Contextual Action Button */}
                       {isProjectInquiryRelated && !msg.isStreaming && (
-                        <div className="mt-3 pt-2.5 border-t border-white/10 flex items-center gap-2">
+                        <div className="mt-3 pt-2.5 border-t border-line flex items-center gap-2">
                           <button
                             type="button"
                             onClick={() => openEmailInquiry({ source: "Chatbot Assistant" })}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-semibold bg-orange-600 hover:bg-orange-500 text-white shadow-sm transition-all cursor-pointer"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-semibold bg-primary text-primary-ink shadow-sm transition-all cursor-pointer hover:brightness-110"
                           >
                             <Mail className="w-3 h-3" />
-                            <span>Launch Pre-Written Inquiry Brief</span>
+                            <span>Discuss a project</span>
                             <ArrowUpRight className="w-3 h-3" />
                           </button>
                         </div>
@@ -378,7 +451,7 @@ export function KaviroxChatbot() {
                             setReplyingTo(msg);
                             setTimeout(() => inputRef.current?.focus(), 50);
                           }}
-                          className="inline-flex items-center gap-1 text-zinc-500 hover:text-orange-400 transition-colors opacity-70 sm:opacity-0 sm:group-hover/msg:opacity-100 cursor-pointer px-1.5 py-0.5 rounded hover:bg-white/5"
+                          className="inline-flex items-center gap-1 text-text-muted hover:text-primary transition-colors opacity-70 sm:opacity-0 sm:group-hover/msg:opacity-100 cursor-pointer px-1.5 py-0.5 rounded hover:bg-white/5"
                           title="Reply to this message"
                         >
                           <Reply className="w-2.5 h-2.5" />
@@ -389,7 +462,7 @@ export function KaviroxChatbot() {
                   </div>
 
                   {!isAssistant && (
-                    <div className="w-5 h-5 rounded-full bg-orange-500/20 border border-orange-500/40 flex items-center justify-center text-orange-400 mb-1 shrink-0">
+                    <div className="w-5 h-5 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center text-primary mb-1 shrink-0">
                       <User className="w-3 h-3" />
                     </div>
                   )}
@@ -401,13 +474,13 @@ export function KaviroxChatbot() {
 
           {/* Starter Suggestion Chips */}
           {messages.length <= 2 && !isGenerating && (
-            <div className="px-4 py-2 border-t border-white/5 bg-black/20 flex flex-wrap gap-1.5">
+            <div className="px-4 py-2 border-t border-line bg-surface flex flex-wrap gap-1.5 shrink-0">
               {STARTER_PROMPTS.map((prompt, pIdx) => (
                 <button
                   key={pIdx}
                   type="button"
                   onClick={() => handleSend(prompt)}
-                  className="px-2.5 py-1 rounded-full text-[10px] font-mono bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 hover:text-white transition-all text-left cursor-pointer"
+                  className="px-2.5 py-1 rounded-full text-[10px] font-mono bg-surface-2 hover:bg-surface-2/80 border border-line text-text-muted hover:text-text transition-all text-left cursor-pointer"
                 >
                   {prompt}
                 </button>
@@ -416,19 +489,19 @@ export function KaviroxChatbot() {
           )}
 
           {/* Input Form Bar */}
-          <div className="p-3 border-t border-white/10 bg-black/40">
+          <div className="p-3 border-t border-line bg-surface shrink-0">
             {/* Active Reply Preview Banner */}
             {replyingTo && (
-              <div className="mb-2 px-3 py-1.5 rounded-xl bg-white/[0.06] border border-orange-500/40 flex items-center justify-between text-xs animate-in fade-in slide-in-from-bottom-1 duration-150">
+              <div className="mb-2 px-3 py-1.5 rounded-xl bg-surface-2 border border-primary/40 flex items-center justify-between text-xs animate-in fade-in slide-in-from-bottom-1 duration-150">
                 <div className="flex items-center gap-2 min-w-0 pr-2">
-                  <div className="w-5 h-5 rounded-md bg-orange-500/15 border border-orange-500/30 flex items-center justify-center text-orange-400 shrink-0">
+                  <div className="w-5 h-5 rounded-md bg-primary/15 border border-primary/30 flex items-center justify-center text-primary shrink-0">
                     <Reply className="w-3 h-3" />
                   </div>
                   <div className="min-w-0 text-left">
-                    <span className="text-[10px] font-mono text-orange-400 block font-medium">
-                      Replying to {replyingTo.role === "assistant" ? "Kavirox AI" : "You"}:
+                    <span className="text-[10px] font-mono text-primary block font-medium">
+                      Replying to {replyingTo.role === "assistant" ? "Kavirox Assistant" : "You"}:
                     </span>
-                    <p className="text-[11px] text-zinc-300 truncate max-w-[240px] sm:max-w-[290px]">
+                    <p className="text-[11px] text-text-muted truncate max-w-[240px] sm:max-w-[290px]">
                       {replyingTo.content.replace(/\*\*/g, "")}
                     </p>
                   </div>
@@ -436,7 +509,7 @@ export function KaviroxChatbot() {
                 <button
                   type="button"
                   onClick={() => setReplyingTo(null)}
-                  className="p-1 rounded-lg text-zinc-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer shrink-0"
+                  className="p-1 rounded-lg text-text-muted hover:text-text hover:bg-white/10 transition-colors cursor-pointer shrink-0"
                   title="Cancel reply"
                 >
                   <X className="w-3.5 h-3.5" />
@@ -457,8 +530,8 @@ export function KaviroxChatbot() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder={replyingTo ? "Type your reply..." : "Ask about our services, RAG chatbots, or team..."}
-                className="w-full px-3 py-2 pr-10 rounded-xl bg-white/[0.06] border border-white/15 text-xs text-white placeholder-zinc-500 font-sans focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/30 resize-none max-h-24 scrollbar-none"
+                placeholder={replyingTo ? "Type your reply..." : "Ask about our products or services..."}
+                className="w-full px-3 py-2 pr-10 rounded-xl bg-surface-2 border border-line text-xs text-text placeholder:text-text-muted/50 font-sans focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/30 resize-none max-h-24 scrollbar-none"
               />
 
               {isGenerating ? (
@@ -476,8 +549,8 @@ export function KaviroxChatbot() {
                   disabled={!input.trim()}
                   className={`absolute right-2 p-1.5 rounded-lg transition-all cursor-pointer ${
                     input.trim()
-                      ? "bg-orange-600 hover:bg-orange-500 text-white shadow-md shadow-orange-600/30"
-                      : "bg-white/5 text-zinc-500 cursor-not-allowed"
+                      ? "bg-primary hover:brightness-110 text-primary-ink font-bold shadow-[0_0_12px_rgba(168,230,46,0.3)]"
+                      : "bg-surface text-text-muted/40 cursor-not-allowed"
                   }`}
                   title="Send message (Enter)"
                 >

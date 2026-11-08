@@ -1,0 +1,27 @@
+.stroke-text {
+  display: inline-block;
+  vertical-align: -0.06em;
+  width: auto;
+  max-width: 100%;
+  overflow: visible;
+  line-height: 1;
+}
+
+.stroke-text--hover {
+  cursor: pointer;
+}
+
+.stroke-text__svg {
+  display: block;
+  width: 100%;
+  max-width: var(--stroke-text-width, 600px);
+  height: auto;
+  margin: 0 auto;
+  overflow: visible;
+}
+
+.stroke-text__stroke,
+.stroke-text__fill {
+  user-select: none;
+}
+

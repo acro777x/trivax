@@ -1,97 +1,116 @@
 @import "tailwindcss";
 
+@import "@fontsource-variable/bricolage-grotesque/wght.css";
+@import "@fontsource-variable/geist/wght.css";
+@import "@fontsource-variable/geist-mono/wght.css";
+
 @theme inline {
-  --font-serif: "Instrument Serif", Georgia, serif;
-  --font-sans: "Inter", system-ui, sans-serif;
-  --color-background: var(--bg-0);
-  --color-foreground: var(--text-100);
+  --font-display: "Bricolage Grotesque Variable", system-ui, -apple-system, sans-serif;
+  --font-sans: "Geist Variable", system-ui, -apple-system, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, monospace;
+
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
   --color-primary: var(--primary);
-  --color-secondary: var(--bg-200);
-  --color-card: var(--bg-100);
-  --color-accent: var(--bg-300);
-  --color-muted: var(--text-400);
+  --color-primary-ink: var(--primary-ink);
+  --color-primary-mid: var(--primary-mid);
+  --color-primary-deep: var(--primary-deep);
 }
 
 :root {
-  --bg-0: #09090b;
-  --bg-100: #18181b;
-  --bg-200: #27272a;
-  --bg-300: #3f3f46;
-  --text-100: #fafafa;
-  --text-200: #e4e4e7;
-  --text-300: #a1a1aa;
-  --text-400: #71717a;
-  --primary: #f97316;
-  --radius: 0.5rem;
+  --bg: #060913;
+  --surface: #0a1122;
+  --surface-2: #0f1a30;
+  --line: rgba(255, 255, 255, 0.10);
+  --text: #f6f8ff;
+  --text-muted: #94a3b8;
+  --primary: #38bdf8;
+  --primary-ink: #030712;
+  --primary-mid: #1e3fd8;
+  --primary-deep: #0f172a;
 }
 
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  scroll-behavior: smooth;
+  background-color: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
 }
 
 body {
   font-family: var(--font-sans);
-  font-size: clamp(15px, 0.9vw + 0.5rem, 18px);
+  background-color: var(--bg);
+  color: var(--text);
   line-height: 1.6;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
 }
 
-@keyframes fadeSlideIn {
+/* Accessible focus ring */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Reduced motion overrides */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Cursor target default styling */
+.cursor-target {
+  /* Class picked up by TargetCursor component */
+}
+
+/* 3D Flip Card utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+/* Utility animation transitions */
+.ease-kavirox {
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Pure CSS Marquee for Lite Tier / Mobile (Compositor-only 120/144Hz) */
+@keyframes marquee-scroll {
   from {
-    opacity: 0;
-    transform: translateY(20px);
+    transform: translate3d(0, 0, 0);
   }
   to {
-    opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(-50%, 0, 0);
   }
 }
-
-.font-instrument-serif {
-  font-family: var(--font-serif);
+.animate-marquee-css {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 28s linear infinite;
+  will-change: transform;
 }
-
-.animate-fade-slide-in-1 {
-  animation: fadeSlideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.animate-fade-slide-in-2 {
-  animation: fadeSlideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
-  animation-fill-mode: both;
-}
-
-.animate-fade-slide-in-3 {
-  animation: fadeSlideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
-  animation-fill-mode: both;
-}
-
-.animate-fade-slide-in-4 {
-  animation: fadeSlideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
-  animation-fill-mode: both;
-}
-
-/* Ambient Light Keyframes for Floating Navbar */
-@keyframes ambientGlowPulse {
-  0%, 100% {
-    opacity: 0.65;
-    transform: scale(0.92);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.12);
-  }
-}
-
-@keyframes ambientBeamShimmer {
-  0%, 100% {
-    opacity: 0.85;
-    transform: scaleX(0.88);
-    box-shadow: 0 0 8px 1.5px rgba(249, 115, 22, 0.7), 0 0 16px 3px rgba(251, 146, 60, 0.35);
-  }
-  50% {
-    opacity: 1;
-    transform: scaleX(1.12);
-    box-shadow: 0 0 14px 2.5px rgba(249, 115, 22, 0.95), 0 0 24px 5px rgba(251, 146, 60, 0.55);
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee-css {
+    animation: none;
+    transform: none;
   }
 }
