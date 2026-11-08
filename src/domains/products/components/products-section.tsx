@@ -176,7 +176,7 @@ export const ProductsSection: React.FC<ProductsSectionProps> = ({ onOpenProduct 
         {/* Featured Trio (Desktop: 3-up Large Cards; Mobile: CSS Snap Rail) */}
         <div className="mb-10 sm:mb-14">
           {/* Mobile / Tablet Snap Rail */}
-          <div className="flex lg:hidden overflow-x-auto snap-x snap-mandatory gap-5 pb-6 -mx-5 px-5 scrollbar-none touch-pan-x">
+          <div className="flex lg:hidden overflow-x-auto snap-x snap-proximity gap-5 pb-6 -mx-5 px-5 scrollbar-none touch-auto">
             {featuredProducts.map((product) => (
               <div
                 key={product.slug}

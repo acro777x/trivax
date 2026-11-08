@@ -3,7 +3,7 @@ import { PRODUCTS_DATA, ProductItem } from '../data/products-data';
 import { PhoneMock } from './phone-mock';
 import { StatusBadge } from './status-badge';
 import { LogoMark } from '@/shared/components/logo';
-import { getInquiryWebmailUrl } from '@/shared/lib/email-inquiry';
+import { getInquiryActionUrl, openEmailInquiry } from '@/shared/lib/email-inquiry';
 import { ArrowLeft, ArrowUpRight, CheckCircle2, AlertCircle, Layers, ShieldCheck, ChevronRight } from 'lucide-react';
 import gsap from 'gsap';
 
@@ -83,7 +83,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
   // Next two products for the bottom carousel
   const otherProducts = PRODUCTS_DATA.filter((p) => p.slug !== slug).slice(0, 2);
 
-  const inquiryUrl = getInquiryWebmailUrl({
+  const inquiryUrl = getInquiryActionUrl({
     source: `Product Detail: ${product.name}`,
   });
 
@@ -113,9 +113,10 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
 
         <a
           href={inquiryUrl}
+                onClick={(e) => { e.preventDefault(); openEmailInquiry({ source: `Product Detail: ${product.name}` }); }}
           target="_blank"
           rel="noopener noreferrer"
-          className="cursor-target inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-full bg-primary text-primary-ink font-display font-bold text-xs hover:brightness-110 transition-all shadow-[0_0_12px_rgba(168,230,46,0.3)] shrink-0"
+          className="cursor-target inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-full bg-primary text-primary-ink font-display font-bold text-xs hover:brightness-110 transition-all shadow-[0_0_12px_rgba(56, 189, 248,0.3)] shrink-0"
           data-cursor-label="Open"
         >
           <span className="hidden sm:inline">Discuss a project like this</span>
@@ -388,9 +389,10 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
             <div className="flex flex-wrap items-center gap-3 shrink-0">
               <a
                 href={inquiryUrl}
+                onClick={(e) => { e.preventDefault(); openEmailInquiry({ source: `Product Detail: ${product.name}` }); }}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="cursor-target inline-flex items-center gap-1.5 px-6 py-3 rounded-full bg-primary text-primary-ink font-display font-bold text-sm shadow-[0_0_20px_rgba(168,230,46,0.35)] hover:brightness-110 transition-all"
+                className="cursor-target inline-flex items-center gap-1.5 px-6 py-3 rounded-full bg-primary text-primary-ink font-display font-bold text-sm shadow-[0_0_20px_rgba(56, 189, 248,0.35)] hover:brightness-110 transition-all"
               >
                 <span>Discuss a project</span>
                 <ArrowUpRight className="w-4 h-4 stroke-[2.5]" />

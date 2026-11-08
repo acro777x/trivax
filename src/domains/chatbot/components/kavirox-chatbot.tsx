@@ -208,7 +208,10 @@ export function KaviroxChatbot() {
 
   // Helper to render formatted text (bold, bullets, linebreaks)
   const renderFormattedText = (content: string) => {
-    const lines = content.split("\n");
+    const normalized = content
+      .replace(/([:.\?!])\s*(\d+\.\s+)/g, "$1\n\n$2")
+      .replace(/([a-z0-9])\.([A-Z])/g, "$1.\n\n$2");
+    const lines = normalized.split("\n");
     return lines.map((line, idx) => {
       if (!line.trim()) {
         return <div key={idx} className="h-2" />;
@@ -274,7 +277,7 @@ export function KaviroxChatbot() {
           className={`hidden sm:flex items-center gap-2.5 px-3.5 py-2 rounded-full transition-all duration-200 shadow-2xl cursor-pointer ${
             isOpen
               ? "bg-surface-2 text-text border border-line scale-95"
-              : "bg-surface/90 text-text border border-line hover:border-primary/50 hover:shadow-[0_0_20px_rgba(168,230,46,0.25)] hover:scale-105"
+              : "bg-surface/90 text-text border border-line hover:border-primary/50 hover:shadow-[0_0_20px_rgba(56, 189, 248,0.25)] hover:scale-105"
           }`}
           style={{
             backdropFilter: "blur(20px)",
@@ -316,7 +319,7 @@ export function KaviroxChatbot() {
           }}
           className="fixed inset-x-0 bottom-0 z-50 h-[85dvh] max-h-[85dvh] w-full rounded-t-[24px] rounded-b-none flex flex-col overflow-hidden sm:inset-auto sm:bottom-20 sm:right-6 sm:w-[380px] sm:h-[540px] sm:max-h-[600px] sm:rounded-2xl animate-in fade-in slide-in-from-bottom-3 duration-200"
           style={{
-            background: "rgba(11, 18, 12, 0.96)",
+            background: "rgba(10, 17, 34, 0.96)",
             backdropFilter: "blur(28px)",
             WebkitBackdropFilter: "blur(28px)",
             border: "1px solid rgba(255, 255, 255, 0.12)",
@@ -401,7 +404,7 @@ export function KaviroxChatbot() {
                       className={`p-3 rounded-2xl text-xs ${
                         isAssistant
                           ? "bg-surface-2 text-text border border-line rounded-bl-sm"
-                          : "bg-primary text-primary-ink font-medium rounded-br-sm shadow-[0_0_15px_rgba(168,230,46,0.2)]"
+                          : "bg-primary text-primary-ink font-medium rounded-br-sm shadow-[0_0_15px_rgba(56, 189, 248,0.2)]"
                       }`}
                     >
                       {/* Thinking State with Lattice Loader */}
@@ -531,7 +534,7 @@ export function KaviroxChatbot() {
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder={replyingTo ? "Type your reply..." : "Ask about our products or services..."}
-                className="w-full px-3 py-2 pr-10 rounded-xl bg-surface-2 border border-line text-xs text-text placeholder:text-text-muted/50 font-sans focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/30 resize-none max-h-24 scrollbar-none"
+                className="w-full px-3.5 py-2.5 pr-11 rounded-xl bg-surface-2 border border-line text-base sm:text-xs text-text placeholder:text-text-muted/50 font-sans focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/30 resize-none max-h-24 scrollbar-none"
               />
 
               {isGenerating ? (
@@ -549,7 +552,7 @@ export function KaviroxChatbot() {
                   disabled={!input.trim()}
                   className={`absolute right-2 p-1.5 rounded-lg transition-all cursor-pointer ${
                     input.trim()
-                      ? "bg-primary hover:brightness-110 text-primary-ink font-bold shadow-[0_0_12px_rgba(168,230,46,0.3)]"
+                      ? "bg-primary hover:brightness-110 text-primary-ink font-bold shadow-[0_0_12px_rgba(56, 189, 248,0.3)]"
                       : "bg-surface text-text-muted/40 cursor-not-allowed"
                   }`}
                   title="Send message (Enter)"

@@ -51,8 +51,8 @@ export const StatefulButton: React.FC<StatefulButtonProps> = ({
       onClick={handleClick}
       className={`relative inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full font-display font-semibold text-sm transition-all duration-200 cursor-target outline-none focus-visible:ring-2 focus-visible:ring-primary ${
         status === 'success'
-          ? 'bg-primary text-primary-ink font-bold shadow-[0_0_20px_rgba(168,230,46,0.5)]'
-          : 'bg-primary text-primary-ink hover:brightness-105 active:scale-95 shadow-[0_0_15px_rgba(168,230,46,0.3)]'
+          ? 'bg-primary text-primary-ink font-bold shadow-[0_0_20px_rgba(56, 189, 248,0.5)]'
+          : 'bg-primary text-primary-ink hover:brightness-105 active:scale-95 shadow-[0_0_15px_rgba(56, 189, 248,0.3)]'
       } ${className}`}
       {...rest}
     >
