@@ -126,7 +126,7 @@ export const PhoneMock: React.FC<PhoneMockProps> = ({
 
               {product.mockType === 'fitness' && (
                 <div className="py-3 flex flex-col items-center justify-center">
-                  <div className="relative w-24 h-24 rounded-full border-4 border-primary/30 border-t-primary flex flex-col items-center justify-center shadow-[0_0_16px_rgba(168,230,46,0.2)]">
+                  <div className="relative w-24 h-24 rounded-full border-4 border-primary/30 border-t-primary flex flex-col items-center justify-center shadow-[0_0_16px_rgba(56, 189, 248,0.2)]">
                     <Activity className="w-4 h-4 text-primary mb-0.5" />
                     <span className="font-display font-extrabold text-sm text-white">2,140</span>
                     <span className="font-mono text-[8px] text-text-muted">KCAL TARGET</span>

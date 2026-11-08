@@ -10,13 +10,13 @@ const THEMES = {
     surface: '#0b120c',
     text: '#eef5ea',
     track: 'rgba(255, 255, 255, 0.1)',
-    light: '#a8e62e'
+    light: '#38bdf8'
   },
   light: {
     surface: '#0b120c',
     text: '#eef5ea',
     track: 'rgba(255, 255, 255, 0.1)',
-    light: '#a8e62e'
+    light: '#38bdf8'
   }
 };
 
@@ -567,4 +567,4 @@ const StarBorder = ({
   );
 };
 
-export default StarBorder;
+export default StarBorder;

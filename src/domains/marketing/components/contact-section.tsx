@@ -66,9 +66,14 @@ export const ContactSection: React.FC = () => {
 
     setTimeout(() => {
       setSubmitStatus('success');
-      const opened = window.open(mailtoUrl, '_self');
-      if (!opened) {
-        window.open(webmailUrl, '_blank');
+      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth < 768;
+      if (isMobile) {
+        window.location.href = mailtoUrl;
+      } else {
+        const opened = window.open(webmailUrl, '_blank');
+        if (!opened) {
+          window.location.href = mailtoUrl;
+        }
       }
 
       setTimeout(() => {
@@ -293,7 +298,7 @@ export const ContactSection: React.FC = () => {
                   status={submitStatus}
                   loadingText="Opening your email..."
                   successText="Email ready"
-                  className="w-full sm:w-auto text-sm px-8 py-3.5 shadow-[0_0_20px_rgba(168,230,46,0.35)]"
+                  className="w-full sm:w-auto text-sm px-8 py-3.5 shadow-[0_0_20px_rgba(56, 189, 248,0.35)]"
                 >
                   <span>Open the email</span>
                   <ArrowUpRight className="w-4 h-4 stroke-[2.5]" />

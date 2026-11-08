@@ -27,7 +27,10 @@ export default {
         JSON.stringify({
           status: "healthy",
           timestamp: Date.now(),
-          worker: "kavirox-cloudflare-pages"
+          worker: "kavirox-cloudflare-pages",
+          hasOpenRouterKey: Boolean(
+            env.OPENROUTER_API_KEY || env.OPEN_ROUTER_API_KEY || env.OPENROUTER_KEY || env.API_KEY
+          )
         }),
         {
           status: 200,
@@ -41,12 +44,13 @@ export default {
 
     // 3. Secure OpenRouter streaming proxy (/api/chat)
     if (url.pathname === "/api/chat" && request.method === "POST") {
-      const apiKey = env.OPENROUTER_API_KEY;
+      const apiKey = env.OPENROUTER_API_KEY || env.OPEN_ROUTER_API_KEY || env.OPENROUTER_KEY || env.API_KEY;
 
       if (!apiKey) {
         return new Response(
           JSON.stringify({
-            error: "OPENROUTER_API_KEY is not configured in Cloudflare environment variables."
+            error: "OPENROUTER_API_KEY is not configured in Cloudflare environment variables.",
+            hint: "Please set OPENROUTER_API_KEY in Cloudflare Pages -> Settings -> Environment Variables."
           }),
           {
             status: 500,
@@ -84,6 +88,23 @@ export default {
             max_tokens: 1000
           })
         });
+
+        if (!openRouterResponse.ok) {
+          const errText = await openRouterResponse.text();
+          return new Response(
+            JSON.stringify({
+              error: `OpenRouter returned status ${openRouterResponse.status}`,
+              details: errText
+            }),
+            {
+              status: openRouterResponse.status,
+              headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+              }
+            }
+          );
+        }
 
         return new Response(openRouterResponse.body, {
           status: openRouterResponse.status,

@@ -3,7 +3,7 @@ import GlassSurface from '@/components/ui/GlassSurface';
 import GooeyNav, { GooeyNavItem } from '@/components/ui/GooeyNav';
 import StaggeredMenu, { StaggeredMenuItem } from '@/components/ui/StaggeredMenu';
 import { Logo } from '@/shared/components/logo';
-import { getInquiryWebmailUrl } from '@/shared/lib/email-inquiry';
+import { getInquiryActionUrl, openEmailInquiry } from '@/shared/lib/email-inquiry';
 import { ArrowUpRight } from 'lucide-react';
 
 const NAV_ITEMS: GooeyNavItem[] = [
@@ -27,7 +27,7 @@ const MOBILE_MENU_ITEMS: StaggeredMenuItem[] = [
   {
     label: 'Discuss a project',
     ariaLabel: 'Open pre-written inquiry email',
-    link: getInquiryWebmailUrl({ source: 'Mobile Menu' }),
+    link: getInquiryActionUrl({ source: 'Mobile Menu' }),
   },
 ];
 
@@ -151,7 +151,8 @@ export const KaviroxHeader: React.FC = () => {
 
               {/* Discuss a project Solid Azure/Cyan CTA */}
               <a
-                href={getInquiryWebmailUrl({ source: 'Desktop Navbar' })}
+                href={getInquiryActionUrl({ source: 'Desktop Navbar' })}
+                onClick={(e) => { e.preventDefault(); openEmailInquiry({ source: 'Desktop Navbar' }); }}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="cursor-target inline-flex items-center gap-1.5 bg-primary text-primary-ink px-4 py-2 rounded-full font-display font-bold text-xs hover:brightness-110 transition-all shadow-[0_0_16px_rgba(56,189,248,0.4)] active:scale-95 ml-1"

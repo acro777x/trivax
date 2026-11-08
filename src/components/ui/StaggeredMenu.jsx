@@ -1,3 +1,4 @@
+import { openEmailInquiry } from '@/shared/lib/email-inquiry';
 // Source: kavirox_ui_elemnts.txt lines 8375-8822 (Staggered Menu)
 'use client';
 
@@ -424,9 +425,26 @@ export const StaggeredMenu = ({
                     href={it.link}
                     aria-label={it.ariaLabel}
                     data-index={String(idx + 1).padStart(2, '0')}
-                    onClick={() => {
+                    onClick={(e) => {
+                      if (it.label.toLowerCase().includes('discuss') || it.link.includes('mailto:') || it.link.includes('mail.google.com')) {
+                        e.preventDefault();
+                        closeMenu();
+                        openEmailInquiry({ source: 'Mobile Menu' });
+                        return;
+                      }
                       if (it.link.startsWith('#')) {
-                        toggleMenu();
+                        e.preventDefault();
+                        closeMenu();
+                        const targetId = it.link.slice(1);
+                        const targetEl = targetId === 'top' ? document.body : document.getElementById(targetId);
+                        setTimeout(() => {
+                          const lenis = window.__lenis;
+                          if (lenis && targetEl) {
+                            lenis.scrollTo(targetEl, { duration: 1.0, offset: -60 });
+                          } else if (targetEl) {
+                            targetEl.scrollIntoView({ behavior: 'smooth' });
+                          }
+                        }, 250);
                       }
                     }}
                   >
@@ -451,14 +469,14 @@ export const StaggeredMenu = ({
                 </h4>
                 <span className="text-[11px] font-mono text-text-muted/60">Swipe →</span>
               </div>
-              <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2 px-1">
+              <div className="flex gap-2 overflow-x-auto no-scrollbar scrollbar-none pb-2 px-1" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
                 {productItems.map((prod, pIdx) => (
                   <a
                     key={prod.label + pIdx}
                     href={prod.link}
                     className="shrink-0 px-3.5 py-2 rounded-xl text-xs font-mono bg-white/5 border border-white/10 text-text-muted hover:text-white hover:border-primary/50 hover:bg-primary/10 transition-all whitespace-nowrap"
                     onClick={() => {
-                      toggleMenu();
+                      closeMenu();
                     }}
                   >
                     {prod.label}
@@ -487,4 +505,4 @@ export const StaggeredMenu = ({
   );
 };
 
-export default StaggeredMenu;
+export default StaggeredMenu;

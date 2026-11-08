@@ -1,8 +1,8 @@
 /**
  * Kavirox Email Inquiry Generator
  * Formats structured, pre-written inquiry emails for brands and founders,
- * redirecting them directly to email web apps (Gmail Web compose) with
- * fallback support for default mailto clients and clipboard copying.
+ * redirecting them directly to email web apps (Gmail Web compose on desktop)
+ * or native mailto clients on mobile (Gmail app, Apple Mail, etc.), addressed to info@kavirox.space.
  */
 
 export interface EmailInquiryOptions {
@@ -75,12 +75,12 @@ Looking forward to connecting with your team.
 Best regards,
 [Your Name]`;
 
-  // Direct Gmail Web compose URL with pre-filled To, Subject, and structured Body
+  // Direct Gmail Web compose URL for Desktop browsers
   const webmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
     KAVIROX_PRIMARY_EMAIL
   )}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
-  // Standard mailto URL fallback for desktop/mobile mail clients
+  // Standard mailto URL for mobile devices and native email clients
   const mailtoUrl = `mailto:${KAVIROX_PRIMARY_EMAIL}?subject=${encodeURIComponent(
     subject
   )}&body=${encodeURIComponent(body)}`;
@@ -102,10 +102,47 @@ export function getInquiryMailtoUrl(options?: EmailInquiryOptions): string {
   return generateEmailInquiry(options).mailtoUrl;
 }
 
-export function openEmailInquiry(options?: EmailInquiryOptions): void {
-  const { webmailUrl } = generateEmailInquiry(options);
+/**
+ * Returns the best action URL depending on device context:
+ * - On mobile: direct mailto: link to launch Gmail / native mail app without popup blocks
+ * - On desktop: Gmail web compose link
+ */
+export function getInquiryActionUrl(options?: EmailInquiryOptions): string {
   if (typeof window !== "undefined") {
-    window.open(webmailUrl, "_blank", "noopener,noreferrer");
+    const isMobile =
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+      (window.innerWidth < 768 && 'ontouchstart' in window);
+    if (isMobile) {
+      return getInquiryMailtoUrl(options);
+    }
+  }
+  return getInquiryWebmailUrl(options);
+}
+
+/**
+ * Universal email launcher:
+ * - Mobile: uses window.location.href to reliably trigger Gmail or native mail app
+ * - Desktop: opens Gmail compose in new tab, falling back to mailto if popups are blocked
+ */
+export function openEmailInquiry(options?: EmailInquiryOptions): void {
+  const { mailtoUrl, webmailUrl } = generateEmailInquiry(options);
+  if (typeof window === "undefined") return;
+
+  const isMobile =
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+    (window.innerWidth < 768 && 'ontouchstart' in window);
+
+  if (isMobile) {
+    window.location.href = mailtoUrl;
+  } else {
+    try {
+      const newWin = window.open(webmailUrl, "_blank", "noopener,noreferrer");
+      if (!newWin || newWin.closed || typeof newWin.closed === "undefined") {
+        window.location.href = mailtoUrl;
+      }
+    } catch {
+      window.location.href = mailtoUrl;
+    }
   }
 }
 

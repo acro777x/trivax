@@ -1,5 +1,5 @@
 import { ChatMessage, OpenRouterModelOption } from "../types";
-import { buildStudioSystemPrompt, SERVICES_KNOWLEDGE, STUDIO_IDENTITY } from "../knowledge/studio-knowledge";
+import { buildStudioSystemPrompt, SERVICES_KNOWLEDGE, STUDIO_IDENTITY, PRODUCTS_KNOWLEDGE, WORK_WAYS_KNOWLEDGE } from "../knowledge/studio-knowledge";
 
 export const OPENROUTER_FREE_MODELS: OpenRouterModelOption[] = [
   {
@@ -90,9 +90,9 @@ export interface StreamChatOptions {
 
 /**
  * Sends chat prompt to OpenRouter using streaming Server-Sent Events (SSE).
- * 1. Attempts Cloudflare Worker proxy at /api/chat (where Cloudflare Worker injects keys securely).
- * 2. If client has API key, requests https://openrouter.ai/api/v1/chat/completions directly.
- * 3. Falls back seamlessly to built-in studio knowledge if endpoints return non-200.
+ * 1. Attempts Cloudflare Worker proxy at /api/chat.
+ * 2. If client has API key in localStorage, requests https://openrouter.ai/api/v1/chat/completions directly.
+ * 3. Falls back seamlessly to built-in verified studio knowledge if endpoints are unreachable.
  */
 export async function streamOpenRouterChat({
   messages,
@@ -103,7 +103,6 @@ export async function streamOpenRouterChat({
   onError,
   signal
 }: StreamChatOptions): Promise<void> {
-  // Strictly enforce OpenRouter free models
   const safeModel =
     typeof model === "string" && (model.endsWith(":free") || model === "openrouter/free")
       ? model
@@ -174,7 +173,7 @@ export async function streamOpenRouterChat({
                 accumulated += delta;
                 onChunk(delta, accumulated);
               }
-            } catch (e) {
+            } catch {
               // Ignore partial JSON
             }
           }
@@ -185,9 +184,11 @@ export async function streamOpenRouterChat({
         onComplete(accumulated);
         return;
       }
+    } else {
+      console.warn("Cloudflare /api/chat returned status:", workerResponse.status);
     }
   } catch (err) {
-    // Worker proxy not available or running in standalone frontend mode; continue to Path 2
+    console.warn("Cloudflare /api/chat fetch error:", err);
   }
 
   // Path 2: Direct OpenRouter API call if client API key is provided
@@ -243,7 +244,7 @@ export async function streamOpenRouterChat({
                   accumulated += delta;
                   onChunk(delta, accumulated);
                 }
-              } catch (e) {
+              } catch {
                 // Ignore partial JSON
               }
             }
@@ -277,46 +278,72 @@ async function simulateStudioResponse(
 
   let responseText = "";
 
-  if (query.includes("product") || query.includes("what do you build") || query.includes("portfolio")) {
+  if (query.includes("work") || query.includes("hire") || query.includes("collaborat") || query.includes("start") || query.includes("together")) {
+    responseText = `We offer **Four Clear Ways to Start** working with us:
+
+1. **Ready-Built Product**: Choose an existing Kavirox product that addresses your need. We provide transparent scope, setup, limits, and pricing.
+
+2. **Product Implementation**: We configure the system, onboard users, connect data, set permissions, and train your team.
+
+3. **Custom Development**: For needs no off-the-shelf product covers: custom web apps, mobile apps, SaaS platforms, and APIs.
+
+4. **Product Plus Custom Extension**: Start from an existing product and commission custom integrations or dedicated modules.
+
+Would you like to discuss a project under one of these models? You can click the button below or email us directly at **info@kavirox.space**.`;
+  } else if (query.includes("rakshak") || query.includes("scam") || query.includes("voice") || query.includes("security")) {
+    responseText = `**Rakshak Setu** is our flagship cybersecurity product:
+
+• **What it is**: An on-device voice shield that warns you during suspicious calls.
+• **Problem it solves**: Counters AI voice cloning and phone-scam impersonation.
+• **Key capabilities**: Listens for scam indicators locally on the phone, displays a live threat HUD during active calls, and generates cryptographic forensic evidence for reporting.
+• **Status**: Prototype with working modules.
+
+Feel free to click "View product" on the site to explore the live simulation!`;
+  } else if (query.includes("gbu one") || query.includes("student") || query.includes("campus")) {
+    responseText = `**GBU One** is our offline-first student companion for Gautam Buddha University:
+
+• **Key features**: Consolidated timetables, notices with offline PDF caching, previous-year question papers, exam datesheets, and attendance tracking.
+• **Admin console**: Features a PIN-gated console for verified university updates.
+• **Status**: Built, device-tested, and currently serving 900+ daily campus students.`;
+  } else if (query.includes("product") || query.includes("what do you build") || query.includes("portfolio")) {
     responseText = `Kavirox builds and operates 7 specialized digital products:
 
-1. **Rakshak Setu** (Cybersecurity) — Real-time on-device scam defense, AI voice clone detection, and forensic evidence generation.
-2. **GBU One** (University Companion) — Campus navigation, attendance alerts, live updates, and emergency contacts.
-3. **GBU SDMS** (Institutional ERP) — Comprehensive student database and administrative management.
-4. **Study Hub AI** (Education Bot) — WhatsApp AI bot for lecture summarization and instant doubt solving.
-5. **FitFuel** (Health & Nutrition) — Macro calculator, food scanner, and habit streak tracker.
-6. **Try-Out** (Virtual Fitting) — AR cloth fitting and realistic 3D avatar sizing.
-7. **LAPS One** (Operations & Logistics) — Internal operations coordination and logistics telemetry.
+1. **Rakshak Setu** (Cybersecurity) — Real-time on-device scam defense & AI voice clone detection.
+2. **GBU One** (University Companion) — Offline-first student portal & attendance tracker.
+3. **GBU SDMS** (Institutional ERP) — Central academic records & role-based digital attendance.
+4. **Study Hub AI** (Education Bot) — WhatsApp AI bot for syllabus answers & instant doubt solving.
+5. **FitFuel** (Health & Fitness) — Macro targets, food log, and habit streak tracker.
+6. **Try-Out** (Virtual Fashion) — AR outfit preview & 3D visual exploration.
+7. **LAPS One** (Operations) — Event coordination platform in active development.
 
-You can explore live details and interactive screens for each product directly on our site!`;
-  } else if (query.includes("work") || query.includes("hire") || query.includes("collaborat") || query.includes("start")) {
-    responseText = `We offer 4 distinct ways to work together:
+You can view full details for each product on the page!`;
+  } else if (query.includes("service") || query.includes("capabilities") || query.includes("stack") || query.includes("tech")) {
+    responseText = `Kavirox delivers engineering across 11 technology service lines:
 
-1. **Ready-built product** — Adopt an existing Kavirox product with standard setup, scope, and support.
-2. **Product implementation** — We configure, integrate data, onboard users, and train your internal team.
-3. **Custom development** — End-to-end bespoke engineering for websites, web applications, SaaS, and automation.
-4. **Product + custom extension** — Start from one of our core products and commission bespoke modules or API integrations.
-
-Would you like to discuss a project? You can reach us directly at **info@kavirox.space**.`;
-  } else if (query.includes("service") || query.includes("capabilities") || query.includes("stack")) {
-    responseText = `Kavirox provides 11 core technology service lines:
-
-• **Engineering**: SaaS Development, Custom Web & Mobile Apps, Cloud Architecture & DevOps
+• **Engineering**: Custom Web & Mobile Apps, SaaS Platforms, Cloud Architecture & DevOps
 • **AI & Automation**: RAG Knowledge Systems, Workflow Automation, Process Bots
-• **Security**: Authorized VAPT Audits, Mobile App Hardening, Security Architecture
+• **Security**: Scoped VAPT Security Audits, Mobile App Hardening, Privacy Engineering
 • **Commerce & Growth**: Headless E-Commerce, UX/UI Product Design, Digital Operations
 
 We are incubated at **AIC-GBU (Gautam Buddha University)** in Greater Noida, India.`;
-  } else if (query.includes("contact") || query.includes("email") || query.includes("phone")) {
-    responseText = `You can get in touch with our engineering and partnership team at:
+  } else if (query.includes("price") || query.includes("pricing") || query.includes("cost") || query.includes("budget") || query.includes("fee")) {
+    responseText = `Our pricing is transparent and tied to scope:
 
-• **Email**: info@kavirox.space
-• **Incubation**: AIC-GBU (Atal Incubation Centre, Gautam Buddha University), Greater Noida, UP, India
+• **Ready-Built Products**: Transparent licensing or fixed setup fees depending on product tier.
+• **Project-Based Sprints**: Scoped fixed-bid delivery for clearly defined MVPs, websites, or features.
+• **Dedicated Engineering Retainer**: Monthly engineering capacity for ongoing feature development, maintenance, and growth.
+
+For an accurate proposal tailored to your roadmap, email us at **info@kavirox.space** or click "Discuss a project"!`;
+  } else if (query.includes("contact") || query.includes("email") || query.includes("reach") || query.includes("touch")) {
+    responseText = `You can connect directly with our engineering and partnership team:
+
+• **Primary Email**: info@kavirox.space
+• **Incubation**: AIC-GBU (Atal Incubation Centre, Gautam Buddha University), Greater Noida, UP 201312, India
 • **Socials**: [LinkedIn](https://www.linkedin.com/company/kavirox) | [Instagram](https://www.instagram.com/kavirox.space)
 
-Feel free to click "Discuss a project" in the header to open a pre-formatted inquiry email!`;
+Click "Discuss a project" to launch a pre-formatted inquiry email!`;
   } else {
-    responseText = `Welcome to Kavirox! We are a product-led technology company based at AIC-GBU, Greater Noida.
+    responseText = `Welcome to **Kavirox**! We are a product-led technology company based at AIC-GBU, Greater Noida.
 
 We build our own products—like **Rakshak Setu**, **GBU One**, and **GBU SDMS**—and deliver high-velocity technology services across custom software, AI automation, cybersecurity, and cloud engineering.
 
@@ -331,7 +358,7 @@ How can I help you today? Feel free to ask about our products, our 4 ways of wor
     const word = words[i] + (i < words.length - 1 ? " " : "");
     accumulated += word;
     onChunk(word, accumulated);
-    await new Promise(r => setTimeout(r, 22));
+    await new Promise(r => setTimeout(r, 16));
   }
 
   if (onComplete) {

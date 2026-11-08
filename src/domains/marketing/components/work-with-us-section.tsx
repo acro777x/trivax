@@ -1,7 +1,7 @@
 import React, { Suspense, lazy, useEffect, useRef } from 'react';
 import ScrollFloat from '@/components/ui/ScrollFloat';
 import { Package, Wrench, Code2, Layers, ArrowUpRight } from 'lucide-react';
-import { getInquiryWebmailUrl } from '@/shared/lib/email-inquiry';
+import { getInquiryActionUrl, openEmailInquiry } from '@/shared/lib/email-inquiry';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { isQaMode } from '@/shared/hooks/use-device-tier';
@@ -184,13 +184,14 @@ export const WorkWithUsSection: React.FC = () => {
                 {/* Bottom Action CTA */}
                 <div className="pt-6 border-t border-white/10 mt-6 flex items-center justify-between">
                   <a
-                    href={getInquiryWebmailUrl({
+                    href={getInquiryActionUrl({
                       source: `Work Model: ${model.title}`,
                       modelTitle: model.title,
                     })}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-mono text-xs font-semibold text-white/90 group-hover:text-primary transition-colors inline-flex items-center gap-1"
+                    onClick={(e) => { e.preventDefault(); openEmailInquiry({ source: `Work Model: ${model.title}`, modelTitle: model.title }); }}
+                    className="font-mono text-xs font-semibold text-white/90 group-hover:text-primary transition-colors inline-flex items-center gap-1 cursor-pointer"
                   >
                     <span>Get started</span>
                   </a>

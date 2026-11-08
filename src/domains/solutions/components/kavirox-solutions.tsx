@@ -104,7 +104,7 @@ export const KaviroxSolutions: React.FC = () => {
                     }}
                     className={`cursor-target w-full text-left p-3 rounded-xl transition-all border flex items-center justify-between ${
                       isActive
-                        ? 'bg-surface2 border-primary/40 text-white shadow-[0_0_15px_rgba(168,230,46,0.15)]'
+                        ? 'bg-surface2 border-primary/40 text-white shadow-[0_0_15px_rgba(56, 189, 248,0.15)]'
                         : 'border-transparent text-text-muted hover:text-white hover:bg-white/5'
                     }`}
                     data-cursor-label="View"
@@ -144,7 +144,7 @@ export const KaviroxSolutions: React.FC = () => {
               <div className="space-y-3 relative">
                 {/* Traveling dot indicator line */}
                 <div className="absolute left-4 top-4 bottom-4 w-[2px] bg-white/10 -z-0">
-                  <div className="w-full h-8 bg-primary rounded-full animate-bounce shadow-[0_0_8px_rgba(168,230,46,0.6)]" />
+                  <div className="w-full h-8 bg-primary rounded-full animate-bounce shadow-[0_0_8px_rgba(56, 189, 248,0.6)]" />
                 </div>
 
                 {/* Node 1: Input */}
@@ -270,7 +270,7 @@ export const KaviroxSolutions: React.FC = () => {
                             </div>
                           }
                           secondContent={
-                            <div className="w-full h-full p-4 sm:p-5 rounded-xl bg-primary/10 border border-primary/40 flex flex-col justify-between shadow-[0_0_24px_rgba(168,230,46,0.15)]">
+                            <div className="w-full h-full p-4 sm:p-5 rounded-xl bg-primary/10 border border-primary/40 flex flex-col justify-between shadow-[0_0_24px_rgba(56, 189, 248,0.15)]">
                               <div className="flex items-center justify-between">
                                 <span className="inline-flex items-center gap-1.5 text-xs font-mono text-primary font-semibold">
                                   <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
