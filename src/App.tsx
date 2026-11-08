@@ -7,8 +7,6 @@ import TargetCursor from '@/components/ui/TargetCursor';
 import KaviroxHeader from '@/domains/marketing/components/kavirox-header';
 import KaviroxHero from '@/domains/marketing/components/kavirox-hero';
 
-const Particles = lazy(() => import('@/components/ui/Particles'));
-
 // Lazy-load below-the-fold sections per docs/redesign/06-performance-tiers.md
 const TechMarquee = lazy(() => import('@/domains/marketing/components/tech-marquee'));
 const ProductsSection = lazy(() =>
@@ -40,7 +38,6 @@ const ProductDetailView = lazy(() =>
 
 export function App() {
   const tier = useDeviceTier();
-  const isFull = tier === 'full';
 
   // Lenis smooth scroll: Fine pointer + full tier only
   useLenis(tier);
@@ -48,7 +45,7 @@ export function App() {
   // Preserve scroll position when entering product detail view
   const savedScrollYRef = useRef<number>(0);
 
-  // Lightweight SPA Router for /products/:slug
+  // Lightweight SPA Router for /products/:slug with GitHub Pages subpath compatibility
   const [currentPath, setCurrentPath] = useState<string>(() => {
     if (typeof window !== 'undefined') {
       return window.location.pathname;
@@ -58,45 +55,51 @@ export function App() {
 
   const navigateTo = useCallback((path: string) => {
     if (typeof window === 'undefined') return;
+
+    // Determine current sub-base for GitHub Pages (e.g. /trivax or '')
+    const pathParts = window.location.pathname.split('/').filter(Boolean);
+    const isRepoSubpath = pathParts.length > 0 && pathParts[0] !== 'products';
+    const basePath = isRepoSubpath ? `/${pathParts[0]}` : '';
+
     if (path.startsWith('/#') || path.startsWith('#')) {
       const hash = path.includes('#') ? '#' + path.split('#')[1] : '';
-      window.history.pushState({}, '', '/' + hash);
-      setCurrentPath('/');
+      window.history.pushState({}, '', (basePath || '') + '/' + hash);
+      setCurrentPath((basePath || '') + '/');
       setTimeout(() => {
         const id = hash.replace(/^#/, '');
         const el = document.getElementById(id);
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
+        const lenis = (window as any).__lenis;
+        if (el) {
+          if (lenis) lenis.scrollTo(el, { duration: 1.1 });
+          else el.scrollIntoView({ behavior: 'smooth' });
+        }
       }, 50);
       return;
     }
 
-    if (path.startsWith('/products/')) {
+    if (path.includes('/products/')) {
+      const slug = path.split('/products/')[1].replace(/[/?#].*$/, '');
       savedScrollYRef.current = window.scrollY;
-      window.history.pushState({}, '', path);
-      setCurrentPath(path);
+      const targetUrl = `${basePath}/products/${slug}`;
+      window.history.pushState({}, '', targetUrl);
+      setCurrentPath(targetUrl);
       window.scrollTo(0, 0);
       return;
     }
 
-    if (path === '/' || path === '') {
-      window.history.pushState({}, '', '/');
-      setCurrentPath('/');
-      setTimeout(() => {
-        window.scrollTo({ top: savedScrollYRef.current, behavior: 'instant' });
-      }, 25);
-      return;
-    }
-
-    window.history.pushState({}, '', path);
-    setCurrentPath(path);
-    window.scrollTo(0, 0);
+    // Return to main landing page
+    window.history.pushState({}, '', (basePath || '') + '/');
+    setCurrentPath((basePath || '') + '/');
+    setTimeout(() => {
+      window.scrollTo({ top: savedScrollYRef.current, behavior: 'instant' });
+    }, 25);
   }, []);
 
   useEffect(() => {
     const handlePopState = () => {
       const newPath = window.location.pathname;
       setCurrentPath(newPath);
-      if (newPath === '/') {
+      if (!newPath.includes('/products/')) {
         setTimeout(() => {
           window.scrollTo({ top: savedScrollYRef.current, behavior: 'instant' });
         }, 25);
@@ -114,10 +117,10 @@ export function App() {
       const href = anchor.getAttribute('href');
       if (!href) return;
 
-      if (href.startsWith('/products/')) {
+      if (href.includes('/products/')) {
         e.preventDefault();
         navigateTo(href);
-      } else if (href.startsWith('/#') && currentPath !== '/') {
+      } else if (href.startsWith('/#') && currentPath.includes('/products/')) {
         e.preventDefault();
         navigateTo(href);
       }
@@ -128,7 +131,7 @@ export function App() {
   }, [currentPath, navigateTo]);
 
   // Check if current route is product detail
-  const productMatch = currentPath.match(/^\/products\/([^/?#]+)/);
+  const productMatch = currentPath.match(/\/products\/([^/?#]+)/);
   const currentProductSlug = productMatch ? productMatch[1] : null;
 
   return (
@@ -187,85 +190,49 @@ export function App() {
             {/* 2. Hero: 100svh, centered composition, pure GradientASCII, ZERO particles */}
             <KaviroxHero />
 
-            {/* Below-Hero Container with Ambient Particles */}
-            <div className="relative isolate overflow-hidden">
-              <div className="absolute inset-0 pointer-events-none -z-10 overflow-hidden" aria-hidden="true">
-                <Suspense fallback={null}>
-                  <Particles
-                    particleColors={["#ffffff", "#ffffff", "#ffffff"]}
-                    particleCount={200}
-                    particleSpread={10}
-                    speed={0.1}
-                    particleBaseSize={100}
-                    glow={0.5}
-                    twinkle={0.3}
-                    moveParticlesOnHover
-                    hoverEffect="parallax"
-                    sizeRandomness={1}
-                    shape="circle"
-                    depthOfField={0}
-                    connections={false}
-                    connectionDistance={110}
-                    particleHoverFactor={1}
-                    hoverRadius={140}
-                    drift="none"
-                    driftSpeed={1}
-                    alphaParticles={false}
-                    disableRotation={false}
-                    cameraDistance={20}
-                    variation={0}
-                    opacity={1}
-                    clickBurst
-                    intro
-                    lightMode={false}
-                  />
-                </Suspense>
-              </div>
+            <Suspense fallback={<div className="w-full h-24 bg-bg" />}>
+              {/* 3. Marquee: Technologies we build with */}
+              <TechMarquee />
+            </Suspense>
 
-              <Suspense fallback={<div className="w-full h-24 bg-bg" />}>
-                {/* 3. Marquee: Technologies we build with */}
-                <TechMarquee />
-              </Suspense>
+            <Suspense fallback={<div className="w-full min-h-[600px] bg-bg" />}>
+              {/* 4. Products: 7 products, honest badges, phone mocks with dedicated Particles background */}
+              <ProductsSection onOpenProduct={(slug) => navigateTo(`/products/${slug}`)} />
+            </Suspense>
 
-              <Suspense fallback={<div className="w-full min-h-[600px] bg-bg" />}>
-                {/* 4. Products: 7 products, honest badges, phone mocks */}
-                <ProductsSection onOpenProduct={(slug) => navigateTo(`/products/${slug}`)} />
-              </Suspense>
+            <Suspense fallback={<div className="w-full min-h-[400px] bg-bg" />}>
+              {/* 5. How you can work with us: 4 cards with connector line & dedicated Particles background */}
+              <WorkWithUsSection />
+            </Suspense>
 
-              <Suspense fallback={<div className="w-full min-h-[400px] bg-bg" />}>
-                {/* 5. How you can work with us: 4 cards with connector line */}
-                <WorkWithUsSection />
-              </Suspense>
+            <Suspense fallback={<div className="w-full min-h-[600px] bg-bg" />}>
+              {/* 6. Services: 11 lines, 2-column featured first card, capability strip & dedicated Particles background */}
+              <KaviroxServices />
+            </Suspense>
 
-              <Suspense fallback={<div className="w-full min-h-[600px] bg-bg" />}>
-                {/* 6. Services: 11 lines, 2-column featured first card, capability strip */}
-                <KaviroxServices />
-              </Suspense>
+            <Suspense fallback={<div className="w-full min-h-[600px] bg-bg" />}>
+              {/* 7. Process: How a project runs, Step 1..Step 6 with scroll-drawn line */}
+              <KaviroxCapabilities />
+            </Suspense>
 
-              <Suspense fallback={<div className="w-full min-h-[600px] bg-bg" />}>
-                {/* 7. Process: How a project runs, Step 1..Step 6 with scroll-drawn line */}
-                <KaviroxCapabilities />
-              </Suspense>
+            <Suspense fallback={<div className="w-full min-h-[300px] bg-bg" />}>
+              {/* 8. About and trust: Verifiable proof tiles, no invented stats */}
+              <TrustSection />
+            </Suspense>
 
-              <Suspense fallback={<div className="w-full min-h-[300px] bg-bg" />}>
-                {/* 9. About and trust: Verifiable proof tiles, no invented stats */}
-                <TrustSection />
-              </Suspense>
+            <Suspense fallback={<div className="w-full min-h-[400px] bg-bg" />}>
+              {/* 9. FAQ: Two-column accessible accordion */}
+              <FaqSection />
+            </Suspense>
 
-              <Suspense fallback={<div className="w-full min-h-[400px] bg-bg" />}>
-                {/* 10. FAQ: Two-column accessible accordion */}
-                <FaqSection />
-              </Suspense>
-
-              <Suspense fallback={<div className="w-full min-h-[500px] bg-bg" />}>
-                {/* 11. Contact: Dual path (project / product), Soft Aurora, Shine Border */}
-                <ContactSection />
-              </Suspense>
-            </div>
+            <Suspense fallback={<div className="w-full min-h-[500px] bg-bg" />}>
+              {/* 10. Contact: Dual path (project / product), Soft Aurora, Shine Border */}
+              <ContactSection />
+            </Suspense>
           </main>
 
           <Suspense fallback={<div className="w-full min-h-[200px] bg-surface" />}>
-            {/* 12. Footer: 4 columns, 7 product links, cropped wordmark watermark */}
+            {/* 11. Footer: 4 columns, 7 product links, cropped wordmark watermark */}
             <KaviroxFooter />
           </Suspense>
         </>

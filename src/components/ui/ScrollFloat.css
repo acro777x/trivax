@@ -1,6 +1,7 @@
 .scroll-float {
   display: inline-block;
   overflow: visible;
+  vertical-align: top;
 }
 
 .scroll-float-sr {
@@ -17,15 +18,20 @@
 
 .scroll-float-text {
   display: inline-block;
+  vertical-align: top;
 }
 
 .scroll-float-word {
   display: inline-block;
   white-space: nowrap;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.08em;
 }
 
 .scroll-float-char {
   display: inline-block;
   will-change: transform, opacity;
   transform-origin: center bottom;
+  vertical-align: top;
 }

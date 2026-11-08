@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import Reveal from '@/components/ui/Reveal';
 import ScrollFloat from '@/components/ui/ScrollFloat';
 import {
@@ -10,6 +10,8 @@ import {
   Repeat,
   CheckCircle2,
 } from 'lucide-react';
+
+const Particles = lazy(() => import('@/components/ui/Particles'));
 
 const PROCESS_STEPS = [
   {
@@ -48,15 +50,15 @@ const PROCESS_STEPS = [
     step: 5,
     title: 'Smooth Launch',
     description:
-      'We deploy your system with zero downtime, configure monitoring and telemetry, and verify all integrations in production.',
-    chips: ['Zero-downtime deploy', 'Telemetry setup', 'Live verification'],
+      'We configure production infrastructure, DNS, SSL, databases, monitoring, and run controlled phased rollouts with rollback contingencies.',
+    chips: ['CI/CD pipeline', 'Zero-downtime deploy', 'Audit checks'],
     icon: Rocket,
   },
   {
     step: 6,
     title: 'Ongoing Support',
     description:
-      'We maintain health metrics, perform platform upgrades, and build iterative enhancements as your business grows.',
+      'We stay with you post-launch to monitor error rates, optimize latency, apply security patches, and build future product iterations.',
     chips: ['Continuous care', 'SLA response', 'Iterative updates'],
     icon: Repeat,
   },
@@ -90,27 +92,59 @@ export const KaviroxCapabilities: React.FC = () => {
   return (
     <section
       id="process"
-      className="relative w-full py-20 sm:py-28 md:py-32 bg-bg border-b border-line scroll-mt-24 md:scroll-mt-28"
+      className="relative w-full py-20 sm:py-28 md:py-32 bg-bg border-b border-line scroll-mt-24 md:scroll-mt-28 overflow-hidden isolate"
       aria-label="Process: How a project runs"
     >
-      <div className="max-w-7xl mx-auto px-5 sm:px-8 md:px-12">
-        {/* Header */}
-        <Reveal>
-          <div className="max-w-3xl mb-14 sm:mb-20 space-y-3">
-            <div className="inline-flex items-center gap-2 font-mono text-xs text-primary uppercase tracking-widest">
-              <span className="w-4 h-[1px] bg-primary" />
-              <span>Process</span>
-            </div>
-            <h2 className="font-display font-extrabold text-3xl sm:text-5xl md:text-6xl text-text tracking-tight leading-[1.05] text-balance">
-              <ScrollFloat effect="float" splitBy="words" animationDuration={0.8} stagger={0.03}>
-                How a project runs.
-              </ScrollFloat>
-            </h2>
-            <p className="text-text-muted text-base sm:text-lg leading-relaxed text-pretty">
-              Six clear steps from first conversation to ongoing support.
-            </p>
+      {/* Dedicated Original Particles Background for Process Section */}
+      <div className="absolute inset-0 pointer-events-none -z-10 overflow-hidden" aria-hidden="true">
+        <Suspense fallback={null}>
+          <Particles
+            particleColors={["#ffffff", "#ffffff", "#ffffff"]}
+            particleCount={200}
+            particleSpread={10}
+            speed={0.1}
+            particleBaseSize={100}
+            glow={0.5}
+            twinkle={0.3}
+            moveParticlesOnHover
+            hoverEffect="parallax"
+            sizeRandomness={1}
+            shape="circle"
+            depthOfField={0}
+            connections={false}
+            connectionDistance={110}
+            particleHoverFactor={1}
+            hoverRadius={140}
+            drift="none"
+            driftSpeed={1}
+            alphaParticles={false}
+            disableRotation={false}
+            cameraDistance={20}
+            variation={0}
+            opacity={1}
+            clickBurst
+            intro
+            lightMode={false}
+          />
+        </Suspense>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 md:px-12 relative z-10">
+        {/* Header with Zero-Collision Spacing */}
+        <div className="max-w-3xl mb-14 sm:mb-20 space-y-3">
+          <div className="inline-flex items-center gap-2 font-mono text-xs text-primary uppercase tracking-widest mb-1">
+            <span className="w-4 h-[1px] bg-primary" />
+            <span>Process</span>
           </div>
-        </Reveal>
+          <h2 className="font-display font-extrabold text-3xl sm:text-5xl md:text-6xl text-text tracking-tight leading-[1.05] text-balance mb-4">
+            <ScrollFloat effect="float" splitBy="words" animationDuration={0.85} stagger={0.035}>
+              How a project runs.
+            </ScrollFloat>
+          </h2>
+          <p className="text-text-muted text-base sm:text-lg leading-relaxed text-pretty">
+            Six clear steps from first conversation to ongoing support.
+          </p>
+        </div>
 
         {/* Sticky Split Layout: Left sticky progress indicator / Right 6 sequential steps */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 relative items-start">
@@ -139,15 +173,15 @@ export const KaviroxCapabilities: React.FC = () => {
                 </p>
               </div>
 
-              {/* Progress Bar */}
-              <div className="space-y-2 pt-1 border-t border-white/5">
-                <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+              {/* Step Progress Pill Indicator */}
+              <div className="pt-2">
+                <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-primary rounded-full transition-all duration-300 ease-out shadow-[0_0_8px_rgba(168,230,46,0.6)]"
+                    className="bg-primary h-full rounded-full transition-all duration-300 ease-out"
                     style={{ width: `${(activeStep / 6) * 100}%` }}
                   />
                 </div>
-                <div className="flex justify-between text-[10px] font-mono text-text-muted/60">
+                <div className="flex justify-between text-[11px] font-mono text-text-muted mt-2">
                   <span>Kickoff</span>
                   <span>Delivery &amp; Scale</span>
                 </div>
@@ -155,87 +189,71 @@ export const KaviroxCapabilities: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Column: 6 Steps along a scroll-linked vertical rule */}
+          {/* Right Sequential Steps with Connected Timeline */}
           <div className="lg:col-span-7 relative">
-            {/* Drawing vertical line mathematically centered at x = 20px */}
-            <div
-              className="absolute left-[19px] top-9 bottom-12 w-[2px] bg-white/10 pointer-events-none rounded-full z-0"
-              aria-hidden="true"
-            >
-              <div
-                className="w-full bg-primary transition-all duration-300 ease-out shadow-[0_0_8px_rgba(168,230,46,0.6)] rounded-full"
-                style={{ height: `${((activeStep - 1) / 5) * 100}%` }}
-              />
-            </div>
+            {/* Vertical timeline spine */}
+            <div className="absolute left-6 top-8 bottom-8 w-[1px] bg-white/10 hidden sm:block" />
 
-            <div className="space-y-8 sm:space-y-10 relative z-10">
+            <div className="space-y-8 sm:space-y-12">
               {PROCESS_STEPS.map((step) => {
                 const Icon = step.icon;
-                const isPassedOrActive = activeStep >= step.step;
-                const isCurrent = activeStep === step.step;
+                const isActive = activeStep === step.step;
 
                 return (
                   <div
                     key={step.step}
-                    id={`step-${step.step}`}
-                    className={`process-step-row flex items-start gap-4 sm:gap-6 relative transition-all duration-300 ${
-                      isCurrent
-                        ? 'opacity-100'
-                        : isPassedOrActive
-                        ? 'opacity-85'
-                        : 'opacity-50'
+                    className={`process-step-row relative transition-all duration-300 ${
+                      isActive ? 'opacity-100' : 'opacity-60 hover:opacity-85'
                     }`}
                   >
-                    {/* Step Node Dot centered directly on the 40px track column at x = 20px */}
-                    <div className="w-10 flex-none flex items-center justify-center pt-6">
+                    <div className="sm:pl-16 relative">
+                      {/* Timeline Node */}
                       <div
-                        className={`w-4 h-4 rounded-full border-2 transition-all relative ${
-                          isPassedOrActive
-                            ? 'bg-bg border-primary shadow-[0_0_8px_rgba(168,230,46,0.7)]'
-                            : 'bg-bg border-white/20'
+                        className={`hidden sm:flex absolute left-0 top-1 w-12 h-12 rounded-full border items-center justify-center transition-all duration-300 -translate-x-[23px] ${
+                          isActive
+                            ? 'bg-primary/20 border-primary text-primary shadow-[0_0_16px_rgba(56,189,248,0.5)] scale-110'
+                            : 'bg-surface border-white/15 text-text-muted'
                         }`}
                       >
-                        {isCurrent && (
-                          <div className="w-1.5 h-1.5 rounded-full bg-primary absolute inset-0 m-auto animate-ping" />
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Step Content Card */}
-                    <div
-                      className={`flex-1 p-6 sm:p-7 rounded-2xl bg-surface/80 border transition-all ${
-                        isCurrent
-                          ? 'border-primary/40 bg-surface shadow-xl ring-1 ring-primary/20'
-                          : 'border-white/10 hover:border-white/20'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between mb-3">
-                        <span className="font-sans font-semibold text-xs text-primary tracking-wide">
-                          Step {step.step}
-                        </span>
-                        <div className="w-8 h-8 rounded-lg bg-surface2 border border-white/10 flex items-center justify-center text-text-muted">
-                          <Icon className="w-4 h-4 text-primary" />
-                        </div>
+                        <Icon className="w-5 h-5" />
                       </div>
 
-                      <h3 className="font-display font-bold text-xl sm:text-2xl text-white mb-2">
-                        {step.title}
-                      </h3>
-                      <p className="text-sm text-text-muted leading-relaxed mb-4">
-                        {step.description}
-                      </p>
-
-                      {/* Deliverable Chips */}
-                      <div className="flex flex-wrap gap-2 pt-2 border-t border-white/5">
-                        {step.chips.map((chip, cIdx) => (
-                          <span
-                            key={cIdx}
-                            className="inline-flex items-center gap-1.5 text-xs font-mono text-text-muted bg-white/5 px-2.5 py-1 rounded-md"
-                          >
-                            <CheckCircle2 className="w-3 h-3 text-primary" />
-                            <span>{chip}</span>
+                      {/* Step Card Content */}
+                      <div
+                        className={`p-6 sm:p-7 rounded-2xl border transition-all duration-300 ${
+                          isActive
+                            ? 'bg-surface/90 border-primary/40 shadow-xl'
+                            : 'bg-surface/60 border-white/10'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between mb-3">
+                          <span className="font-mono text-xs font-semibold text-primary uppercase">
+                            Step {step.step}
                           </span>
-                        ))}
+                          <div className="sm:hidden w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-primary">
+                            <Icon className="w-4 h-4" />
+                          </div>
+                        </div>
+
+                        <h4 className="font-display font-bold text-xl sm:text-2xl text-white mb-2.5">
+                          {step.title}
+                        </h4>
+                        <p className="text-sm text-text-muted leading-relaxed mb-4">
+                          {step.description}
+                        </p>
+
+                        {/* Deliverables / Focus Chips */}
+                        <div className="flex flex-wrap gap-2 pt-2 border-t border-white/5">
+                          {step.chips.map((chip, cIdx) => (
+                            <span
+                              key={cIdx}
+                              className="text-xs font-mono px-2.5 py-1 rounded-md bg-white/5 border border-white/5 text-text-muted flex items-center gap-1.5"
+                            >
+                              <CheckCircle2 className="w-3 h-3 text-primary shrink-0" />
+                              <span>{chip}</span>
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>

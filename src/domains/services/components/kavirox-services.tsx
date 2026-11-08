@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef, useEffect, Suspense, lazy } from 'react';
 import { serviceLines, ServiceLine } from './service-data';
 import Reveal from '@/components/ui/Reveal';
 import ScrollFloat from '@/components/ui/ScrollFloat';
@@ -9,6 +9,15 @@ import {
   ArrowRight,
   Sparkles,
 } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { isQaMode } from '@/shared/hooks/use-device-tier';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
+const Particles = lazy(() => import('@/components/ui/Particles'));
 
 const CATEGORIES = [
   { key: 'all', label: 'All' },
@@ -37,6 +46,8 @@ export const KaviroxServices: React.FC = () => {
   const [searchExpanded, setSearchExpanded] = useState<boolean>(false);
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const qa = isQaMode();
 
   const toggleFlip = (id: string) => {
     setFlippedCards((prev) => ({
@@ -65,6 +76,37 @@ export const KaviroxServices: React.FC = () => {
     });
   }, [activeCategory, searchQuery]);
 
+  // Cards cascading animation: coming one by one from below to top on scroll
+  useEffect(() => {
+    const el = gridRef.current;
+    if (!el || qa) return;
+
+    const cards = el.querySelectorAll('.service-card');
+    if (!cards.length) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        cards,
+        { opacity: 0, y: 56, scale: 0.96 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.75,
+          stagger: 0.08,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 85%',
+            once: true,
+          },
+        }
+      );
+    }, el);
+
+    return () => ctx.revert();
+  }, [filteredServices, qa]);
+
   const getCategoryCount = (catKey: string) => {
     if (catKey === 'all') return serviceLines.length;
     return serviceLines.filter((s) => s.category === catKey).length;
@@ -87,86 +129,120 @@ export const KaviroxServices: React.FC = () => {
   return (
     <section
       id="services"
-      className="relative w-full py-20 sm:py-28 md:py-32 bg-bg border-b border-line overflow-hidden scroll-mt-24 md:scroll-mt-28"
+      className="relative w-full py-20 sm:py-28 md:py-32 bg-bg border-b border-line overflow-hidden scroll-mt-24 md:scroll-mt-28 isolate"
       aria-label="Kavirox Services"
     >
-      <div className="max-w-7xl mx-auto px-5 sm:px-8 md:px-12">
-        {/* Section Header */}
-        <Reveal>
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-14">
-            <div className="max-w-3xl space-y-3">
-              <div className="inline-flex items-center gap-2 font-mono text-xs text-primary uppercase tracking-widest">
-                <span className="w-4 h-[1px] bg-primary" />
-                <span>Services</span>
-              </div>
-              <h2 className="font-display font-extrabold text-3xl sm:text-5xl md:text-6xl text-text tracking-tight leading-[1.05] text-balance">
-                <ScrollFloat effect="float" splitBy="words" animationDuration={0.8} stagger={0.03}>
-                  Everything around a product, built properly.
-                </ScrollFloat>
-              </h2>
-              <p className="text-text-muted text-base sm:text-lg leading-relaxed text-pretty">
-                Alongside our products, we provide custom software, product engineering, web and mobile, AI and automation, cybersecurity, cloud and DevOps, e-commerce and digital growth support.
-              </p>
-            </div>
+      {/* Dedicated Original Particles Background for Services Section */}
+      <div className="absolute inset-0 pointer-events-none -z-10 overflow-hidden" aria-hidden="true">
+        <Suspense fallback={null}>
+          <Particles
+            particleColors={["#ffffff", "#ffffff", "#ffffff"]}
+            particleCount={200}
+            particleSpread={10}
+            speed={0.1}
+            particleBaseSize={100}
+            glow={0.5}
+            twinkle={0.3}
+            moveParticlesOnHover
+            hoverEffect="parallax"
+            sizeRandomness={1}
+            shape="circle"
+            depthOfField={0}
+            connections={false}
+            connectionDistance={110}
+            particleHoverFactor={1}
+            hoverRadius={140}
+            drift="none"
+            driftSpeed={1}
+            alphaParticles={false}
+            disableRotation={false}
+            cameraDistance={20}
+            variation={0}
+            opacity={1}
+            clickBurst
+            intro
+            lightMode={false}
+          />
+        </Suspense>
+      </div>
 
-            {/* Expandable Search Input */}
-            <div className="relative flex items-center justify-end">
-              <div
-                className={`flex items-center bg-surface-2 border border-line rounded-full transition-all duration-300 ${
-                  searchExpanded || searchQuery ? 'w-full sm:w-64 px-3 py-1.5' : 'w-10 h-10 justify-center'
-                }`}
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 md:px-12 relative z-10">
+        {/* Section Header with Zero-Collision Spacing */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-14">
+          <div className="max-w-3xl space-y-3">
+            <div className="inline-flex items-center gap-2 font-mono text-xs text-primary uppercase tracking-widest mb-1">
+              <span className="w-4 h-[1px] bg-primary" />
+              <span>Services</span>
+            </div>
+            <h2 className="font-display font-extrabold text-3xl sm:text-5xl md:text-6xl text-text tracking-tight leading-[1.05] text-balance mb-4">
+              <ScrollFloat effect="float" splitBy="words" animationDuration={0.85} stagger={0.035}>
+                Everything around a product, built properly.
+              </ScrollFloat>
+            </h2>
+            <p className="text-text-muted text-base sm:text-lg leading-relaxed text-pretty">
+              Alongside our products, we provide custom software, product engineering, web and mobile, AI and automation, cybersecurity, cloud and DevOps, e-commerce and digital growth support.
+            </p>
+          </div>
+
+          {/* Expandable Search Input */}
+          <div className="relative flex items-center justify-end">
+            <div
+              className={`flex items-center bg-surface-2 border border-line rounded-full transition-all duration-300 ${
+                searchExpanded || searchQuery ? 'w-full sm:w-64 px-3 py-1.5' : 'w-10 h-10 justify-center'
+              }`}
+            >
+              <button
+                type="button"
+                aria-label="Toggle search input"
+                onClick={() => {
+                  setSearchExpanded(!searchExpanded);
+                  if (!searchExpanded) {
+                    setTimeout(() => searchInputRef.current?.focus(), 50);
+                  }
+                }}
+                className="text-text-muted hover:text-white transition-colors"
               >
-                <button
-                  type="button"
-                  aria-label="Toggle search input"
-                  onClick={() => {
-                    setSearchExpanded(!searchExpanded);
-                    if (!searchExpanded) {
-                      setTimeout(() => searchInputRef.current?.focus(), 50);
-                    }
+                <Search className="w-4 h-4 shrink-0" />
+              </button>
+              {(searchExpanded || searchQuery) && (
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  placeholder="Search services or tools..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onBlur={() => {
+                    if (!searchQuery) setSearchExpanded(false);
                   }}
-                  className="text-text-muted hover:text-white transition-colors"
-                >
-                  <Search className="w-4 h-4 shrink-0" />
-                </button>
-                {(searchExpanded || searchQuery) && (
-                  <input
-                    ref={searchInputRef}
-                    type="text"
-                    placeholder="Search services or tools..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    onBlur={() => {
-                      if (!searchQuery) setSearchExpanded(false);
-                    }}
-                    className="w-full bg-transparent pl-2.5 text-xs font-mono text-text placeholder:text-text-muted/60 outline-none"
-                    aria-label="Filter services"
-                  />
-                )}
-              </div>
+                  className="w-full bg-transparent border-none text-xs text-white placeholder-text-muted/60 focus:outline-none ml-2"
+                />
+              )}
             </div>
           </div>
-        </Reveal>
+        </div>
 
-        {/* Category Filter Chips */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 scrollbar-none">
+        {/* Category Filter Pills */}
+        <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 mb-8 sm:mb-10" role="tablist">
           {CATEGORIES.map((cat) => {
-            const count = getCategoryCount(cat.key);
             const active = activeCategory === cat.key;
+            const count = getCategoryCount(cat.key);
             return (
               <button
                 key={cat.key}
+                type="button"
+                role="tab"
+                aria-selected={active}
                 onClick={() => setActiveCategory(cat.key)}
-                className={`cursor-target shrink-0 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-mono transition-all ${
+                className={`cursor-target px-4 py-2 rounded-full text-xs font-mono transition-all duration-200 flex items-center gap-2 ${
                   active
-                    ? 'bg-primary text-primary-ink font-semibold shadow-[0_0_12px_rgba(168,230,46,0.3)]'
-                    : 'bg-surface2/80 text-text-muted border border-white/10 hover:border-white/20 hover:text-white'
+                    ? 'bg-primary text-primary-ink font-semibold shadow-[0_0_12px_rgba(56,189,248,0.35)] scale-[1.02]'
+                    : 'bg-surface/90 text-text-muted hover:text-white hover:border-white/20 border border-white/5'
                 }`}
                 data-cursor-label="Filter"
               >
                 <span>{cat.label}</span>
                 <span
-                  className={`text-[10px] px-1.5 py-0.2 rounded-full tabular-nums ${
+                  className={`text-[10px] px-1.5 py-0.2 rounded-full ${
                     active ? 'bg-primary-ink/20 text-primary-ink' : 'bg-white/5 text-text-muted'
                   }`}
                 >
@@ -177,8 +253,8 @@ export const KaviroxServices: React.FC = () => {
           })}
         </div>
 
-        {/* Services Grid (Desktop: Featured 2-col first card, 3-col grid; Mobile: snap rail) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Services Grid (Desktop: Featured 2-col first card, 3-col grid; Mobile: snap rail) with Smooth Cascade */}
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredServices.map((service, idx) => {
             const Icon = service.icon;
             const isFlipped = flippedCards[service.id];
@@ -188,7 +264,7 @@ export const KaviroxServices: React.FC = () => {
             return (
               <div
                 key={service.id}
-                className={`relative cursor-target ${isFeatured ? 'lg:col-span-2' : 'col-span-1'}`}
+                className={`service-card relative cursor-target ${isFeatured ? 'lg:col-span-2' : 'col-span-1'}`}
                 data-cursor-label="Flip"
               >
                 <div
@@ -290,12 +366,12 @@ export const KaviroxServices: React.FC = () => {
                           Tools &amp; Stack
                         </span>
                         <div className="flex flex-wrap gap-1.5">
-                          {service.tools.slice(0, 4).map((tool, tIdx) => (
+                          {service.tools.slice(0, 4).map((t, tIdx) => (
                             <span
                               key={tIdx}
-                              className="text-[10px] font-mono text-text bg-white/5 border border-white/10 px-2 py-0.5 rounded"
+                              className="text-[11px] font-mono px-2 py-0.5 rounded bg-white/5 text-text-muted border border-white/5"
                             >
-                              {tool}
+                              {t}
                             </span>
                           ))}
                         </div>
