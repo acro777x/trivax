@@ -1,5 +1,5 @@
 import { ChatMessage, OpenRouterModelOption } from "../types";
-import { buildStudioSystemPrompt, SERVICES_KNOWLEDGE, SOLUTIONS_KNOWLEDGE, CAPABILITIES_KNOWLEDGE, STUDIO_IDENTITY } from "../knowledge/studio-knowledge";
+import { buildStudioSystemPrompt, SERVICES_KNOWLEDGE, STUDIO_IDENTITY } from "../knowledge/studio-knowledge";
 
 export const OPENROUTER_FREE_MODELS: OpenRouterModelOption[] = [
   {
@@ -309,310 +309,124 @@ async function simulateStudioResponse(
   onChunk: (chunk: string, accumulated: string) => void,
   onComplete?: (fullText: string) => void
 ): Promise<void> {
-  const context = analyzeConversationContext(messages);
   const userMessages = messages.filter(m => m.role === "user");
   const lastUserObj = userMessages[userMessages.length - 1];
   const lastUserMsg = (lastUserObj?.content || "").trim().toLowerCase();
 
-  // Determine target topic
-  const explicitTopicInCurrentQuery = detectTopic(lastUserMsg);
-  const targetTopic: TopicType = 
-    explicitTopicInCurrentQuery || 
-    context.repliedTopic || 
-    context.activeTopic || 
-    "general";
-
   let reply = "";
 
-  // 1. Initial Greeting vs Mid-Chat Greeting
+  // 1. Initial Greeting
   if (/^(hi|hello|hey|greetings|hola|good\s+(morning|afternoon|evening)|yo|sup)\b/i.test(lastUserMsg)) {
-    if (userMessages.length <= 1) {
-      reply = `Hello! Welcome to **Kavirox**. We engineer sub-second e-commerce stores, custom RAG chatbots, and WhatsApp automation for consumer brands.
+    reply = `Hello! Welcome to **Kavirox**. We are a product-led technology company based at AIC-GBU, Greater Noida.
 
-How can I help you today?`;
-    } else {
-      reply = `Hey there! How can I assist with your store or project today? Feel free to ask about our services, RAG chatbots, or sprint pricing.`;
-    }
+We build digital products (like **Rakshak Setu**, **GBU One**, and **GBU SDMS**) and deliver software, AI, automation, and cybersecurity solutions.
+
+How can I help you today? You can ask about our products, our 4 ways of working, or our engineering services.`;
   }
-  // 2. Affirmative Responses & Confirmations ("yes", "sure", "tell me more", "sounds good", "continue")
-  else if (/^(yes|yeah|yep|sure|tell me more|sounds good|continue|okay|ok|cool|go ahead|definitely|why not|lets do it|let's do it|please do|first one|second one)\b/i.test(lastUserMsg)) {
-    if (context.lastAssistantOffer === "audit") {
-      reply = `Awesome! What is your store website link or brand name? We'll run a complimentary speed and UX benchmark to pinpoint your biggest drop-offs.`;
-    } else if (context.lastAssistantOffer === "rag" || targetTopic === "rag") {
-      reply = `Great! To give you a tailored scoping overview:
-• Are you currently on Shopify or another platform?
-• Roughly how many products or SKUs are in your catalog?
+  // 2. What products do you build / Products inquiry
+  else if (/(what products|which products|products do you build|tell me about products|portfolio|show me products|what do you make|what do you build|list products|your products)/i.test(lastUserMsg)) {
+    reply = `At **Kavirox**, our product portfolio includes:
 
-Feel free to reply here, or click the email button below to open our pre-written brief!`;
-    } else if (context.lastAssistantOffer === "whatsapp" || targetTopic === "whatsapp") {
-      reply = `To launch WhatsApp commerce, we set up official Meta Cloud API webhooks for cart recovery and order tracking. Would you like a sprint proposal for your store?`;
-    } else if (context.lastAssistantOffer === "sprint" || targetTopic === "pricing") {
-      reply = `Our **Project Sprints** run for 2–6 weeks with fixed deliverables and weekly preview builds. Click the button below to launch our formatted email brief with your scope pre-filled!`;
-    } else if (targetTopic === "speed") {
-      reply = `For speed tuning, we benchmark your current LCP, minify heavy assets, and optimize theme liquid code. Want to share your store link?`;
-    } else {
-      reply = `Glad to hear! What specific detail would you like to explore next—timelines, pricing, or technical rollout?`;
-    }
+• **Rakshak Setu** *(Prototype)*: On-device voice shield countering AI voice cloning and phone-scam impersonation during live calls.
+• **GBU One & Admin** *(Built & Device-Tested)*: Offline-first student companion app with timetables, attendance battery, PYQs, and PIN-gated admin console.
+• **GBU SDMS** *(Deployed & Active)*: Role-based platform for university student records, session attendance, and academic administration.
+• **Study Hub AI** *(Campus Pilot)*: WhatsApp and Telegram study assistant answering directly from verified university syllabus and past papers.
+• **FitFuel** *(In Development)*: Mobile-first calorie and workout tracker keeping core tools free.
+• **Try-Out** *(In Development)*: Virtual fashion try-on experience for visual exploration.
+• **LAPS One** *(In Development)*: Centralized event management platform for track and stage scheduling.
+
+Which product would you like to know more about?`;
   }
-  // 3. User Shared a Store URL
-  else if (context.storeUrl && lastUserMsg.includes(context.storeUrl.toLowerCase())) {
-    reply = `Thanks for sharing **${context.storeUrl}**! Our engineering squad can review your storefront speed, UX bottlenecks, and RAG bot readiness.
+  // 3. How can we work together / Ways to work
+  else if (/(how can we work|ways to work|work together|how to work with you|engagement models?|ways to start|four ways)/i.test(lastUserMsg)) {
+    reply = `We offer **Four Clear Ways to Start** working with us:
 
-Click the email button below to send us a quick inquiry, and we'll reply with a detailed review within 24 hours!`;
+1. **Ready-Built Product**: Choose an existing Kavirox product that addresses your need. We provide transparent scope, setup, limits, and pricing.
+2. **Product Implementation**: We configure the system, onboard users, connect data, set permissions, and train your team.
+3. **Custom Development**: For needs no off-the-shelf product covers: custom web apps, mobile apps, SaaS platforms, and APIs.
+4. **Product Plus Custom Extension**: Start from an existing product and commission custom integrations or dedicated modules.
+
+Would you like to discuss a project under one of these models?`;
   }
-  // 4. Pricing & Rates Intent
-  else if (/(price|pricing|cost|how much|rate|rates|budget|quote|fees?|expensive|charge)\b/i.test(lastUserMsg)) {
-    if (targetTopic === "rag") {
-      reply = `For a **Custom RAG Chatbot**, we deploy under a fixed **Project Sprint** (typically 2 to 3 weeks):
+  // 4. Specific product: Rakshak Setu
+  else if (/rakshak\s*setu/i.test(lastUserMsg)) {
+    reply = `**Rakshak Setu** is an on-device cybersecurity voice shield (SIH 2026 project by Team Forge Labs at Gautam Buddha University):
 
-• **Includes**: Vector catalog ingestion, zero-hallucination guardrails, storefront chat widget, and optional WhatsApp sync.
-• **Pricing**: Flat sprint fee with no recurring agency retainers or hidden markups.
-
-Click below to get an exact estimate based on your catalog size!`;
-    } else if (targetTopic === "speed") {
-      reply = `For **Store Speed & Core Web Vitals Optimization**, we execute a focused **2-week Sprint**:
-
-• **Includes**: Eliminating app bloat, deferring scripts, optimizing critical rendering paths, and hitting LCP < 1.2s.
-• **Pricing**: Fixed-scope flat fee with guaranteed performance targets.
-
-Click below to request a complimentary initial audit and quote!`;
-    } else if (targetTopic === "whatsapp") {
-      reply = `For **WhatsApp Conversational Commerce**:
-
-• **Sprint Setup** (1–2 weeks): Meta Cloud API onboarding, cart recovery workflows, and shipping webhook triggers.
-• **Pricing**: Flat setup fee. WhatsApp message costs are billed directly by Meta at base wholesale rates with zero markup.
-
-Click below to get a quote based on your monthly order volume!`;
-    } else if (targetTopic === "email") {
-      reply = `For **Klaviyo Email & Retention Automation**:
-
-• **Sprint Scope** (2–3 weeks): 5 core lifecycle flows (Welcome, browse abandonment, checkout abandonment, replenishment, win-back).
-• **Pricing**: Fixed project sprint with custom responsive email templates.
-
-Click below to get started!`;
-    } else {
-      reply = `We provide 3 flexible **engagement models**:
-
-1. **Project Sprint** (2–6 wks): Fixed scope for new builds, speed overhauls, or RAG bots.
-2. **Dedicated Squad**: Ongoing monthly engineering embedded with your team.
-3. **Technical Advisory**: On-demand audits, performance tuning, and architecture reviews.
-
-Click below to send us a quick project brief for an exact quote!`;
-    }
+• **Threat Detection**: Listens locally for AI voice cloning and pressure scam scripts.
+• **Privacy by Design**: Raw call audio is processed entirely in memory on-device and never stored or sent to the cloud.
+• **Features**: Live threat HUD during calls, forensic evidence records, URL/QR scanners, and a 1930 NCRP reporting co-pilot.`;
   }
-  // 5. Timeline & Delivery Duration Intent
-  else if (/(how long|timeline|duration|how fast|timeframe|turnaround|how many (weeks|days)|when can|deadline)\b/i.test(lastUserMsg)) {
-    if (targetTopic === "rag") {
-      reply = `A **Custom RAG Chatbot** rollout takes **2 to 3 weeks**:
+  // 5. Specific product: GBU SDMS
+  else if (/(gbu[\s-]sdms|sdms|student data management)/i.test(lastUserMsg)) {
+    reply = `**GBU SDMS** is a deployed, role-based platform for institutional student records and administration:
 
-• **Week 1**: Ingest catalog, FAQs, and policies into vector database + set guardrails.
-• **Week 2**: Front-end widget integration and simulated test queries.
-• **Week 3**: Live deployment, staff verification, and optional WhatsApp connection.`;
-    } else if (targetTopic === "speed") {
-      reply = `A **Store Speed Overhaul** is delivered in **1 to 2 weeks**:
-
-• **Days 1–3**: Comprehensive theme code audit and render-blocking script diagnosis.
-• **Days 4–8**: Asset compression, script deferral, and staging testing.
-• **Days 9–10**: Production rollout and live Core Web Vitals validation (LCP < 1.2s).`;
-    } else if (targetTopic === "whatsapp") {
-      reply = `A complete **WhatsApp Commerce & Cart Recovery** setup takes **1 to 2 weeks**, including Meta Cloud API onboarding and live webhook triggers.`;
-    } else {
-      reply = `Our delivery timelines are fast and agile:
-
-• **Project Sprints**: Store builds and RAG bots launch within **2 to 6 weeks**.
-• **Weekly Milestones**: Architecture in Week 1, followed by weekly preview builds and staging access.`;
-    }
+• **Five Access Roles**: Administrator, Chairperson, Coordinator, Faculty, and Student.
+• **Key Capabilities**: Digital attendance logging with timestamp and session locking, bulk Excel roster imports, faculty load allocation, and comprehensive audit trails.
+• **Tech Stack**: PostgreSQL, Role-Based Security, TypeScript, and REST APIs.`;
   }
-  // 6. How It Works / Process Intent
-  else if (/(how (does it|do you|would that) work|process|steps|rollout|how do you (do|build|deploy|train)|workflow)\b/i.test(lastUserMsg)) {
-    if (targetTopic === "rag") {
-      reply = `Here is how your **RAG Chatbot** operates:
+  // 6. Specific product: GBU One
+  else if (/gbu[\s-]one/i.test(lastUserMsg)) {
+    reply = `**GBU One** is an offline-first student companion app for Gautam Buddha University:
 
-1. **Vector Ingestion**: We ingest your verified products, ingredients, shipping terms, and FAQs into a dedicated vector store.
-2. **Semantic Retrieval**: When a shopper asks a question, the model retrieves verified passages—strictly preventing hallucinations.
-3. **1-Click Cart**: The bot recommends exact matching products and generates 1-click checkout links.
-4. **Multi-Channel**: Runs directly on your storefront or official WhatsApp.`;
-    } else if (targetTopic === "speed") {
-      reply = `Our speed optimization process is surgical:
-
-1. **Telemetry Audit**: Profile real-user metrics (LCP, INP, CLS) and pinpoint script bottlenecks.
-2. **Code Pruning**: Strip residual code from uninstalled apps and optimize liquid loops.
-3. **Asset Optimization**: Responsive WebP/AVIF images and zero-render-blocking fonts.
-4. **Verification**: Live benchmarks across mobile and desktop.`;
-    } else if (targetTopic === "whatsapp") {
-      reply = `Here is how WhatsApp Cart Recovery works:
-
-1. **Webhook Trigger**: When a checkout is abandoned, Shopify instantly signals our automation pipeline.
-2. **Smart Timing**: A personalized WhatsApp message is sent with the customer's exact items and a 1-click buy link.
-3. **Order Updates**: Automatically sends tracking alerts upon dispatch.`;
-    } else {
-      reply = `We work in structured 6-phase engineering lifecycles:
-
-• **01 Discovery** → **02 UX & Architecture** → **03 Rapid Sprint** → **04 QA Testing** → **05 Production Launch** → **06 Continuous Growth**.
-
-Every project includes direct Slack access to your lead engineer.`;
-    }
+• **Student Features**: Smart timetables with next-class countdowns, official notices with offline PDF caching, previous-year question papers (PYQs), and attendance battery monitoring.
+• **Admin Console**: PIN-gated console for university coordinators to publish notices and push instant updates.
+• **Tech Stack**: React Native / Expo, TypeScript, SQLite offline cache, and Supabase.`;
   }
-  // 7. Tech Stack & Tools Intent
-  else if (/(tech stack|technologies|what tools|framework|what language|database|infrastructure|libraries)\b/i.test(lastUserMsg)) {
-    if (targetTopic === "rag") {
-      reply = `Our **RAG Chatbot** tech stack:
+  // 7. Specific product: Study Hub AI
+  else if (/study\s*hub/i.test(lastUserMsg)) {
+    reply = `**Study Hub AI** is a campus study assistant living where students already are:
 
-• **Vector DB**: Pinecone / Qdrant with high-dimensional embeddings.
-• **LLM Core**: Fast, reliable models tuned with strict temperature boundaries.
-• **Widget**: Lightweight React / TypeScript component (<28KB) with zero storefront lag.
-• **Messaging**: Meta Cloud API for official WhatsApp integration.`;
-    } else if (targetTopic === "speed" || targetTopic === "shopify") {
-      reply = `Our **Engineering Stack** includes:
-
-• **Storefronts**: Custom Shopify Liquid, Headless Next.js, React, TypeScript, Tailwind CSS.
-• **Performance**: Lighthouse CI, WebPageTest, Shopify Storefront API, GraphQL.
-• **Automation**: n8n, Cloudflare Workers, Node.js microservices.`;
-    } else {
-      reply = `Our core technology stack spans:
-
-• **Commerce**: Shopify, Liquid, Next.js, React, Tailwind CSS.
-• **AI & RAG**: Vector embeddings, Pinecone/Qdrant, LLM APIs.
-• **Automation**: Meta Cloud API (WhatsApp), Klaviyo, n8n, Webhooks.
-• **Data**: Meta CAPI, GA4, Looker Studio.`;
-    }
+• **Native Messaging**: Accessible directly via WhatsApp and Telegram bots with no extra apps required.
+• **Grounded Answers**: Retrieves verified answers strictly from university syllabus files, exam patterns, and past papers.
+• **Resilient Infrastructure**: Multi-provider AI routing with automated fallback for 99.9% uptime.`;
   }
-  // 8. Integrations & Compatibility Intent
-  else if (/(integrate|integration|compatible|work with|connect to|connect with|support|supports|api|hook up|sync with)\b/i.test(lastUserMsg)) {
-    if (/whatsapp/i.test(lastUserMsg)) {
-      reply = `Yes! We integrate directly with the **official WhatsApp Business API (Meta Cloud API)**. Your RAG chatbot or cart recovery automations run natively inside WhatsApp with verified green-tick support.`;
-    } else if (/shopify/i.test(lastUserMsg)) {
-      reply = `Yes! Shopify is our primary specialty. We build custom Liquid sections, headless Next.js frontends, and integrate with the Shopify Storefront & Admin APIs.`;
-    } else if (/woocommerce|wordpress/i.test(lastUserMsg)) {
-      reply = `Yes, we support WooCommerce stores via REST APIs and webhooks for speed optimization, RAG bot deployment, and WhatsApp messaging.`;
-    } else if (/payment|razorpay|upi|cod/i.test(lastUserMsg)) {
-      reply = `Yes! We deeply integrate with Razorpay, Cashfree, and UPI deep-links, plus automated COD OTP verification to drastically reduce RTO.`;
-    } else if (/klaviyo/i.test(lastUserMsg)) {
-      reply = `Yes! We build automated Klaviyo flows, RFM behavioral segmentations, and dynamic catalog feeds synced with your storefront.`;
-    } else {
-      reply = `Yes! We connect your storefront with all major e-commerce platforms and APIs, including Shopify, WhatsApp Cloud API, Klaviyo, Razorpay, and Shiprocket.`;
-    }
+  // 8. Services inquiry
+  else if (/(what services|services do you deliver|services do you offer|what can you do|capabilities)/i.test(lastUserMsg)) {
+    reply = `We deliver focused engineering services across:
+
+• **AI & Automation**: Custom RAG assistants, internal automation workflows, and local on-device ML.
+• **Mobile App Development**: High-performance offline-first iOS and Android applications.
+• **Web & Cloud Engineering**: Fast, modern web applications, scalable backends, and API integrations.
+• **Cybersecurity**: Role-based access governance, tamper-proof audit trails, and security audits.
+
+Tell us what your business is aiming to build, and we'll outline a tailored roadmap!`;
   }
-  // 9. Accuracy & Hallucination Intent
-  else if (/(hallucinat|accurate|accuracy|mistake|wrong|error|reliable|safe|security|privacy|data safety)\b/i.test(lastUserMsg)) {
-    reply = `Our RAG chatbots are engineered with **strict zero-hallucination guardrails**:
+  // 9. Pricing & Timeline
+  else if (/(price|pricing|cost|how much|rate|budget|quote|timeline|how long)/i.test(lastUserMsg)) {
+    reply = `We provide clear, honest pricing with zero hidden retainers:
 
-• The AI is strictly bounded to your verified product catalog, ingredients, and store policies.
-• If information isn't in your knowledge base, it politely offers to connect the shopper with human support instead of guessing.
-• Your private brand data is never used for public model training.`;
+• **Ready-Built Products**: Transparent licensing or fixed setup fees based on required scope.
+• **Project Sprints**: Fixed-scope development sprints (2–6 weeks) with weekly preview milestones.
+• **Custom Solutions**: Structured milestone-based quotes with full architecture transparency.
+
+Click the email button below or write to **info@kavirox.space** to receive a tailored estimate for your project!`;
   }
-  // 10. Recommendations & Where to Start Intent
-  else if (/(which (one|should|is better)|recommend|difference between|compare|where should (i|we) start|what do you suggest)\b/i.test(lastUserMsg)) {
-    if (context.painPoint?.includes("speed")) {
-      reply = `Given your speed bottlenecks, we recommend starting with a **2-Week Speed Overhaul Sprint**—sub-second speeds immediately lift your conversion rate before scaling ad spend.`;
-    } else if (context.painPoint?.includes("cart")) {
-      reply = `Given your cart abandonment, we recommend deploying our **WhatsApp Cart Recovery & 1-Click Checkout Sprint** to immediately recover 15–25% of dropped shoppers.`;
-    } else {
-      reply = `For most growing brands, a **2 to 3-week Project Sprint** is the best starting point. It provides a fixed scope and guaranteed deliverables with zero ongoing retainers. Which area is your primary focus?`;
-    }
+  // 10. General Company & Location
+  else if (/(who are you|where are you|location|office|greater noida|aic|aic-gbu)/i.test(lastUserMsg)) {
+    reply = `**Kavirox** is a product-led technology company with services, proudly incubated at **AIC-GBU (Atal Incubation Centre, Gautam Buddha University)**, Greater Noida, India.
+
+Our team designs, engineers, and operates digital products that solve real problems. Reach us anytime at **info@kavirox.space**.`;
   }
-  // 11. Explicit Topic Triggers (User specifically inquiring about a domain)
-  else if (explicitTopicInCurrentQuery === "rag") {
-    reply = `We engineer **Custom RAG Chatbots** tailored to your store:
-
-• **Zero Hallucinations**: Grounded strictly in your products, ingredients, and FAQs.
-• **Instant Cart Links**: Recommends products and generates checkout links.
-• **Multi-Channel**: Embedded on your storefront or official WhatsApp.
-
-Click the email button below to explore a custom bot for your brand!`;
-  } else if (explicitTopicInCurrentQuery === "speed") {
-    reply = `Our **Website Development & Performance** engineering delivers sub-second loads:
-
-• **Speed Tuning**: Core Web Vitals optimization (LCP < 1.2s), script cleanup, and zero bloat.
-• **Custom Shopify & Headless**: Custom Liquid sections or high-performance Next.js stores.
-
-Would you like a complimentary store audit?`;
-  } else if (explicitTopicInCurrentQuery === "whatsapp") {
-    reply = `Our **WhatsApp Commerce** turns WhatsApp into a reliable sales channel:
-
-• **Cart Recovery**: Automated sequences with 1-click checkout links.
-• **Order Tracking**: Real-time dispatch and delivery status updates.
-• **Guided Shopping**: Conversational product finders inside WhatsApp.`;
-  } else if (explicitTopicInCurrentQuery === "email") {
-    reply = `Our **Email & Retention Automation** boosts repeat orders:
-
-• **Automated Flows**: Welcome series, browse abandonment, and cart recovery.
-• **Post-Purchase**: Replenishment reminders and UGC review collection.`;
-  } else if (explicitTopicInCurrentQuery === "payments") {
-    reply = `Our **Payments & Checkout Flow** engineering cuts drop-offs and RTO:
-
-• **1-Click UPI & Cards**: Optimized Razorpay, Cashfree, and UPI deep-links.
-• **COD Verification**: Automated OTP/WhatsApp verification to prevent bogus orders.`;
-  } else if (explicitTopicInCurrentQuery === "analytics") {
-    reply = `Our **Data & Analytics** setup fixes signal loss:
-
-• **Meta CAPI**: Server-side conversion tracking bypassing ad blockers.
-• **GA4 & BI Dashboards**: Granular e-commerce funnel tracking and Looker dashboards.`;
-  } else if (explicitTopicInCurrentQuery === "seo") {
-    reply = `Our **SEO & Content Engineering** builds long-term organic authority:
-
-• **Technical Audits**: Fix crawl errors, canonical tags, and mobile usability.
-• **Rich Schema**: JSON-LD structured data for rich Google product cards.`;
-  } else if (explicitTopicInCurrentQuery === "team") {
-    reply = `**Kavirox** is a digital engineering studio founded at **GBU Incubation Center (AIC-GBU), Greater Noida, India**.
-
-We are a hands-on squad of software engineers working directly with brands with daily Slack updates and zero agency overhead.`;
-  }
-  // 12. General Services Overview Intent
-  else if (/(service|what do you do|what can you do|capabilities|offer)\b/i.test(lastUserMsg)) {
-    reply = `Kavirox provides **11 core engineering services** across:
-
-• **Commerce & Storefront**: Sub-second Shopify / Next.js builds.
-• **Data & AI Systems**: Custom RAG chatbots and analytics.
-• **Automation**: WhatsApp commerce, cart recovery, and n8n workflows.
-• **Checkout & Security**: UPI deep-links, COD verification, and audit standards.`;
-  }
-  // 13. Contact & Hiring Intent
-  else if (/(contact|start|hire|work with|call|reach out|touch|proposal)\b/i.test(lastUserMsg)) {
-    reply = `Ready to build? Getting started is straightforward:
-
-• **Email**: info@kavirox.space
-• **Location**: GBU Incubation Center (AIC-GBU), Greater Noida, India
-• **Interactive Brief**: Click the button below to launch our pre-written project brief in Gmail!`;
-  }
-  // 14. Intelligent Context-Aware Fallback
+  // 11. Default fallback
   else {
-    if (targetTopic === "rag") {
-      reply = `Regarding your **RAG Chatbot**, we calibrate the system to your verified catalog, policies, and FAQs.
+    reply = `I would be happy to help! At **Kavirox**, we build products like **Rakshak Setu**, **GBU One**, and **GBU SDMS**, and deliver software, AI, and cybersecurity services.
 
-Would you like to explore **pricing**, **rollout timelines**, or see how it connects to **WhatsApp**?`;
-    } else if (targetTopic === "speed") {
-      reply = `Regarding **Store Speed & Performance**, our goal is hitting sub-1.2s LCP on mobile without breaking existing apps.
-
-Would you like a complimentary speed audit for your store URL?`;
-    } else if (targetTopic === "whatsapp") {
-      reply = `Regarding **WhatsApp Commerce**, we automate cart recovery and customer order updates via Meta Cloud API.
-
-Would you like to see how the recovery sequence operates?`;
-    } else if (targetTopic === "shopify" || context.platform === "Shopify") {
-      reply = `For your **Shopify storefront**, we can optimize speed, build custom Liquid sections, or deploy a RAG shopping assistant.
-
-What specific challenge is your brand facing right now?`;
-    } else if (targetTopic === "pricing") {
-      reply = `For our **Engagement Models**, you can choose between a fixed **Project Sprint** or a **Dedicated Squad**.
-
-Would you like a breakdown of what's included in a sprint?`;
-    } else {
-      reply = `At **Kavirox**, we help consumer brands engineer faster online stores, custom RAG chatbots, and automated customer messaging.
-
-Feel free to ask a specific question, or click below to email our engineering squad!`;
-    }
+Feel free to ask about any specific product, our 4 ways of working, or click below to start a direct inquiry with our engineering team!`;
   }
 
-  // Simulate streaming typing effect
+  // Stream reply with human-like pace
+  const chunks = reply.match(/.{1,14}/g) || [reply];
   let accumulated = "";
-  const words = reply.split(" ");
-  for (let i = 0; i < words.length; i++) {
-    const word = words[i] + (i < words.length - 1 ? " " : "");
-    accumulated += word;
-    onChunk(word, accumulated);
-    await new Promise(r => setTimeout(r, 20));
+
+  for (let i = 0; i < chunks.length; i++) {
+    await new Promise(r => setTimeout(r, 18));
+    accumulated += chunks[i];
+    onChunk(chunks[i], accumulated);
   }
 
-  if (onComplete) onComplete(accumulated);
+  if (onComplete) {
+    onComplete(accumulated);
+  }
 }
+
+

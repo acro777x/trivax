@@ -19,3 +19,11 @@ dist/
 # TypeScript
 *.tsbuildinfo
 
+
+# QA and test artifacts
+/*.png
+/*.jpg
+/*.zip
+scripts/test*.py
+extract.py
+extracted_user_turn10.txt

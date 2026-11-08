@@ -1,311 +1,252 @@
-import React from "react";
-import { 
-  CheckCircle2, 
-  Layers, 
-  ShieldCheck, 
-  Cpu, 
-  Workflow, 
-  Sparkles, 
-  Clock, 
-  Users, 
-  Briefcase, 
-  Repeat, 
-  Compass, 
-  Code2, 
-  Rocket, 
+import React, { useState, useEffect } from 'react';
+import Reveal from '@/components/ui/Reveal';
+import ScrollFloat from '@/components/ui/ScrollFloat';
+import {
+  Compass,
+  Layers,
+  Code2,
   FileCheck,
-  Server,
-  Lock,
-  ArrowUpRight
-} from "lucide-react";
-import { getInquiryWebmailUrl } from "@/shared/lib/email-inquiry";
-import { ChromaticText } from "@/domains/marketing/components/chromatic-text";
+  Rocket,
+  Repeat,
+  CheckCircle2,
+} from 'lucide-react';
 
-interface TechCategory {
-  title: string;
-  badge: string;
-  skills: string[];
-}
-
-export const techCategories: TechCategory[] = [
+const PROCESS_STEPS = [
   {
-    title: "Storefronts & Frontend",
-    badge: "UI / UX",
-    skills: ["Shopify Liquid", "Next.js", "React 19", "TypeScript", "Tailwind CSS", "Storefront API", "Vite"]
+    step: 1,
+    title: 'Understanding Your Needs',
+    description:
+      'We assess your current product or digital system, identify where users encounter friction, and establish clear technical requirements.',
+    chips: ['Architecture review', 'Scope alignment', 'Technical plan'],
+    icon: Compass,
   },
   {
-    title: "Conversational & Automation",
-    badge: "Workflows",
-    skills: ["WhatsApp Business API", "Meta Cloud API", "n8n", "Zapier", "Webhooks", "Node.js", "REST / GraphQL"]
+    step: 2,
+    title: 'Design & Planning',
+    description:
+      'We architect intuitive, responsive user interfaces and map out backend data models, APIs, and permissions before coding begins.',
+    chips: ['Design system', 'Data flow mapping', 'API specifications'],
+    icon: Layers,
   },
   {
-    title: "Payments & Commerce Ops",
-    badge: "Transactions",
-    skills: ["Razorpay", "Cashfree", "UPI Deep-Linking", "COD Verification", "Logistics & Shipping APIs"]
+    step: 3,
+    title: 'Clean Development',
+    description:
+      'We write modular, production-tested code designed for speed, security, and scalability across web and mobile platforms.',
+    chips: ['TypeScript', 'Component architecture', 'Integrations'],
+    icon: Code2,
   },
   {
-    title: "AI & RAG Chatbots",
-    badge: "Intelligence",
-    skills: ["RAG Chatbots", "Brand Knowledge Bases", "Vector Search", "OpenAI APIs", "Google Analytics 4", "Meta CAPI", "Looker Studio"]
+    step: 4,
+    title: 'Testing Everything',
+    description:
+      'We rigorously test user flows, security access, edge cases, and performance across real devices and network environments.',
+    chips: ['Cross-device QA', 'Security audit', 'Performance tuning'],
+    icon: FileCheck,
   },
   {
-    title: "Security, Cloud & Health",
-    badge: "Infrastructure",
-    skills: ["OWASP Compliance", "SSL / TLS 1.3", "Access Governance", "CDN Caching", "Disaster Recovery", "Uptime SLAs"]
-  }
+    step: 5,
+    title: 'Smooth Launch',
+    description:
+      'We deploy your system with zero downtime, configure monitoring and telemetry, and verify all integrations in production.',
+    chips: ['Zero-downtime deploy', 'Telemetry setup', 'Live verification'],
+    icon: Rocket,
+  },
+  {
+    step: 6,
+    title: 'Ongoing Support',
+    description:
+      'We maintain health metrics, perform platform upgrades, and build iterative enhancements as your business grows.',
+    chips: ['Continuous care', 'SLA response', 'Iterative updates'],
+    icon: Repeat,
+  },
 ];
 
-export const deliverySteps = [
-  {
-    step: "01",
-    title: "Understanding Your Needs",
-    description: "We look at your current store, see where shoppers drop off, and find practical ways to improve your sales.",
-    icon: Compass
-  },
-  {
-    step: "02",
-    title: "Design & Planning",
-    description: "We design clean, easy-to-use shopping pages and map out the automations needed behind the scenes.",
-    icon: Layers
-  },
-  {
-    step: "03",
-    title: "Clean Development",
-    description: "We write fast, reliable code that looks great on mobile and connects seamlessly with your tools.",
-    icon: Code2
-  },
-  {
-    step: "04",
-    title: "Testing Everything",
-    description: "We test every button, cart flow, and payment method so your customers never experience friction.",
-    icon: FileCheck
-  },
-  {
-    step: "05",
-    title: "Smooth Launch",
-    description: "We roll out your updates with zero downtime, making sure all orders and customer alerts work perfectly.",
-    icon: Rocket
-  },
-  {
-    step: "06",
-    title: "Ongoing Support",
-    description: "We keep checking your numbers, testing new ideas, and keeping your store fast and reliable every month.",
-    icon: Repeat
-  }
-];
+export const KaviroxCapabilities: React.FC = () => {
+  const [activeStep, setActiveStep] = useState(1);
 
-export const engagementModels = [
-  {
-    title: "Project-Based",
-    type: "Clear Goals & Fixed Timeline",
-    description: "Ideal for a specific project — like building a new store, a custom checkout flow, or launching a brand-trained RAG chatbot.",
-    features: [
-      "Fixed timeline and clear milestone dates",
-      "Custom design and clean code built for your brand",
-      "Full handover with easy-to-follow documentation",
-      "Post-launch support and bug fixes included"
-    ],
-    badge: "Clear Scope"
-  },
-  {
-    title: "Dedicated Team",
-    type: "Your In-House Tech Partner",
-    description: "A focused team of developers working closely with you every week to build, improve, and scale your digital store.",
-    features: [
-      "Dedicated developers for frontend, backend, automations, and RAG chatbots",
-      "Direct chat on Slack or WhatsApp for quick daily answers",
-      "Weekly updates and steady feature shipping",
-      "Freedom to adjust priorities as your business grows"
-    ],
-    badge: "Most Popular",
-    highlighted: true
-  },
-  {
-    title: "Monthly Support",
-    type: "Ongoing Maintenance & Growth",
-    description: "Reliable monthly support to keep your store fast, fix issues quickly, run campaigns, and test new improvements.",
-    features: [
-      "Fast response whenever you need quick changes or fixes",
-      "Ongoing tweaks to improve conversions and sales",
-      "Hands-on help with WhatsApp and email workflows",
-      "Regular health checks for speed and security"
-    ],
-    badge: "Continuous Care"
-  }
-];
+  useEffect(() => {
+    const handleScroll = () => {
+      const stepElements = document.querySelectorAll('.process-step-row');
+      const triggerY = window.innerHeight * 0.52;
+      let currentIdx = 0;
 
-export function KaviroxCapabilities() {
+      stepElements.forEach((el, idx) => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= triggerY) {
+          currentIdx = idx;
+        }
+      });
+      setActiveStep(currentIdx + 1);
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const currentStepData = PROCESS_STEPS[activeStep - 1] || PROCESS_STEPS[0];
+
   return (
-    <section 
-      id="capabilities" 
-      className="relative z-10 bg-transparent text-[#fafafa] py-24 md:py-36 border-t border-white/10 overflow-hidden font-sans"
+    <section
+      id="process"
+      className="relative w-full py-20 sm:py-28 md:py-32 bg-bg border-b border-line scroll-mt-24 md:scroll-mt-28"
+      aria-label="Process: How a project runs"
     >
-      {/* Background Dot Matrix */}
-      <div 
-        className="absolute inset-0 z-0 bg-[radial-gradient(circle,_rgba(255,255,255,0.12)_1px,_transparent_1px)] opacity-20 pointer-events-none"
-        style={{ backgroundSize: "28px 28px" }} 
-      />
-
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
-        {/* Section Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-12 border-b border-white/10">
-          <div className="shrink-0">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="h-2 w-2 rounded-full bg-orange-500 animate-pulse" />
-              <span className="text-xs uppercase font-mono tracking-widest text-orange-400">
-                Our Capabilities & Tools
-              </span>
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 md:px-12">
+        {/* Header */}
+        <Reveal>
+          <div className="max-w-3xl mb-14 sm:mb-20 space-y-3">
+            <div className="inline-flex items-center gap-2 font-mono text-xs text-primary uppercase tracking-widest">
+              <span className="w-4 h-[1px] bg-primary" />
+              <span>Process</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight whitespace-nowrap inline-flex items-baseline flex-nowrap gap-x-2 sm:gap-x-3">
-              <span>How We</span>
-              <span className="font-bold italic text-white inline-block cursor-pointer">
-                <ChromaticText text="Work & Build" seed={7734} delay={0.1} duration={1.2} />
-              </span>
+            <h2 className="font-display font-extrabold text-3xl sm:text-5xl md:text-6xl text-text tracking-tight leading-[1.05] text-balance">
+              <ScrollFloat effect="float" splitBy="words" animationDuration={0.8} stagger={0.03}>
+                How a project runs.
+              </ScrollFloat>
             </h2>
+            <p className="text-text-muted text-base sm:text-lg leading-relaxed text-pretty">
+              Six clear steps from first conversation to ongoing support.
+            </p>
           </div>
-          <p className="text-sm md:text-base text-zinc-400 font-mono max-w-md lg:text-right">
-            Founded at Gautam Buddha University to help growing brands build faster stores, connect their tools, and scale with confidence.
-          </p>
-        </div>
+        </Reveal>
 
-        {/* 1. Technology Matrix */}
-        <div className="py-16 border-b border-white/10">
-          <div className="text-xs uppercase font-mono tracking-widest text-zinc-400 mb-8 flex items-center gap-2">
-            <Cpu className="w-4 h-4 text-orange-500" />
-            <span>01 // The Tools & Technology We Use</span>
-          </div>
+        {/* Sticky Split Layout: Left sticky progress indicator / Right 6 sequential steps */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 relative items-start">
+          {/* Left Sticky Panel (Desktop) */}
+          <div className="hidden lg:block lg:col-span-5 lg:sticky lg:top-28 space-y-4">
+            <div className="p-6 sm:p-7 rounded-3xl bg-surface/90 border border-white/10 shadow-2xl backdrop-blur-md space-y-5">
+              <div className="flex items-baseline justify-between border-b border-white/10 pb-3.5">
+                <span className="font-mono text-xs uppercase text-primary tracking-widest">
+                  Current Stage
+                </span>
+                <span className="font-mono text-xs text-text-muted tabular-nums">
+                  {activeStep} of 06
+                </span>
+              </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {techCategories.map((cat, idx) => (
-              <div 
-                key={idx} 
-                className="p-6 rounded-xl bg-zinc-900/25 border border-white/10 backdrop-blur-md hover:border-white/20 hover:bg-zinc-900/35 transition-all"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-sm font-semibold text-zinc-200">{cat.title}</span>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-orange-500/10 text-orange-400 border border-orange-500/20">
-                    {cat.badge}
-                  </span>
+              {/* Big Step Numeral & Title */}
+              <div>
+                <div className="font-display font-black text-5xl sm:text-6xl text-primary/95 mb-2 tabular-nums">
+                  0{activeStep}
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  {cat.skills.map((skill, sIdx) => (
-                    <span 
-                      key={sIdx}
-                      className="text-xs font-mono px-2.5 py-1 rounded bg-white/5 text-zinc-300 border border-white/5 hover:border-orange-500/30 transition-colors"
-                    >
-                      {skill}
-                    </span>
-                  ))}
+                <h3 className="font-display font-bold text-xl sm:text-2xl text-white mb-2.5">
+                  {currentStepData.title}
+                </h3>
+                <p className="text-xs sm:text-sm text-text-muted leading-relaxed">
+                  {currentStepData.description}
+                </p>
+              </div>
+
+              {/* Progress Bar */}
+              <div className="space-y-2 pt-1 border-t border-white/5">
+                <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-primary rounded-full transition-all duration-300 ease-out shadow-[0_0_8px_rgba(168,230,46,0.6)]"
+                    style={{ width: `${(activeStep / 6) * 100}%` }}
+                  />
+                </div>
+                <div className="flex justify-between text-[10px] font-mono text-text-muted/60">
+                  <span>Kickoff</span>
+                  <span>Delivery &amp; Scale</span>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* 2. End-to-End Delivery Methodology */}
-        <div className="py-16 border-b border-white/10">
-          <div className="text-xs uppercase font-mono tracking-widest text-zinc-400 mb-8 flex items-center gap-2">
-            <Workflow className="w-4 h-4 text-orange-500" />
-            <span>02 // How We Bring Your Ideas to Life</span>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {deliverySteps.map((step, idx) => {
-              const Icon = step.icon;
-              return (
-                <div 
-                  key={idx} 
-                  className="p-6 rounded-xl bg-zinc-950/30 border border-white/10 backdrop-blur-md relative group hover:border-orange-500/40 hover:bg-zinc-900/30 transition-all duration-300"
-                >
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-2xl font-mono font-light text-orange-500">
-                      {step.step}
-                    </span>
-                    <div className="p-2 rounded-lg bg-white/5 text-zinc-400 group-hover:text-orange-400 group-hover:bg-orange-500/10 transition-colors">
-                      <Icon className="w-4 h-4" />
-                    </div>
-                  </div>
-                  <h3 className="text-base font-semibold text-zinc-100 mb-2">
-                    {step.title}
-                  </h3>
-                  <p className="text-xs text-zinc-400 leading-relaxed font-sans">
-                    {step.description}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+          {/* Right Column: 6 Steps along a scroll-linked vertical rule */}
+          <div className="lg:col-span-7 relative">
+            {/* Drawing vertical line mathematically centered at x = 20px */}
+            <div
+              className="absolute left-[19px] top-9 bottom-12 w-[2px] bg-white/10 pointer-events-none rounded-full z-0"
+              aria-hidden="true"
+            >
+              <div
+                className="w-full bg-primary transition-all duration-300 ease-out shadow-[0_0_8px_rgba(168,230,46,0.6)] rounded-full"
+                style={{ height: `${((activeStep - 1) / 5) * 100}%` }}
+              />
+            </div>
 
-        {/* 3. Engagement Models */}
-        <div className="pt-16">
-          <div className="text-xs uppercase font-mono tracking-widest text-zinc-400 mb-8 flex items-center gap-2">
-            <Briefcase className="w-4 h-4 text-orange-500" />
-            <span>03 // Simple Ways to Work Together</span>
-          </div>
+            <div className="space-y-8 sm:space-y-10 relative z-10">
+              {PROCESS_STEPS.map((step) => {
+                const Icon = step.icon;
+                const isPassedOrActive = activeStep >= step.step;
+                const isCurrent = activeStep === step.step;
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {engagementModels.map((model, idx) => (
-              <div 
-                key={idx}
-                className={`p-8 rounded-2xl border flex flex-col justify-between transition-all duration-300 backdrop-blur-md ${
-                  model.highlighted
-                    ? "bg-zinc-900/45 border-orange-500 shadow-2xl shadow-orange-500/10 relative"
-                    : "bg-zinc-950/25 border-white/10 hover:border-white/20 hover:bg-zinc-900/35"
-                }`}
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-xs font-mono px-3 py-1 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/20">
-                      {model.badge}
-                    </span>
-                    <span className="text-[11px] font-mono text-zinc-500">MODEL 0{idx + 1}</span>
-                  </div>
-
-                  <h3 className="text-2xl font-light tracking-tight text-white mb-1">
-                    {model.title}
-                  </h3>
-                  <div className="text-xs font-mono text-orange-400/90 mb-4">
-                    {model.type}
-                  </div>
-
-                  <p className="text-xs md:text-sm text-zinc-300 leading-relaxed mb-6 font-sans">
-                    {model.description}
-                  </p>
-
-                  <div className="space-y-2.5 pt-4 border-t border-white/5">
-                    {model.features.map((feat, fIdx) => (
-                      <div key={fIdx} className="flex items-start gap-2.5">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-orange-500 mt-0.5 flex-shrink-0" />
-                        <span className="text-xs text-zinc-300 font-sans">{feat}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="pt-8 mt-6 border-t border-white/5">
-                  <a
-                    href={getInquiryWebmailUrl({ modelTitle: model.title, source: "Capabilities Engagement Model" })}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title={`Open Pre-Written Inquiry Email for ${model.title} in Gmail Web`}
-                    className={`w-full py-2.5 rounded-lg text-xs font-semibold flex items-center justify-center gap-2 transition-all ${
-                      model.highlighted
-                        ? "bg-orange-600 hover:bg-orange-500 text-white shadow-lg shadow-orange-600/20"
-                        : "bg-white/10 hover:bg-white/20 text-white"
+                return (
+                  <div
+                    key={step.step}
+                    id={`step-${step.step}`}
+                    className={`process-step-row flex items-start gap-4 sm:gap-6 relative transition-all duration-300 ${
+                      isCurrent
+                        ? 'opacity-100'
+                        : isPassedOrActive
+                        ? 'opacity-85'
+                        : 'opacity-50'
                     }`}
                   >
-                    <span>Work With Us</span>
-                    <ArrowUpRight className="w-3.5 h-3.5" />
-                  </a>
-                </div>
-              </div>
-            ))}
+                    {/* Step Node Dot centered directly on the 40px track column at x = 20px */}
+                    <div className="w-10 flex-none flex items-center justify-center pt-6">
+                      <div
+                        className={`w-4 h-4 rounded-full border-2 transition-all relative ${
+                          isPassedOrActive
+                            ? 'bg-bg border-primary shadow-[0_0_8px_rgba(168,230,46,0.7)]'
+                            : 'bg-bg border-white/20'
+                        }`}
+                      >
+                        {isCurrent && (
+                          <div className="w-1.5 h-1.5 rounded-full bg-primary absolute inset-0 m-auto animate-ping" />
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Step Content Card */}
+                    <div
+                      className={`flex-1 p-6 sm:p-7 rounded-2xl bg-surface/80 border transition-all ${
+                        isCurrent
+                          ? 'border-primary/40 bg-surface shadow-xl ring-1 ring-primary/20'
+                          : 'border-white/10 hover:border-white/20'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="font-sans font-semibold text-xs text-primary tracking-wide">
+                          Step {step.step}
+                        </span>
+                        <div className="w-8 h-8 rounded-lg bg-surface2 border border-white/10 flex items-center justify-center text-text-muted">
+                          <Icon className="w-4 h-4 text-primary" />
+                        </div>
+                      </div>
+
+                      <h3 className="font-display font-bold text-xl sm:text-2xl text-white mb-2">
+                        {step.title}
+                      </h3>
+                      <p className="text-sm text-text-muted leading-relaxed mb-4">
+                        {step.description}
+                      </p>
+
+                      {/* Deliverable Chips */}
+                      <div className="flex flex-wrap gap-2 pt-2 border-t border-white/5">
+                        {step.chips.map((chip, cIdx) => (
+                          <span
+                            key={cIdx}
+                            className="inline-flex items-center gap-1.5 text-xs font-mono text-text-muted bg-white/5 px-2.5 py-1 rounded-md"
+                          >
+                            <CheckCircle2 className="w-3 h-3 text-primary" />
+                            <span>{chip}</span>
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
     </section>
   );
-}
+};
 
 export default KaviroxCapabilities;

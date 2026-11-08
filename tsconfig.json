@@ -26,9 +26,7 @@
       "@/*": ["src/*"],
       "@/components/*": ["src/components/*"],
       "@/domains/*": ["src/domains/*"],
-      "@/shared/*": ["src/shared/*"],
-      "@designcodeio/threeui": ["src/shaders/threeui-entry.tsx"],
-      "@designcodeio/threeui/*": ["src/shaders/*"]
+      "@/shared/*": ["src/shared/*"]
     }
   },
   "include": ["src"]

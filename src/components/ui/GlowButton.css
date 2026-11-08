@@ -1,0 +1,78 @@
+/* Source: kavirox_ui_elemnts.txt lines 16125-16369 (Glow button / Uiverse sparkle) */
+/* Recolored to Kavirox lime tokens: HSL 84 */
+
+.kavirox-glow-button-wrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+.kavirox-glow-button {
+  --active: 0;
+  --transition: 0.3s;
+  --glow-hue: 199;
+  
+  background: radial-gradient(
+    40% 50% at center 100%,
+    hsl(var(--glow-hue) calc(var(--active) * 80%) 55% / calc(var(--active) * 0.4)),
+    transparent
+  ),
+  radial-gradient(
+    80% 100% at center 120%,
+    hsl(var(--glow-hue) calc(var(--active) * 75%) 40% / calc(var(--active) * 0.3)),
+    transparent
+  ),
+  #38bdf8;
+
+  color: #030712;
+  font-family: var(--font-display, inherit);
+  font-size: 1rem;
+  font-weight: 700;
+  border: 1px solid rgba(56, 189, 248, 0.5);
+  cursor: pointer;
+  padding: 0.75rem 1.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  border-radius: 9999px;
+  position: relative;
+  outline: none;
+  text-decoration: none;
+  transform: scale(calc(1 + (var(--active) * 0.03)));
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), background 0.25s, border-color 0.25s;
+  box-shadow: 0 0 calc(var(--active) * 24px) calc(var(--active) * 4px) rgba(56, 189, 248, 0.5);
+}
+
+.kavirox-glow-button:hover,
+.kavirox-glow-button:focus-visible {
+  --active: 1;
+}
+
+.kavirox-glow-button:active {
+  transform: scale(0.97);
+}
+
+.kavirox-glow-button:focus-visible {
+  outline: 2px solid #38bdf8;
+  outline-offset: 3px;
+}
+
+.kavirox-glow-button .sparkle-icon {
+  width: 1.1em;
+  height: 1.1em;
+  fill: currentColor;
+  transition: transform 0.3s ease;
+}
+
+.kavirox-glow-button:hover .sparkle-icon,
+.kavirox-glow-button:focus-visible .sparkle-icon {
+  transform: rotate(15deg) scale(1.15);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kavirox-glow-button {
+    transition: none !important;
+    transform: none !important;
+  }
+}
