@@ -1,10 +1,10 @@
-import React, { Suspense, lazy, useEffect, useRef } from 'react';
+import React, { Suspense, lazy, useEffect, useRef, useState, useCallback } from 'react';
 import StarBorder from '@/components/ui/StarBorder';
 import ScrollFloat from '@/components/ui/ScrollFloat';
 import { PRODUCTS_DATA, ProductItem } from '../data/products-data';
 import { PhoneMock } from './phone-mock';
 import { StatusBadge } from './status-badge';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { isQaMode } from '@/shared/hooks/use-device-tier';
@@ -24,7 +24,40 @@ export const ProductsSection: React.FC<ProductsSectionProps> = ({ onOpenProduct 
   const compactProducts = PRODUCTS_DATA.filter((p) => !p.isFeatured);
   const featuredGridRef = useRef<HTMLDivElement>(null);
   const compactGridRef = useRef<HTMLDivElement>(null);
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [activeSlide, setActiveSlide] = useState(0);
   const qa = isQaMode();
+
+  const checkScroll = useCallback(() => {
+    if (!sliderRef.current) return;
+    const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
+    setCanScrollLeft(scrollLeft > 10);
+    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+
+    const cardWidth = 320;
+    const idx = Math.round(scrollLeft / cardWidth);
+    setActiveSlide(Math.min(compactProducts.length - 1, Math.max(0, idx)));
+  }, [compactProducts.length]);
+
+  useEffect(() => {
+    const el = sliderRef.current;
+    if (!el) return;
+    el.addEventListener('scroll', checkScroll, { passive: true });
+    checkScroll();
+    return () => el.removeEventListener('scroll', checkScroll);
+  }, [checkScroll]);
+
+  const slideLeft = () => {
+    if (!sliderRef.current) return;
+    sliderRef.current.scrollBy({ left: -340, behavior: 'smooth' });
+  };
+
+  const slideRight = () => {
+    if (!sliderRef.current) return;
+    sliderRef.current.scrollBy({ left: 340, behavior: 'smooth' });
+  };
 
   // Cards cascading animation: coming one by one from below to top on scroll
   useEffect(() => {
@@ -246,12 +279,66 @@ export const ProductsSection: React.FC<ProductsSectionProps> = ({ onOpenProduct 
           </div>
         </div>
 
-        {/* Compact Four Portfolio Grid (Desktop: 4-up; Mobile: 2-up) with Scroll-Triggered Cascade */}
-        <div className="mt-8">
-          <h4 className="text-xs font-mono uppercase text-text-muted/70 tracking-widest mb-4">
-            More in the portfolio
-          </h4>
-          <div ref={compactGridRef} className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5">
+        {/* Horizontal Slider: Slide-wise from left to right */}
+        <div className="mt-12 pt-8 border-t border-white/10">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+            <div>
+              <div className="inline-flex items-center gap-2 font-mono text-xs text-primary uppercase tracking-widest mb-1.5">
+                <span className="w-3.5 h-[1px] bg-primary" />
+                <span>Portfolio Catalog</span>
+              </div>
+              <h3 className="font-display font-bold text-xl sm:text-2xl text-white">
+                More in the portfolio.
+              </h3>
+            </div>
+
+            {/* Slider Navigation Controls */}
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-mono text-text-muted hidden sm:inline-block">
+                {String(activeSlide + 1).padStart(2, '0')} / {String(compactProducts.length).padStart(2, '0')}
+              </span>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={slideLeft}
+                  disabled={!canScrollLeft}
+                  aria-label="Previous project"
+                  className={`p-2.5 rounded-full border transition-all ${
+                    canScrollLeft
+                      ? 'border-white/20 bg-surface/80 text-white hover:border-primary/50 hover:bg-primary/10 active:scale-95'
+                      : 'border-white/5 bg-surface/30 text-white/30 cursor-not-allowed'
+                  }`}
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={slideRight}
+                  disabled={!canScrollRight}
+                  aria-label="Next project"
+                  className={`p-2.5 rounded-full border transition-all ${
+                    canScrollRight
+                      ? 'border-white/20 bg-surface/80 text-white hover:border-primary/50 hover:bg-primary/10 active:scale-95'
+                      : 'border-white/5 bg-surface/30 text-white/30 cursor-not-allowed'
+                  }`}
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Sliding Track: slide-wise left to right */}
+          <div
+            ref={(node) => {
+              (sliderRef as any).current = node;
+              (compactGridRef as any).current = node;
+            }}
+            className="flex gap-4 sm:gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-6 pt-2 -mx-4 px-4 sm:mx-0 sm:px-0 no-scrollbar"
+            tabIndex={0}
+            role="region"
+            aria-label="Portfolio projects slider"
+          >
             {compactProducts.map((product) => (
               <div
                 key={product.slug}
@@ -264,7 +351,7 @@ export const ProductsSection: React.FC<ProductsSectionProps> = ({ onOpenProduct 
                   }
                 }}
                 onClick={() => onOpenProduct(product.slug)}
-                className="compact-product-card cursor-target group rounded-2xl bg-surface/70 border border-white/10 hover:border-primary/40 p-4 sm:p-5 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-lg active:scale-[0.98]"
+                className="compact-product-card shrink-0 snap-start w-[270px] sm:w-[310px] md:w-[330px] cursor-target group rounded-2xl bg-surface/80 border border-white/10 hover:border-primary/50 p-5 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_16px_36px_rgba(0,0,0,0.45)] active:scale-[0.98] select-none"
                 data-cursor-label="View"
               >
                 <div>
@@ -289,7 +376,7 @@ export const ProductsSection: React.FC<ProductsSectionProps> = ({ onOpenProduct 
                     {product.oneLine}
                   </p>
                   <div className="inline-flex items-center gap-1 text-[11px] font-mono text-primary mt-2.5">
-                    <span>View</span>
+                    <span>Explore project</span>
                     <ArrowUpRight className="w-3 h-3" />
                   </div>
                 </div>

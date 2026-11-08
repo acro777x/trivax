@@ -1,0 +1,7 @@
+name = "kavirox-space"
+compatibility_date = "2024-09-23"
+pages_build_output_dir = "dist"
+
+[vars]
+# OpenRouter API key can be set in Cloudflare Dashboard Secrets or below for local dev
+DEFAULT_MODEL = "openrouter/free"
