@@ -175,7 +175,6 @@ export const KaviroxHeader: React.FC = () => {
         position="right"
         isFixed={true}
         items={MOBILE_MENU_ITEMS}
-        productItems={PRODUCT_ITEMS}
         socialItems={MOBILE_SOCIALS}
         displaySocials={true}
         displayItemNumbering={true}

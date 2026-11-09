@@ -176,7 +176,7 @@ export const ProductsSection: React.FC<ProductsSectionProps> = ({ onOpenProduct 
         {/* Featured Trio (Desktop: 3-up Large Cards; Mobile: CSS Snap Rail) */}
         <div className="mb-10 sm:mb-14">
           {/* Mobile / Tablet Snap Rail */}
-          <div className="flex lg:hidden overflow-x-auto snap-x snap-proximity gap-5 pb-6 -mx-5 px-5 scrollbar-none touch-auto">
+          <div className="flex lg:hidden overflow-x-auto snap-x snap-proximity gap-5 pb-6 -mx-5 px-5 scrollbar-none touch-pan-y overscroll-x-contain">
             {featuredProducts.map((product) => (
               <div
                 key={product.slug}
@@ -334,7 +334,7 @@ export const ProductsSection: React.FC<ProductsSectionProps> = ({ onOpenProduct 
               (sliderRef as any).current = node;
               (compactGridRef as any).current = node;
             }}
-            className="flex gap-4 sm:gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-6 pt-2 -mx-4 px-4 sm:mx-0 sm:px-0 no-scrollbar scrollbar-none"
+            className="flex gap-4 sm:gap-6 overflow-x-auto scroll-smooth snap-x snap-proximity pb-6 pt-2 -mx-4 px-4 sm:mx-0 sm:px-0 no-scrollbar scrollbar-none touch-pan-y overscroll-x-contain"
             tabIndex={0}
             role="region"
             aria-label="Portfolio projects slider"
