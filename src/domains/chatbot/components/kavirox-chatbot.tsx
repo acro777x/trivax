@@ -4,6 +4,7 @@ import {
   Send, 
   RotateCcw, 
   ArrowUpRight, 
+  ArrowDown,
   User, 
   Square,
   Mail,
@@ -29,6 +30,25 @@ const STARTER_PROMPTS = [
   "How can we work together?",
   "What services do you deliver?"
 ];
+
+interface ParsedButton {
+  label: string;
+  action: string;
+}
+
+function extractButtons(content: string): { cleanContent: string; buttons: ParsedButton[] } {
+  const buttons: ParsedButton[] = [];
+  const buttonRegex = /\[button:([^\|\]]+)\|([^\]]+)\]/g;
+  let match;
+  while ((match = buttonRegex.exec(content)) !== null) {
+    buttons.push({
+      label: match[1].trim(),
+      action: match[2].trim()
+    });
+  }
+  const cleanContent = content.replace(buttonRegex, "").trim();
+  return { cleanContent, buttons };
+}
 
 export function KaviroxChatbot() {
   const [isOpen, setIsOpen] = useState(false);
@@ -206,6 +226,33 @@ export function KaviroxChatbot() {
     }
   };
 
+  const handleActionClick = (action: string) => {
+    if (action === "inquiry" || action.startsWith("mailto:")) {
+      openEmailInquiry({ source: "Chatbot Assistant" });
+    } else if (action.startsWith("#")) {
+      const id = action.slice(1);
+      const target = document.getElementById(id);
+      const lenis = (window as any).__lenis;
+      if (target) {
+        if (lenis) lenis.scrollTo(target, { duration: 1.1, offset: -60 });
+        else target.scrollIntoView({ behavior: "smooth" });
+      }
+      if (window.innerWidth < 640) {
+        setIsOpen(false);
+      }
+    } else if (action.startsWith("/products/")) {
+      const slug = action.split("/products/")[1].replace(/[/?#].*$/, "");
+      window.history.pushState({}, "", `/products/${slug}`);
+      window.dispatchEvent(new PopStateEvent("popstate"));
+      window.scrollTo(0, 0);
+      if (window.innerWidth < 640) {
+        setIsOpen(false);
+      }
+    } else if (action.startsWith("http")) {
+      window.open(action, "_blank", "noopener,noreferrer");
+    }
+  };
+
   // Helper to render formatted text (bold, bullets, linebreaks)
   const renderFormattedText = (content: string) => {
     const normalized = content
@@ -369,12 +416,13 @@ export function KaviroxChatbot() {
           <div className="flex-1 overflow-y-auto p-4 space-y-3.5 text-xs text-text-muted font-sans scrollbar-none">
             {messages.map((msg) => {
               const isAssistant = msg.role === "assistant";
+              const { cleanContent, buttons } = extractButtons(msg.content);
               const isProjectInquiryRelated =
                 isAssistant &&
-                (msg.content.toLowerCase().includes("discuss a project") ||
-                  msg.content.toLowerCase().includes("pre-written project brief") ||
-                  msg.content.toLowerCase().includes("email us") ||
-                  msg.content.toLowerCase().includes("info@kavirox.space"));
+                (cleanContent.toLowerCase().includes("discuss a project") ||
+                  cleanContent.toLowerCase().includes("pre-written project brief") ||
+                  cleanContent.toLowerCase().includes("email us") ||
+                  cleanContent.toLowerCase().includes("info@kavirox.space"));
 
               return (
                 <div
@@ -422,25 +470,46 @@ export function KaviroxChatbot() {
                         </div>
                       ) : (
                         <>
-                          {renderFormattedText(msg.content)}
+                          {renderFormattedText(cleanContent)}
                           {msg.isStreaming && (
                             <span className="inline-block w-1.5 h-3.5 ml-1 bg-primary animate-pulse align-middle" />
                           )}
                         </>
                       )}
 
-                      {/* Contextual Action Button */}
-                      {isProjectInquiryRelated && !msg.isStreaming && (
-                        <div className="mt-3 pt-2.5 border-t border-line flex items-center gap-2">
-                          <button
-                            type="button"
-                            onClick={() => openEmailInquiry({ source: "Chatbot Assistant" })}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-semibold bg-primary text-primary-ink shadow-sm transition-all cursor-pointer hover:brightness-110"
-                          >
-                            <Mail className="w-3 h-3" />
-                            <span>Discuss a project</span>
-                            <ArrowUpRight className="w-3 h-3" />
-                          </button>
+                      {/* Interactive Action Buttons (Read-Only Agency) */}
+                      {isAssistant && !msg.isStreaming && (buttons.length > 0 || isProjectInquiryRelated) && (
+                        <div className="mt-3 pt-2.5 border-t border-line flex flex-wrap items-center gap-1.5">
+                          {buttons.length > 0 ? (
+                            buttons.map((btn, bIdx) => (
+                              <button
+                                key={bIdx}
+                                type="button"
+                                onClick={() => handleActionClick(btn.action)}
+                                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold bg-primary/90 text-primary-ink shadow-sm transition-all cursor-pointer hover:bg-primary active:scale-95"
+                              >
+                                {btn.action === "inquiry" || btn.action.startsWith("mailto:") ? (
+                                  <Mail className="w-3 h-3" />
+                                ) : btn.action.startsWith("#") ? (
+                                  <ArrowDown className="w-3 h-3" />
+                                ) : (
+                                  <ArrowUpRight className="w-3 h-3" />
+                                )}
+                                <span>{btn.label}</span>
+                                <ArrowUpRight className="w-2.5 h-2.5 opacity-70" />
+                              </button>
+                            ))
+                          ) : isProjectInquiryRelated ? (
+                            <button
+                              type="button"
+                              onClick={() => openEmailInquiry({ source: "Chatbot Assistant" })}
+                              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold bg-primary/90 text-primary-ink shadow-sm transition-all cursor-pointer hover:bg-primary active:scale-95"
+                            >
+                              <Mail className="w-3 h-3" />
+                              <span>Discuss a project</span>
+                              <ArrowUpRight className="w-2.5 h-2.5 opacity-70" />
+                            </button>
+                          ) : null}
                         </div>
                       )}
                     </div>
