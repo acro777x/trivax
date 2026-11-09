@@ -260,7 +260,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
 
             {/* Screens Gallery Rail */}
             <div className="w-full my-6 rounded-2xl overflow-hidden border border-white/10 bg-[#08100a]/80 backdrop-blur-md">
-              <div className="overflow-x-auto pb-6 pt-6 px-4 sm:px-6 flex gap-6 snap-x snap-mandatory scrollbar-none">
+              <div className="overflow-x-auto pb-6 pt-6 px-4 sm:px-6 flex gap-6 snap-x snap-proximity scrollbar-none touch-swipe-rail touch-pan-x touch-pan-y overscroll-x-contain">
                 {product.screens.map((screen, sIdx) => {
                   const isWide =
                     product.mockType === 'table' ||
