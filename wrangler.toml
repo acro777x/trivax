@@ -10,4 +10,7 @@ directory = "./dist"
 binding = "ASSETS"
 
 [vars]
-DEFAULT_MODEL = "openrouter/free"
+DEFAULT_MODEL = "nvidia/nemotron-3.5-super-vl:free"
+OPENROUTER_MODEL = "nvidia/nemotron-3.5-super-vl:free"
+OPENROUTER_SITE_NAME = "KAVIROX.SPACE"
+OPENROUTER_SITE_URL = "https://kavirox.space"

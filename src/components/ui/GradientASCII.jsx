@@ -831,14 +831,29 @@ const GradientASCII = ({
 
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(container);
+    let hasLeft = false;
     const intersection = new IntersectionObserver(entries => {
       visible = entries.some(entry => entry.isIntersecting);
       if (visible) {
+        if (hasLeft && settingsRef.current.intro && !reduce) {
+          introClock = 0;
+        }
         last = 0;
         wake();
+      } else {
+        hasLeft = true;
       }
     });
     intersection.observe(container);
+
+    const onPreloaderDone = () => {
+      if (settingsRef.current.intro && !reduce) {
+        introClock = 0;
+        last = 0;
+        wake();
+      }
+    };
+    window.addEventListener('kavirox-preloader-complete', onPreloaderDone);
     window.addEventListener('pointermove', onPointerMove, { passive: true });
     window.addEventListener('pointerdown', onPointerDown, { passive: true });
     document.addEventListener('visibilitychange', onVisibility);
@@ -853,6 +868,7 @@ const GradientASCII = ({
       intersection.disconnect();
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerdown', onPointerDown);
+      window.removeEventListener('kavirox-preloader-complete', onPreloaderDone);
       document.removeEventListener('visibilitychange', onVisibility);
       [fieldTarget, haloA, haloB].forEach(target => {
         target.textures.forEach(texture => gl.deleteTexture(texture));

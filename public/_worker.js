@@ -90,9 +90,14 @@ export default {
 
     // 2. Health check endpoint
     if (url.pathname === "/api/health") {
-      const activeModel = env.OPENROUTER_MODEL || "nvidia/nemotron-3.5-super-vl:free";
+      const activeModel = env?.OPENROUTER_MODEL || "nvidia/nemotron-3.5-super-vl:free";
       const hasKey = Boolean(
-        env.OPENROUTER_API_KEY || env.OPEN_ROUTER_API_KEY || env.OPENROUTER_KEY || env.API_KEY
+        env?.OPENROUTER_API_KEY ||
+        env?.OPEN_ROUTER_API_KEY ||
+        env?.OPENROUTER_KEY ||
+        env?.API_KEY ||
+        (typeof globalThis !== "undefined" && (globalThis.OPENROUTER_API_KEY || globalThis.OPENROUTER_KEY)) ||
+        (typeof process !== "undefined" && process?.env?.OPENROUTER_API_KEY)
       );
       return new Response(
         JSON.stringify({
@@ -101,7 +106,8 @@ export default {
           timestamp: Date.now(),
           configuredModel: activeModel,
           hasOpenRouterKey: hasKey,
-          site: env.OPENROUTER_SITE_NAME || "Kavirox Space",
+          envKeys: env ? Object.keys(env) : [],
+          site: env?.OPENROUTER_SITE_NAME || "Kavirox Space",
           security: "OWASP-Top-10-LLM-2025/2026-Hardened"
         }),
         {
@@ -135,7 +141,13 @@ export default {
         );
       }
 
-      const apiKey = env.OPENROUTER_API_KEY || env.OPEN_ROUTER_API_KEY || env.OPENROUTER_KEY || env.API_KEY;
+      const apiKey =
+        env?.OPENROUTER_API_KEY ||
+        env?.OPEN_ROUTER_API_KEY ||
+        env?.OPENROUTER_KEY ||
+        env?.API_KEY ||
+        (typeof globalThis !== "undefined" && (globalThis.OPENROUTER_API_KEY || globalThis.OPENROUTER_KEY)) ||
+        (typeof process !== "undefined" && process?.env?.OPENROUTER_API_KEY);
 
       if (!apiKey) {
         return new Response(

@@ -113,12 +113,12 @@ export const KaviroxHero: React.FC = () => {
             gradientOpacity={0.9}
             grain={0.08}
             variation={0}
-            mouseInteraction={isFull}
+            mouseInteraction={true}
             scrambleRadius={0.1}
             clickEffect="wave"
-            intro={isFull && !qa}
+            intro={!qa}
             lightMode={false}
-            dpr={isFull ? undefined : 1}
+            dpr={typeof window !== 'undefined' ? Math.min(window.devicePixelRatio || 1, 2) : 1}
             fontFamily="Geist Mono Variable"
             className="w-full h-full"
           />
@@ -169,7 +169,7 @@ export const KaviroxHero: React.FC = () => {
                   drawDuration={1.2}
                   fillDelay={0.3}
                   trigger="mount"
-                  hoverRedraw={isFull}
+                  hoverRedraw={true}
                   fontFamily="Bricolage Grotesque Variable, system-ui, sans-serif"
                   fontWeight={800}
                   shadow={true}
@@ -213,37 +213,27 @@ export const KaviroxHero: React.FC = () => {
 
         {/* Buttons Row */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-4 w-full max-w-[340px] sm:max-w-none mb-10 sm:mb-12">
-          {isFull ? (
-            <Magnet padding={80} magnetStrength={2}>
-              <GlowButton
-                href="#products"
-                onClick={handleScrollToProducts}
-                className="w-full sm:w-auto font-display font-bold text-sm sm:text-base px-6 py-3.5 shadow-[0_0_24px_rgba(168,230,46,0.35)] cursor-target"
-                data-cursor-label="View"
-              >
-                Explore Products
-              </GlowButton>
-            </Magnet>
-          ) : (
+          <Magnet padding={80} magnetStrength={2}>
             <GlowButton
               href="#products"
               onClick={handleScrollToProducts}
-              className="w-full sm:w-auto font-display font-bold text-sm px-6 py-3.5"
+              className="w-full sm:w-auto font-display font-bold text-sm sm:text-base px-6 py-3.5 shadow-[0_0_24px_rgba(56,189,248,0.35)] cursor-target"
+              data-cursor-label="View"
             >
               Explore Products
             </GlowButton>
-          )}
+          </Magnet>
 
           <SpecularButton
             size="md"
             radius={9999}
-            tint="#101a12"
-            tintOpacity={0.65}
+            tint="#0a1122"
+            tintOpacity={0.7}
             textColor="#eef5ea"
-            lineColor="rgba(255, 255, 255, 0.16)"
-            intensity={isFull ? 1 : 0.3}
-            idleIntensity={0.25}
-            followMouse={isFull}
+            lineColor="rgba(56, 189, 248, 0.45)"
+            intensity={1}
+            idleIntensity={0.35}
+            followMouse={true}
             href="#contact"
             onClick={handleScrollToContact}
             className="w-full sm:w-auto cursor-target font-display font-semibold text-xs sm:text-sm px-6 py-3.5 border border-white/10"
