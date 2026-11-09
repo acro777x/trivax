@@ -238,15 +238,40 @@ const StrokeText = ({
       });
     } else {
       timeline = build();
+
+      // Listen for preloader completion to replay freshly once preloader lifts
+      const handlePreloaderComplete = () => {
+        timeline?.kill();
+        timeline = build();
+        timeline.play(0);
+      };
+      window.addEventListener('kavirox-preloader-complete', handlePreloaderComplete);
+      listeners.push(() => window.removeEventListener('kavirox-preloader-complete', handlePreloaderComplete));
+
       if (trigger === 'scroll') {
         scrollTrigger = ScrollTrigger.create({
           trigger: root,
           start: 'top 82%',
-          once: true,
-          onEnter: () => timeline?.play(0)
+          once: false,
+          onEnter: () => timeline?.play(0),
+          onEnterBack: () => {
+            timeline?.kill();
+            timeline = build();
+            timeline.play(0);
+          }
         });
       } else {
         timeline.play(0);
+        // Also setup scroll listener to replay when scrolling back up to top
+        scrollTrigger = ScrollTrigger.create({
+          trigger: root,
+          start: 'top 95%',
+          onEnterBack: () => {
+            timeline?.kill();
+            timeline = build();
+            timeline.play(0);
+          }
+        });
       }
 
       if (hoverRedraw && trigger !== 'loop') {

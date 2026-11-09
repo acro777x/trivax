@@ -90,7 +90,13 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     );
   }
 
-  const apiKey = env.OPENROUTER_API_KEY || env.OPEN_ROUTER_API_KEY || env.OPENROUTER_KEY || env.API_KEY;
+  const apiKey =
+    env?.OPENROUTER_API_KEY ||
+    env?.OPEN_ROUTER_API_KEY ||
+    env?.OPENROUTER_KEY ||
+    env?.API_KEY ||
+    ((globalThis as any).OPENROUTER_API_KEY || (globalThis as any).OPENROUTER_KEY) ||
+    ((process as any)?.env?.OPENROUTER_API_KEY);
 
   if (!apiKey) {
     return new Response(
