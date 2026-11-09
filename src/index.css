@@ -128,3 +128,12 @@ body {
   width: 0 !important;
   height: 0 !important;
 }
+
+
+/* Smooth Touch & Swipe Rail for Mobile */
+.touch-swipe-rail {
+  touch-action: pan-x pan-y !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior-x: contain !important;
+  scroll-behavior: smooth;
+}

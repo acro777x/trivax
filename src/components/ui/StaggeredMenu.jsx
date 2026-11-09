@@ -356,6 +356,42 @@ export const StaggeredMenu = ({
     };
   }, [closeOnClickAway, open, closeMenu]);
 
+  // Swipe horizontally to dismiss drawer on mobile
+  React.useEffect(() => {
+    if (!open) return;
+    const panel = panelRef.current;
+    if (!panel) return;
+
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    const onTouchStart = (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    };
+
+    const onTouchEnd = (e) => {
+      const touchEndX = e.changedTouches[0].clientX;
+      const touchEndY = e.changedTouches[0].clientY;
+      const diffX = touchEndX - touchStartX;
+      const diffY = Math.abs(touchEndY - touchStartY);
+
+      if (position === 'right' && diffX > 50 && diffY < 120) {
+        closeMenu();
+      } else if (position === 'left' && diffX < -50 && diffY < 120) {
+        closeMenu();
+      }
+    };
+
+    panel.addEventListener('touchstart', onTouchStart, { passive: true });
+    panel.addEventListener('touchend', onTouchEnd, { passive: true });
+
+    return () => {
+      panel.removeEventListener('touchstart', onTouchStart);
+      panel.removeEventListener('touchend', onTouchEnd);
+    };
+  }, [open, position, closeMenu]);
+
   return (
     <div
       className={(className ? className + ' ' : '') + 'staggered-menu-wrapper' + (isFixed ? ' fixed-wrapper' : '')}
