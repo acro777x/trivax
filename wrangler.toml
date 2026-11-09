@@ -1,4 +1,4 @@
-name = "kavirox-space"
+name = "kavirox"
 main = "public/_worker.js"
 compatibility_date = "2024-09-23"
 

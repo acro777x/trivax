@@ -436,15 +436,32 @@ export const StaggeredMenu = ({
                         e.preventDefault();
                         closeMenu();
                         const targetId = it.link.slice(1);
-                        const targetEl = targetId === 'top' ? document.body : document.getElementById(targetId);
+                        if (window.location.pathname !== '/' && window.location.pathname !== '') {
+                          window.location.href = '/' + it.link;
+                          return;
+                        }
                         setTimeout(() => {
-                          const lenis = window.__lenis;
-                          if (lenis && targetEl) {
-                            lenis.scrollTo(targetEl, { duration: 1.0, offset: -60 });
-                          } else if (targetEl) {
-                            targetEl.scrollIntoView({ behavior: 'smooth' });
+                          if (targetId === 'top') {
+                            const lenis = window.__lenis;
+                            if (lenis) {
+                              lenis.scrollTo(0, { duration: 0.8 });
+                            } else {
+                              window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }
+                            return;
                           }
-                        }, 250);
+                          const targetEl = document.getElementById(targetId);
+                          if (targetEl) {
+                            const lenis = window.__lenis;
+                            if (lenis) {
+                              lenis.scrollTo(targetEl, { duration: 0.9, offset: -70 });
+                            } else {
+                              const rect = targetEl.getBoundingClientRect();
+                              const targetY = rect.top + window.pageYOffset - 70;
+                              window.scrollTo({ top: targetY, behavior: 'smooth' });
+                            }
+                          }
+                        }, 120);
                       }
                     }}
                   >
@@ -461,30 +478,6 @@ export const StaggeredMenu = ({
             )}
           </ul>
 
-          {productItems && productItems.length > 0 && (
-            <div className="sm-products-group mt-6 pt-4 border-t border-white/10">
-              <div className="flex items-center justify-between mb-3 px-2">
-                <h4 className="text-xs font-mono uppercase text-primary tracking-widest m-0">
-                  Products
-                </h4>
-                <span className="text-[11px] font-mono text-text-muted/60">Swipe →</span>
-              </div>
-              <div className="flex gap-2 overflow-x-auto no-scrollbar scrollbar-none pb-2 px-1" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
-                {productItems.map((prod, pIdx) => (
-                  <a
-                    key={prod.label + pIdx}
-                    href={prod.link}
-                    className="shrink-0 px-3.5 py-2 rounded-xl text-xs font-mono bg-white/5 border border-white/10 text-text-muted hover:text-white hover:border-primary/50 hover:bg-primary/10 transition-all whitespace-nowrap"
-                    onClick={() => {
-                      closeMenu();
-                    }}
-                  >
-                    {prod.label}
-                  </a>
-                ))}
-              </div>
-            </div>
-          )}
           {displaySocials && socialItems && socialItems.length > 0 && (
             <div className="sm-socials" aria-label="Social links">
               <h3 className="sm-socials-title">Socials</h3>
